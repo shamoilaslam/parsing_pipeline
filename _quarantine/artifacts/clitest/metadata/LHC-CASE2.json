@@ -1,0 +1,95 @@
+{
+  "source_name": "LHC-CASE2.pdf",
+  "source_file": "data\\pdfs\\LHC-CASE2.pdf",
+  "page_count": 6,
+  "extraction_mode": "mixed_native_and_ocr",
+  "router": {
+    "requested": "auto",
+    "selected": "scanned",
+    "mode": "scanned",
+    "page_count": 6,
+    "scan_pages": [
+      1,
+      2,
+      3,
+      6
+    ],
+    "native_pages": [
+      4,
+      5
+    ]
+  },
+  "metadata": {
+    "court": null,
+    "bench": null,
+    "case_number": "Writ Petition No.40844of",
+    "decision_date": "03.06.2025",
+    "hearing_date": null,
+    "dates_found": [
+      "02.05.2025",
+      "03.06.2025",
+      "06.04.2024",
+      "13.03.2025",
+      "18.07.2025",
+      "20.12.2024",
+      "21.02.2025",
+      "23.06.2025",
+      "24.07.202"
+    ],
+    "judges": [],
+    "parties": "Abdul Rehman Faryad Vs. Government of Punjab etc.",
+    "citations": [
+      "PLD 2023 Lahore 512",
+      "PLD 2025 Peshawar 67"
+    ],
+    "acts": [],
+    "sections": [
+      "173",
+      "2001",
+      "249-A",
+      "3",
+      "30",
+      "4"
+    ],
+    "pdf_title": "CamScanner 28-07-2025 15.43",
+    "pdf_author": "CamScanner"
+  },
+  "metadata_provenance": null,
+  "confidence": 0.837,
+  "diagnostics": {
+    "status": "REVIEW",
+    "failed_components": [
+      "metadata"
+    ],
+    "quality_score": 0.945,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 1.0,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 0.5625
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 70,
+    "tables": 0,
+    "excluded_pages": 0,
+    "blue_slip_pages": 0,
+    "blank_pages": 0,
+    "region_retries": 0,
+    "preprocess_variant": "grayscale",
+    "models": [
+      "rapidocr-onnx-general-cpu"
+    ],
+    "native_pages_kept": 2
+  },
+  "warnings": [
+    "OCR output is line-box accurate; exact character boxes are not available from the lightweight runtime and are not fabricated.",
+    "LlamaParse output is a comparison reference, not ground truth."
+  ],
+  "template_key": null
+}

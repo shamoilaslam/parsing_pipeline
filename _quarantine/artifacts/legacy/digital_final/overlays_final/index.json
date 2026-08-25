@@ -1,0 +1,622 @@
+{
+  "pdf": "data\\2024LHC6559.pdf",
+  "scale": 1.0,
+  "pages": [
+    {
+      "page": 1,
+      "path": "outputs\\digital_final\\overlays_final\\page_001.png",
+      "ground_truth_blocks": 10,
+      "predicted_blocks": 10,
+      "matched_blocks": 10,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.8867789231298269
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9703165622145912
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.42403550359848835
+        },
+        {
+          "gt_order": 3,
+          "prediction_order": 3,
+          "iou": 0.73173964532076
+        },
+        {
+          "gt_order": 4,
+          "prediction_order": 4,
+          "iou": 0.8786542023803269
+        },
+        {
+          "gt_order": 5,
+          "prediction_order": 5,
+          "iou": 0.9589787338796579
+        },
+        {
+          "gt_order": 6,
+          "prediction_order": 6,
+          "iou": 0.7698130143472655
+        },
+        {
+          "gt_order": 7,
+          "prediction_order": 7,
+          "iou": 0.6454616757404872
+        },
+        {
+          "gt_order": 8,
+          "prediction_order": 8,
+          "iou": 0.9767013530662955
+        },
+        {
+          "gt_order": 9,
+          "prediction_order": 9,
+          "iou": 0.9852924208050048
+        }
+      ]
+    },
+    {
+      "page": 2,
+      "path": "outputs\\digital_final\\overlays_final\\page_002.png",
+      "ground_truth_blocks": 3,
+      "predicted_blocks": 3,
+      "matched_blocks": 3,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9764224747584044
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9572980064376388
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.9880281901091823
+        }
+      ]
+    },
+    {
+      "page": 3,
+      "path": "outputs\\digital_final\\overlays_final\\page_003.png",
+      "ground_truth_blocks": 2,
+      "predicted_blocks": 2,
+      "matched_blocks": 2,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9764224747584044
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.986929012901917
+        }
+      ]
+    },
+    {
+      "page": 4,
+      "path": "outputs\\digital_final\\overlays_final\\page_004.png",
+      "ground_truth_blocks": 7,
+      "predicted_blocks": 7,
+      "matched_blocks": 7,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9764224747584044
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9623633193839936
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.9318665591093263
+        },
+        {
+          "gt_order": 3,
+          "prediction_order": 3,
+          "iou": 0.8526480584987203
+        },
+        {
+          "gt_order": 4,
+          "prediction_order": 4,
+          "iou": 0.9750612443575423
+        },
+        {
+          "gt_order": 5,
+          "prediction_order": 5,
+          "iou": 0.9270443356249519
+        },
+        {
+          "gt_order": 6,
+          "prediction_order": 6,
+          "iou": 0.9854019419265897
+        }
+      ]
+    },
+    {
+      "page": 5,
+      "path": "outputs\\digital_final\\overlays_final\\page_005.png",
+      "ground_truth_blocks": 5,
+      "predicted_blocks": 8,
+      "matched_blocks": 5,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9091170835441156
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9748432442811291
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.9390115390070389
+        },
+        {
+          "gt_order": 3,
+          "prediction_order": 3,
+          "iou": 0.9782137760078443
+        },
+        {
+          "gt_order": 4,
+          "prediction_order": 5,
+          "iou": 0.543207688701313
+        }
+      ]
+    },
+    {
+      "page": 6,
+      "path": "outputs\\digital_final\\overlays_final\\page_006.png",
+      "ground_truth_blocks": 4,
+      "predicted_blocks": 5,
+      "matched_blocks": 4,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9036944800405528
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9816306655709732
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.9348793682867367
+        },
+        {
+          "gt_order": 3,
+          "prediction_order": 4,
+          "iou": 0.780328253948243
+        }
+      ]
+    },
+    {
+      "page": 7,
+      "path": "outputs\\digital_final\\overlays_final\\page_007.png",
+      "ground_truth_blocks": 3,
+      "predicted_blocks": 3,
+      "matched_blocks": 3,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9764224747584044
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9620575362087246
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.9941798978495793
+        }
+      ]
+    },
+    {
+      "page": 8,
+      "path": "outputs\\digital_final\\overlays_final\\page_008.png",
+      "ground_truth_blocks": 5,
+      "predicted_blocks": 5,
+      "matched_blocks": 5,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9764224747584044
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9687829050105168
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.9875627607497818
+        },
+        {
+          "gt_order": 3,
+          "prediction_order": 3,
+          "iou": 0.9817936695464988
+        },
+        {
+          "gt_order": 4,
+          "prediction_order": 4,
+          "iou": 0.9525562110124399
+        }
+      ]
+    },
+    {
+      "page": 9,
+      "path": "outputs\\digital_final\\overlays_final\\page_009.png",
+      "ground_truth_blocks": 6,
+      "predicted_blocks": 6,
+      "matched_blocks": 6,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9764224747584044
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9074000703835241
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.6801820967752973
+        },
+        {
+          "gt_order": 3,
+          "prediction_order": 3,
+          "iou": 0.9856849582873191
+        },
+        {
+          "gt_order": 4,
+          "prediction_order": 4,
+          "iou": 0.7705372283665407
+        },
+        {
+          "gt_order": 5,
+          "prediction_order": 5,
+          "iou": 0.8469973562770413
+        }
+      ]
+    },
+    {
+      "page": 10,
+      "path": "outputs\\digital_final\\overlays_final\\page_010.png",
+      "ground_truth_blocks": 4,
+      "predicted_blocks": 4,
+      "matched_blocks": 4,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9613087621439009
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9798026214217231
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.9847331544918118
+        },
+        {
+          "gt_order": 3,
+          "prediction_order": 3,
+          "iou": 0.9859495502270033
+        }
+      ]
+    },
+    {
+      "page": 11,
+      "path": "outputs\\digital_final\\overlays_final\\page_011.png",
+      "ground_truth_blocks": 4,
+      "predicted_blocks": 4,
+      "matched_blocks": 4,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9613087621439009
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9846112898701456
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.9848193438365739
+        },
+        {
+          "gt_order": 3,
+          "prediction_order": 3,
+          "iou": 0.98470560832726
+        }
+      ]
+    },
+    {
+      "page": 12,
+      "path": "outputs\\digital_final\\overlays_final\\page_012.png",
+      "ground_truth_blocks": 6,
+      "predicted_blocks": 6,
+      "matched_blocks": 6,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9613087621439009
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9743362680288267
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.9043425518135859
+        },
+        {
+          "gt_order": 3,
+          "prediction_order": 3,
+          "iou": 0.9786126875167658
+        },
+        {
+          "gt_order": 4,
+          "prediction_order": 4,
+          "iou": 0.9408459269381485
+        },
+        {
+          "gt_order": 5,
+          "prediction_order": 5,
+          "iou": 0.9538919055860707
+        }
+      ]
+    },
+    {
+      "page": 13,
+      "path": "outputs\\digital_final\\overlays_final\\page_013.png",
+      "ground_truth_blocks": 3,
+      "predicted_blocks": 3,
+      "matched_blocks": 3,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9613087621439009
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9785052883593538
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.9613073190391208
+        }
+      ]
+    },
+    {
+      "page": 14,
+      "path": "outputs\\digital_final\\overlays_final\\page_014.png",
+      "ground_truth_blocks": 4,
+      "predicted_blocks": 4,
+      "matched_blocks": 4,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9613087621439009
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9849321711121619
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.980154863693037
+        },
+        {
+          "gt_order": 3,
+          "prediction_order": 3,
+          "iou": 0.9922577765947954
+        }
+      ]
+    },
+    {
+      "page": 15,
+      "path": "outputs\\digital_final\\overlays_final\\page_015.png",
+      "ground_truth_blocks": 3,
+      "predicted_blocks": 3,
+      "matched_blocks": 3,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9105694603152956
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9664867368129295
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.9549473144270365
+        }
+      ]
+    },
+    {
+      "page": 16,
+      "path": "outputs\\digital_final\\overlays_final\\page_016.png",
+      "ground_truth_blocks": 4,
+      "predicted_blocks": 4,
+      "matched_blocks": 4,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9613087621439009
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9616154639723594
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.979703048209159
+        },
+        {
+          "gt_order": 3,
+          "prediction_order": 3,
+          "iou": 0.9552620372314107
+        }
+      ]
+    },
+    {
+      "page": 17,
+      "path": "outputs\\digital_final\\overlays_final\\page_017.png",
+      "ground_truth_blocks": 3,
+      "predicted_blocks": 3,
+      "matched_blocks": 3,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9613087621439009
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9741255754225047
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.9852346714816987
+        }
+      ]
+    },
+    {
+      "page": 18,
+      "path": "outputs\\digital_final\\overlays_final\\page_018.png",
+      "ground_truth_blocks": 2,
+      "predicted_blocks": 2,
+      "matched_blocks": 2,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9613087621439009
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9657142428278639
+        }
+      ]
+    },
+    {
+      "page": 19,
+      "path": "outputs\\digital_final\\overlays_final\\page_019.png",
+      "ground_truth_blocks": 11,
+      "predicted_blocks": 9,
+      "matched_blocks": 9,
+      "matches": [
+        {
+          "gt_order": 0,
+          "prediction_order": 0,
+          "iou": 0.9764224747584044
+        },
+        {
+          "gt_order": 1,
+          "prediction_order": 1,
+          "iou": 0.9689247641555019
+        },
+        {
+          "gt_order": 2,
+          "prediction_order": 2,
+          "iou": 0.2440344615653873
+        },
+        {
+          "gt_order": 3,
+          "prediction_order": 3,
+          "iou": 0.16855558971367277
+        },
+        {
+          "gt_order": 4,
+          "prediction_order": 4,
+          "iou": 0.709689787280869
+        },
+        {
+          "gt_order": 5,
+          "prediction_order": 5,
+          "iou": 0.5480892566646135
+        },
+        {
+          "gt_order": 6,
+          "prediction_order": 6,
+          "iou": 0.11656166824882018
+        },
+        {
+          "gt_order": 7,
+          "prediction_order": null,
+          "iou": 0.0
+        },
+        {
+          "gt_order": 8,
+          "prediction_order": 7,
+          "iou": 0.8426592330213043
+        },
+        {
+          "gt_order": 9,
+          "prediction_order": null,
+          "iou": 0.0
+        },
+        {
+          "gt_order": 10,
+          "prediction_order": 8,
+          "iou": 0.21443978666983432
+        }
+      ]
+    }
+  ]
+}

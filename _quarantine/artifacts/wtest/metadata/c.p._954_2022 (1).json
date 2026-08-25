@@ -1,0 +1,312 @@
+{
+  "source_name": "c.p._954_2022 (1).pdf",
+  "source_file": "data\\pdfs\\c.p._954_2022 (1).pdf",
+  "page_count": 5,
+  "extraction_mode": "digital",
+  "router": {
+    "requested": "auto",
+    "selected": "digital",
+    "mode": "digital",
+    "page_count": 5,
+    "scan_pages": [],
+    "native_pages": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "metadata": {
+    "court": "IN THE SUPREME COURT OF PAKISTAN",
+    "bench": null,
+    "case_number": "Civil Petitions No. 954, 981 to 983 of 2022",
+    "decision_date": "30.09.2025",
+    "hearing_date": "30.09.2025",
+    "dates_found": [
+      "03.04.2017",
+      "08.04.2015",
+      "10.10.2017",
+      "24.07.2017",
+      "26.01.2022",
+      "30.09.2025"
+    ],
+    "judges": [
+      "Syed Mansoor Ali Shah"
+    ],
+    "parties": "…Petitioners Versus Federal of Pakistan through Secretary, Ministry of Interior, Govt. of",
+    "citations": [],
+    "acts": [],
+    "sections": [],
+    "pdf_title": null,
+    "pdf_author": null,
+    "counsel": [
+      {
+        "role": "respondents",
+        "names": "Munawwar Iqbal Duggal, Addl, AGP a/w Jair Nasrani, DD HR, FIA a/w Sajjad Hussain, Deputy Dir. (Law), FIA (in call cases)",
+        "page": 1,
+        "bbox": [
+          266.3999938964844,
+          443.0265197753906,
+          525.122314453125,
+          494.93145751953125
+        ],
+        "source": "cover_text"
+      }
+    ]
+  },
+  "metadata_provenance": {
+    "court": {
+      "value": "IN THE SUPREME COURT OF PAKISTAN",
+      "matched_value": "IN THE SUPREME COURT OF PAKISTAN",
+      "page": 1,
+      "bbox": [
+        205.44000244140625,
+        74.12409210205078,
+        456.8707275390625,
+        86.12769317626953
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "bench": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "case_number": {
+      "value": "Civil Petitions No. 954, 981 to 983 of 2022",
+      "matched_value": "Civil Petitions No. 954, 981 to 983 of 2022",
+      "page": 1,
+      "bbox": [
+        122.4000015258789,
+        191.48406982421875,
+        396.72247314453125,
+        203.4876708984375
+      ],
+      "confidence": 0.96,
+      "source": "native_text"
+    },
+    "decision_date": {
+      "value": "30.09.2025",
+      "matched_value": "30.09.2025",
+      "page": 1,
+      "bbox": [
+        266.3999938964844,
+        508.5465393066406,
+        345.1222229003906,
+        520.5501708984375
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "hearing_date": {
+      "value": "30.09.2025",
+      "matched_value": "30.09.2025",
+      "page": 1,
+      "bbox": [
+        266.3999938964844,
+        508.5465393066406,
+        345.1222229003906,
+        520.5501708984375
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "dates_found": {
+      "value": [
+        "03.04.2017",
+        "08.04.2015",
+        "10.10.2017",
+        "24.07.2017",
+        "26.01.2022",
+        "30.09.2025"
+      ],
+      "matched_value": "03.04.2017",
+      "page": 1,
+      "bbox": [
+        122.4000015258789,
+        860.6265869140625,
+        522.1198120117188,
+        872.6301879882812
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 1,
+          "bbox": [
+            122.4000015258789,
+            860.6265869140625,
+            522.1198120117188,
+            872.6301879882812
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "03.04.2017"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            122.4000015258789,
+            776.1466064453125,
+            522.1557006835938,
+            788.1502075195312
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "08.04.2015"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            122.4000015258789,
+            755.026611328125,
+            522.0214233398438,
+            767.0302124023438
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "10.10.2017"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            122.4000015258789,
+            881.74658203125,
+            522.0118408203125,
+            893.7501831054688
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "24.07.2017"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            122.4000015258789,
+            206.20848083496094,
+            543.4683227539062,
+            216.29150390625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "26.01.2022"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            266.3999938964844,
+            508.5465393066406,
+            345.1222229003906,
+            520.5501708984375
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "30.09.2025"
+        }
+      ]
+    },
+    "judges": {
+      "value": [
+        "Syed Mansoor Ali Shah"
+      ],
+      "matched_value": "Syed Mansoor Ali Shah",
+      "page": 1,
+      "bbox": [
+        196.8000030517578,
+        145.90652465820312,
+        411.1222229003906,
+        157.91012573242188
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "parties": {
+      "value": "…Petitioners Versus Federal of Pakistan through Secretary, Ministry of Interior, Govt. of",
+      "matched_value": "…Petitioners Versus Federal of Pakistan through Secretary, Ministry of Interior, Govt. of",
+      "page": 1,
+      "bbox": [
+        122.4000015258789,
+        307.8870849609375,
+        544.4652099609375,
+        356.1501770019531
+      ],
+      "confidence": 0.792,
+      "source": "native_text_parts"
+    },
+    "citations": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "acts": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "sections": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "pdf_title": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    },
+    "pdf_author": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    }
+  },
+  "confidence": 0.882,
+  "diagnostics": {
+    "status": "PASS",
+    "failed_components": [],
+    "quality_score": 1.0,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 1.0,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 1.0
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 60,
+    "rtl_blocks": 0,
+    "ocr_blocks": 0,
+    "tables": 0,
+    "table_candidates_rejected": 0,
+    "form_headers_stripped": 0,
+    "unreliable_text_blocks": 0,
+    "digital_pages": 5
+  },
+  "warnings": [],
+  "label_check": null,
+  "template_key": "615ec9f7d82e671f"
+}

@@ -1,0 +1,314 @@
+{
+  "source_name": "SCP_Crl.O.P.57_2015_31-07-2009.pdf",
+  "source_file": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_Crl.O.P.57_2015_31-07-2009.pdf",
+  "page_count": 14,
+  "extraction_mode": "digital",
+  "router": {
+    "requested": "auto",
+    "selected": "digital",
+    "mode": "digital",
+    "page_count": 14,
+    "scan_pages": [],
+    "native_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ]
+  },
+  "metadata": {
+    "court": null,
+    "bench": null,
+    "case_number": "criminal original petition No.57 of\n2015",
+    "decision_date": "31.7.2009",
+    "hearing_date": null,
+    "dates_found": [
+      "10 of\n2005",
+      "28.7.2009",
+      "31.7.2009",
+      "57 of\n2015"
+    ],
+    "judges": [
+      "MAQBOOL BAQAR"
+    ],
+    "parties": null,
+    "citations": [],
+    "acts": [],
+    "sections": [
+      "12",
+      "16",
+      "3",
+      "39"
+    ],
+    "pdf_title": null,
+    "pdf_author": null,
+    "counsel": []
+  },
+  "metadata_provenance": {
+    "court": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "bench": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "case_number": {
+      "value": "criminal original petition No.57 of\n2015",
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.6,
+      "source": "no_source_span"
+    },
+    "decision_date": {
+      "value": "31.7.2009",
+      "matched_value": "31.7.2009",
+      "page": 1,
+      "bbox": [
+        122.4000015258789,
+        188.85585021972656,
+        251.82968139648438,
+        201.81973266601562
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "hearing_date": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "dates_found": {
+      "value": [
+        "10 of\n2005",
+        "28.7.2009",
+        "31.7.2009",
+        "57 of\n2015"
+      ],
+      "matched_value": "28.7.2009",
+      "page": 1,
+      "bbox": [
+        122.4000015258789,
+        494.1358642578125,
+        529.7177734375,
+        507.0997619628906
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 1,
+          "bbox": [
+            122.4000015258789,
+            494.1358642578125,
+            529.7177734375,
+            507.0997619628906
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "28.7.2009"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            122.4000015258789,
+            188.85585021972656,
+            251.82968139648438,
+            201.81973266601562
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "31.7.2009"
+        }
+      ]
+    },
+    "judges": {
+      "value": [
+        "MAQBOOL BAQAR"
+      ],
+      "matched_value": "MAQBOOL BAQAR",
+      "page": 1,
+      "bbox": [
+        194.39999389648438,
+        74.35157775878906,
+        345.4683837890625,
+        87.31546783447266
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "parties": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "citations": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "acts": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "sections": {
+      "value": [
+        "12",
+        "16",
+        "3",
+        "39"
+      ],
+      "matched_value": "12",
+      "page": 2,
+      "bbox": [
+        230.39999389648438,
+        383.5065612792969,
+        486.3216247558594,
+        395.5101623535156
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 2,
+          "bbox": [
+            230.39999389648438,
+            383.5065612792969,
+            486.3216247558594,
+            395.5101623535156
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "12"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            230.39999389648438,
+            404.6265563964844,
+            486.381591796875,
+            416.6301574707031
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "16"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            320.8800048828125,
+            37.64872741699219,
+            326.88360595703125,
+            49.65232849121094
+          ],
+          "confidence": 0.82,
+          "source": "native_text",
+          "matched_value": "3"
+        },
+        {
+          "page": 7,
+          "bbox": [
+            122.4000015258789,
+            74.37586212158203,
+            529.7804565429688,
+            87.33975219726562
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "39"
+        }
+      ]
+    },
+    "pdf_title": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    },
+    "pdf_author": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    }
+  },
+  "confidence": 0.881,
+  "diagnostics": {
+    "status": "REVIEW",
+    "failed_components": [
+      "metadata"
+    ],
+    "quality_score": 0.938,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 1.0,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 0.5
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 303,
+    "rtl_blocks": 0,
+    "ocr_blocks": 0,
+    "tables": 0,
+    "table_candidates_rejected": 0,
+    "form_headers_stripped": 0,
+    "unreliable_text_blocks": 0,
+    "digital_pages": 14
+  },
+  "warnings": [],
+  "label_check": {
+    "source": "filename",
+    "labels": {
+      "case_type": "Crl.O.P",
+      "case_number": "57",
+      "year": "2015",
+      "decision_date": "31-07-2009",
+      "judge": "Maqbool Baqar",
+      "source": "filename"
+    },
+    "findings": []
+  },
+  "template_key": "eb61e172b392f13b"
+}

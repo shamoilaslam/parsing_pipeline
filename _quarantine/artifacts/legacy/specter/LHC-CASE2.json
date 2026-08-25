@@ -1,0 +1,404 @@
+{
+  "schema_version": "specter.v1",
+  "document": {
+    "source_file": "data\\LHC-CASE2.pdf",
+    "source_name": "LHC-CASE2.pdf",
+    "engine": "pymupdf-native",
+    "extraction_mode": "digital",
+    "page_count": 6,
+    "pdf_metadata": {
+      "format": "PDF 1.7",
+      "title": "CamScanner 28-07-2025 15.43",
+      "author": "CamScanner",
+      "subject": "CamScanner 28-07-2025 15.43",
+      "keywords": "",
+      "creator": "",
+      "producer": "intsig.com pdf producer",
+      "creationDate": "",
+      "modDate": "",
+      "trapped": "",
+      "encryption": null
+    },
+    "metadata": {
+      "court": null,
+      "bench": null,
+      "case_number": null,
+      "decision_date": null,
+      "hearing_date": null,
+      "dates_found": [],
+      "judges": [],
+      "parties": null,
+      "citations": [],
+      "acts": [],
+      "sections": [],
+      "pdf_title": "CamScanner 28-07-2025 15.43",
+      "pdf_author": "CamScanner"
+    },
+    "confidence": 0.96,
+    "confidence_policy": "heuristic; validate low-confidence pages with a layout/OCR fallback",
+    "stats": {
+      "blocks": 6,
+      "rtl_blocks": 0,
+      "tables": 0,
+      "digital_pages": 6
+    },
+    "warnings": []
+  },
+  "pages": [
+    {
+      "page_number": 1,
+      "width": 595.0,
+      "height": 842.0,
+      "rotation": 0,
+      "blocks": [
+        {
+          "id": "p1_b0",
+          "type": "footer",
+          "text": "CamScanner",
+          "markdown": "CamScanner",
+          "bbox": [
+            510.0,
+            813.3109741210938,
+            576.429931640625,
+            830.6530151367188
+          ],
+          "spans": [
+            {
+              "text": "CamScanner",
+              "bbox": [
+                510.0,
+                813.3109741210938,
+                576.429931640625,
+                830.6530151367188
+              ],
+              "font": "Times-Roman",
+              "size": 13.0,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "font_sizes": [
+            13.0
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 0,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.96,
+            "reasons": [
+              "bottom_band"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 0,
+          "end_index": 10
+        }
+      ],
+      "markdown": "CamScanner",
+      "confidence": 0.96,
+      "extraction": "digital"
+    },
+    {
+      "page_number": 2,
+      "width": 595.0,
+      "height": 842.0,
+      "rotation": 0,
+      "blocks": [
+        {
+          "id": "p2_b0",
+          "type": "footer",
+          "text": "CamScanner",
+          "markdown": "CamScanner",
+          "bbox": [
+            510.0,
+            813.3109741210938,
+            576.429931640625,
+            830.6530151367188
+          ],
+          "spans": [
+            {
+              "text": "CamScanner",
+              "bbox": [
+                510.0,
+                813.3109741210938,
+                576.429931640625,
+                830.6530151367188
+              ],
+              "font": "Times-Roman",
+              "size": 13.0,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "font_sizes": [
+            13.0
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 0,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.96,
+            "reasons": [
+              "bottom_band"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 0,
+          "end_index": 10
+        }
+      ],
+      "markdown": "CamScanner",
+      "confidence": 0.96,
+      "extraction": "digital"
+    },
+    {
+      "page_number": 3,
+      "width": 595.0,
+      "height": 842.0,
+      "rotation": 0,
+      "blocks": [
+        {
+          "id": "p3_b0",
+          "type": "footer",
+          "text": "CamScanner",
+          "markdown": "CamScanner",
+          "bbox": [
+            510.0,
+            813.3109741210938,
+            576.429931640625,
+            830.6530151367188
+          ],
+          "spans": [
+            {
+              "text": "CamScanner",
+              "bbox": [
+                510.0,
+                813.3109741210938,
+                576.429931640625,
+                830.6530151367188
+              ],
+              "font": "Times-Roman",
+              "size": 13.0,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "font_sizes": [
+            13.0
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 0,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.96,
+            "reasons": [
+              "bottom_band"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 0,
+          "end_index": 10
+        }
+      ],
+      "markdown": "CamScanner",
+      "confidence": 0.96,
+      "extraction": "digital"
+    },
+    {
+      "page_number": 4,
+      "width": 595.0,
+      "height": 842.0,
+      "rotation": 0,
+      "blocks": [
+        {
+          "id": "p4_b0",
+          "type": "footer",
+          "text": "CamScanner",
+          "markdown": "CamScanner",
+          "bbox": [
+            510.0,
+            813.3109741210938,
+            576.429931640625,
+            830.6530151367188
+          ],
+          "spans": [
+            {
+              "text": "CamScanner",
+              "bbox": [
+                510.0,
+                813.3109741210938,
+                576.429931640625,
+                830.6530151367188
+              ],
+              "font": "Times-Roman",
+              "size": 13.0,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "font_sizes": [
+            13.0
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 0,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.96,
+            "reasons": [
+              "bottom_band"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 0,
+          "end_index": 10
+        }
+      ],
+      "markdown": "CamScanner",
+      "confidence": 0.96,
+      "extraction": "digital"
+    },
+    {
+      "page_number": 5,
+      "width": 595.0,
+      "height": 842.0,
+      "rotation": 0,
+      "blocks": [
+        {
+          "id": "p5_b0",
+          "type": "footer",
+          "text": "CamScanner",
+          "markdown": "CamScanner",
+          "bbox": [
+            510.0,
+            813.3109741210938,
+            576.429931640625,
+            830.6530151367188
+          ],
+          "spans": [
+            {
+              "text": "CamScanner",
+              "bbox": [
+                510.0,
+                813.3109741210938,
+                576.429931640625,
+                830.6530151367188
+              ],
+              "font": "Times-Roman",
+              "size": 13.0,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "font_sizes": [
+            13.0
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 0,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.96,
+            "reasons": [
+              "bottom_band"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 0,
+          "end_index": 10
+        }
+      ],
+      "markdown": "CamScanner",
+      "confidence": 0.96,
+      "extraction": "digital"
+    },
+    {
+      "page_number": 6,
+      "width": 595.0,
+      "height": 842.0,
+      "rotation": 0,
+      "blocks": [
+        {
+          "id": "p6_b0",
+          "type": "footer",
+          "text": "CamScanner",
+          "markdown": "CamScanner",
+          "bbox": [
+            510.0,
+            813.3109741210938,
+            576.429931640625,
+            830.6530151367188
+          ],
+          "spans": [
+            {
+              "text": "CamScanner",
+              "bbox": [
+                510.0,
+                813.3109741210938,
+                576.429931640625,
+                830.6530151367188
+              ],
+              "font": "Times-Roman",
+              "size": 13.0,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "font_sizes": [
+            13.0
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 0,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.96,
+            "reasons": [
+              "bottom_band"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 0,
+          "end_index": 10
+        }
+      ],
+      "markdown": "CamScanner",
+      "confidence": 0.96,
+      "extraction": "digital"
+    }
+  ],
+  "markdown": "CamScanner\n\n---\n\nCamScanner\n\n---\n\nCamScanner\n\n---\n\nCamScanner\n\n---\n\nCamScanner\n\n---\n\nCamScanner"
+}

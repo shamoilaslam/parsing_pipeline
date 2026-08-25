@@ -1,0 +1,374 @@
+{
+  "output_dir": "artifacts\\sctest",
+  "inputs": [
+    "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar"
+  ],
+  "pdfs_found": 25,
+  "parsed": 25,
+  "failed": 0,
+  "settings": {
+    "engine": "auto",
+    "rtl_mode": "image",
+    "preprocess_variant": "grayscale",
+    "render_scale": 2.0
+  },
+  "documents": [
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.A.1079_2015_18-03-2022.pdf",
+      "stem": "SCP_C.A.1079_2015_18-03-2022",
+      "pages": 12,
+      "route": "scanned",
+      "extraction_mode": "scanned",
+      "case_number": "Civil Appeal Nos.",
+      "confidence": 0.854,
+      "status": "REVIEW",
+      "quality_score": 0.938,
+      "label_findings": [
+        "case_number:disagrees",
+        "decision_date:disagrees",
+        "judges:filled_from_filename"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.A.1125_2007_21-04-2015.pdf",
+      "stem": "SCP_C.A.1125_2007_21-04-2015",
+      "pages": 5,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "CIVIL APPEAL NO.1125 OF 2007",
+      "confidence": 0.88,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": []
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.A.125-K_2016_17-01-2019.pdf",
+      "stem": "SCP_C.A.125-K_2016_17-01-2019",
+      "pages": 34,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Civil Appeal No.2307/2016",
+      "confidence": 0.881,
+      "status": "REVIEW",
+      "quality_score": 0.927,
+      "label_findings": [
+        "case_number:disagrees",
+        "decision_date:disagrees",
+        "judges:filled_from_filename"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.A.1359_2014_18-05-2015.pdf",
+      "stem": "SCP_C.A.1359_2014_18-05-2015",
+      "pages": 8,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "CIVIL APPEAL NOS.1359",
+      "confidence": 0.885,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": [
+        "case_number:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.A.167-Q_2005_07-04-2015.pdf",
+      "stem": "SCP_C.A.167-Q_2005_07-04-2015",
+      "pages": 9,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "CIVIL APPEAL NO.167-Q OF 2005",
+      "confidence": 0.881,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": []
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.A.194_2015_12-11-2015.pdf",
+      "stem": "SCP_C.A.194_2015_12-11-2015",
+      "pages": 21,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "CIVIL APEAL No.194 OF 2015",
+      "confidence": 0.881,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": []
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.A.221_2018_15-09-2021.pdf",
+      "stem": "SCP_C.A.221_2018_15-09-2021",
+      "pages": 7,
+      "route": "scanned",
+      "extraction_mode": "scanned",
+      "case_number": "CIVIL APPEAL NO. 221/2018",
+      "confidence": 0.868,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": [
+        "judges:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.A.51_2011_19-02-2020.pdf",
+      "stem": "SCP_C.A.51_2011_19-02-2020",
+      "pages": 5,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "CIVIL APPEAL NO. 51 OF 2011",
+      "confidence": 0.881,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": []
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.A.601_2019_01-03-2022.pdf",
+      "stem": "SCP_C.A.601_2019_01-03-2022",
+      "pages": 15,
+      "route": "scanned",
+      "extraction_mode": "scanned",
+      "case_number": "Civil Appeal No. 601/2019",
+      "confidence": 0.848,
+      "status": "REVIEW",
+      "quality_score": 0.958,
+      "label_findings": [
+        "decision_date:disagrees",
+        "judges:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.A.825_2015_03-11-2016.pdf",
+      "stem": "SCP_C.A.825_2015_03-11-2016",
+      "pages": 8,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "CIVIL APPEAL NOS.825",
+      "confidence": 0.882,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": [
+        "case_number:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.A.837_2011_25-09-2019.pdf",
+      "stem": "SCP_C.A.837_2011_25-09-2019",
+      "pages": 7,
+      "route": "scanned",
+      "extraction_mode": "scanned",
+      "case_number": "CIVILAPPEAL NO.837 OF 2011",
+      "confidence": 0.865,
+      "status": "REVIEW",
+      "quality_score": 0.938,
+      "label_findings": [
+        "decision_date:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.M.A.1243_2021_04-04-2022.pdf",
+      "stem": "SCP_C.M.A.1243_2021_04-04-2022",
+      "pages": 34,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Civil Review Petition No.296 of 2020",
+      "confidence": 0.884,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": [
+        "case_number:disagrees",
+        "decision_date:disagrees",
+        "judges:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.P.17_2019_04-11-2020.pdf",
+      "stem": "SCP_C.P.17_2019_04-11-2020",
+      "pages": 68,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "petitioner in Suo Moto Case No.7 of 2017",
+      "confidence": 0.878,
+      "status": "REVIEW",
+      "quality_score": 0.969,
+      "label_findings": [
+        "case_number:disagrees",
+        "decision_date:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.P.L.A.1444_2019_19-09-2019.pdf",
+      "stem": "SCP_C.P.L.A.1444_2019_19-09-2019",
+      "pages": 11,
+      "route": "scanned",
+      "extraction_mode": "scanned",
+      "case_number": "Civil Revision No.253698of",
+      "confidence": 0.855,
+      "status": "REVIEW",
+      "quality_score": 0.969,
+      "label_findings": [
+        "case_number:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.P.L.A.1774_2014_27-05-2015.pdf",
+      "stem": "SCP_C.P.L.A.1774_2014_27-05-2015",
+      "pages": 16,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "CIVIL PETITIONS NOS.1774",
+      "confidence": 0.881,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": [
+        "case_number:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.P.L.A.1774_2015_27-05-2015.pdf",
+      "stem": "SCP_C.P.L.A.1774_2015_27-05-2015",
+      "pages": 17,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "CIVIL PETITIONS NOS.1774",
+      "confidence": 0.881,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": [
+        "case_number:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.P.L.A.1882_2016_22-01-2020.pdf",
+      "stem": "SCP_C.P.L.A.1882_2016_22-01-2020",
+      "pages": 6,
+      "route": "scanned",
+      "extraction_mode": "scanned",
+      "case_number": "Appeal Nos.13",
+      "confidence": 0.869,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": [
+        "case_number:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.P.L.A.2243-L_2019_17-03-2020.pdf",
+      "stem": "SCP_C.P.L.A.2243-L_2019_17-03-2020",
+      "pages": 87,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Civil Petitions No.2243-L",
+      "confidence": 0.884,
+      "status": "PASS",
+      "quality_score": 0.999,
+      "label_findings": [
+        "case_number:disagrees",
+        "judges:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.P.L.A.3317_2018_22-01-2020.pdf",
+      "stem": "SCP_C.P.L.A.3317_2018_22-01-2020",
+      "pages": 5,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "CIVIL PETITION NO.3317",
+      "confidence": 0.881,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": [
+        "case_number:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.P.L.A.3795_2021_08-11-2021.pdf",
+      "stem": "SCP_C.P.L.A.3795_2021_08-11-2021",
+      "pages": 7,
+      "route": "scanned",
+      "extraction_mode": "scanned",
+      "case_number": "CIVIL PETITION NO. 3795 OF 2021",
+      "confidence": 0.858,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": [
+        "judges:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.P.L.A.449_2019_07-01-2020.pdf",
+      "stem": "SCP_C.P.L.A.449_2019_07-01-2020",
+      "pages": 7,
+      "route": "scanned",
+      "extraction_mode": "scanned",
+      "case_number": "WP No. 3074/2017)",
+      "confidence": 0.854,
+      "status": "REVIEW",
+      "quality_score": 0.875,
+      "label_findings": [
+        "case_number:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.P.L.A.51_2015_20-04-2015.pdf",
+      "stem": "SCP_C.P.L.A.51_2015_20-04-2015",
+      "pages": 21,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "CIVIL PETITIONS NOS.51",
+      "confidence": 0.881,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": [
+        "case_number:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.R.P.296_2020_26-04-2021.pdf",
+      "stem": "SCP_C.R.P.296_2020_26-04-2021",
+      "pages": 45,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Civil Review Petitions No.296",
+      "confidence": 0.883,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": [
+        "case_number:disagrees",
+        "judges:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_Crl.A.35-K_2016_04-05-2018.pdf",
+      "stem": "SCP_Crl.A.35-K_2016_04-05-2018",
+      "pages": 14,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "CRIMINAL APPEAL NO. 35-K",
+      "confidence": 0.881,
+      "status": "PASS",
+      "quality_score": 1.0,
+      "label_findings": [
+        "case_number:disagrees"
+      ]
+    },
+    {
+      "pdf": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_Crl.O.P.57_2015_31-07-2009.pdf",
+      "stem": "SCP_Crl.O.P.57_2015_31-07-2009",
+      "pages": 14,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "criminal original petition No.57 of\n2015",
+      "confidence": 0.881,
+      "status": "REVIEW",
+      "quality_score": 0.938,
+      "label_findings": []
+    }
+  ],
+  "failures": [],
+  "duplicate_stems": [],
+  "label_check": {
+    "filled_from_filename": 2,
+    "disagreements": 28,
+    "documents_with_findings": 20
+  }
+}

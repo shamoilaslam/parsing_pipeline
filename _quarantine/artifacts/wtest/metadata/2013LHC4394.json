@@ -1,0 +1,489 @@
+{
+  "source_name": "2013LHC4394.pdf",
+  "source_file": "data\\pdfs\\2013LHC4394.pdf",
+  "page_count": 18,
+  "extraction_mode": "scanned",
+  "router": {
+    "requested": "auto",
+    "selected": "scanned",
+    "mode": "scanned",
+    "page_count": 18,
+    "scan_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "native_pages": []
+  },
+  "metadata": {
+    "court": null,
+    "bench": "INTHELAHOREHIGHCOURT MULTAN BENCH MULTAN. JUDICIAL DEPARTMENT",
+    "case_number": "petitioners with respondent No.l.",
+    "decision_date": "10.12.2013",
+    "hearing_date": "10.12.2013",
+    "dates_found": [
+      "10.12.2013",
+      "17.06.2009",
+      "18.06.2009",
+      "21.07.2009",
+      "29.10.2008"
+    ],
+    "judges": [
+      "SHOAIB SAEED"
+    ],
+    "parties": null,
+    "citations": [],
+    "acts": [],
+    "sections": [
+      "15",
+      "1912",
+      "2",
+      "20",
+      "30",
+      "5",
+      "6",
+      "68",
+      "68(3)",
+      "84",
+      "85"
+    ],
+    "pdf_title": null,
+    "pdf_author": null,
+    "counsel": [
+      {
+        "role": "petitioners",
+        "names": "Ch. Sagheer Ahmad, Advocate",
+        "page": 3,
+        "bbox": [
+          357.5,
+          306.5,
+          509.0,
+          324.5
+        ],
+        "source": "cover_text"
+      },
+      {
+        "role": "respondents no 3 to16",
+        "names": "MianMuhammadJamal,Advocate Khalid Mehmood Ziladar.",
+        "page": 3,
+        "bbox": [
+          357.0,
+          327.5,
+          529.0,
+          357.0
+        ],
+        "source": "cover_text"
+      }
+    ]
+  },
+  "metadata_provenance": {
+    "court": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "bench": {
+      "value": "INTHELAHOREHIGHCOURT MULTAN BENCH MULTAN. JUDICIAL DEPARTMENT",
+      "matched_value": "INTHELAHOREHIGHCOURT MULTAN BENCH MULTAN. JUDICIAL DEPARTMENT",
+      "page": 3,
+      "bbox": [
+        189.5,
+        95.5,
+        477.0,
+        161.0
+      ],
+      "confidence": 0.846,
+      "source": "native_text"
+    },
+    "case_number": {
+      "value": "petitioners with respondent No.l.",
+      "matched_value": "petitioners with respondent No.l.",
+      "page": 3,
+      "bbox": [
+        250.5,
+        626.0,
+        556.0,
+        650.5
+      ],
+      "confidence": 0.868,
+      "source": "native_text"
+    },
+    "decision_date": {
+      "value": "10.12.2013",
+      "matched_value": "10.12.2013",
+      "page": 3,
+      "bbox": [
+        357.5,
+        284.0,
+        414.5,
+        299.0
+      ],
+      "confidence": 0.871,
+      "source": "native_text"
+    },
+    "hearing_date": {
+      "value": "10.12.2013",
+      "matched_value": "10.12.2013",
+      "page": 3,
+      "bbox": [
+        357.5,
+        284.0,
+        414.5,
+        299.0
+      ],
+      "confidence": 0.871,
+      "source": "native_text"
+    },
+    "dates_found": {
+      "value": [
+        "10.12.2013",
+        "17.06.2009",
+        "18.06.2009",
+        "21.07.2009",
+        "29.10.2008"
+      ],
+      "matched_value": "10.12.2013",
+      "page": 3,
+      "bbox": [
+        357.5,
+        284.0,
+        414.5,
+        299.0
+      ],
+      "confidence": 0.871,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 3,
+          "bbox": [
+            357.5,
+            284.0,
+            414.5,
+            299.0
+          ],
+          "confidence": 0.871,
+          "source": "native_text",
+          "matched_value": "10.12.2013"
+        },
+        {
+          "page": 7,
+          "bbox": [
+            256.5,
+            390.0,
+            562.0,
+            419.5
+          ],
+          "confidence": 0.879,
+          "source": "native_text",
+          "matched_value": "17.06.2009"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            264.0,
+            638.0,
+            566.5,
+            657.0
+          ],
+          "confidence": 0.876,
+          "source": "native_text",
+          "matched_value": "18.06.2009"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            251.0,
+            430.5,
+            468.5,
+            453.5
+          ],
+          "confidence": 0.877,
+          "source": "native_text",
+          "matched_value": "21.07.2009"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            264.0,
+            638.0,
+            566.5,
+            657.0
+          ],
+          "confidence": 0.876,
+          "source": "native_text",
+          "matched_value": "29.10.2008"
+        }
+      ]
+    },
+    "judges": {
+      "value": [
+        "SHOAIB SAEED"
+      ],
+      "matched_value": "SHOAIB SAEED",
+      "page": 3,
+      "bbox": [
+        302.0,
+        383.5,
+        460.0,
+        402.5
+      ],
+      "confidence": 0.85,
+      "source": "native_text"
+    },
+    "parties": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "citations": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "acts": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "sections": {
+      "value": [
+        "15",
+        "1912",
+        "2",
+        "20",
+        "30",
+        "5",
+        "6",
+        "68",
+        "68(3)",
+        "84",
+        "85"
+      ],
+      "matched_value": "15",
+      "page": 5,
+      "bbox": [
+        261.5,
+        517.0,
+        567.5,
+        536.0
+      ],
+      "confidence": 0.876,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 5,
+          "bbox": [
+            261.5,
+            517.0,
+            567.5,
+            536.0
+          ],
+          "confidence": 0.876,
+          "source": "native_text",
+          "matched_value": "15"
+        },
+        {
+          "page": 9,
+          "bbox": [
+            242.0,
+            92.0,
+            544.0,
+            119.0
+          ],
+          "confidence": 0.874,
+          "source": "native_text",
+          "matched_value": "1912"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            251.0,
+            457.5,
+            350.0,
+            495.5
+          ],
+          "confidence": 0.8,
+          "source": "native_text",
+          "matched_value": "2"
+        },
+        {
+          "page": 9,
+          "bbox": [
+            229.5,
+            800.0,
+            533.0,
+            827.0
+          ],
+          "confidence": 0.882,
+          "source": "native_text",
+          "matched_value": "20"
+        },
+        {
+          "page": 9,
+          "bbox": [
+            242.5,
+            67.5,
+            545.5,
+            96.0
+          ],
+          "confidence": 0.874,
+          "source": "native_text",
+          "matched_value": "30"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            261.0,
+            443.0,
+            569.0,
+            729.5
+          ],
+          "confidence": 0.876,
+          "source": "native_text",
+          "matched_value": "5"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            251.5,
+            577.5,
+            555.0,
+            601.5
+          ],
+          "confidence": 0.87,
+          "source": "native_text",
+          "matched_value": "6"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            251.5,
+            504.0,
+            556.0,
+            529.0
+          ],
+          "confidence": 0.87,
+          "source": "native_text",
+          "matched_value": "68"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            262.0,
+            491.5,
+            566.5,
+            513.5
+          ],
+          "confidence": 0.876,
+          "source": "native_text",
+          "matched_value": "68(3)"
+        },
+        {
+          "page": 11,
+          "bbox": [
+            236.5,
+            397.5,
+            540.5,
+            428.5
+          ],
+          "confidence": 0.875,
+          "source": "native_text",
+          "matched_value": "84"
+        },
+        {
+          "page": 11,
+          "bbox": [
+            235.0,
+            445.5,
+            543.0,
+            478.0
+          ],
+          "confidence": 0.875,
+          "source": "native_text",
+          "matched_value": "85"
+        }
+      ]
+    },
+    "pdf_title": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    },
+    "pdf_author": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    }
+  },
+  "confidence": 0.861,
+  "diagnostics": {
+    "status": "REVIEW",
+    "failed_components": [
+      "headers_footers",
+      "metadata"
+    ],
+    "quality_score": 0.92,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 0.8571,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 0.5
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 63,
+    "tables": 0,
+    "excluded_pages": 9,
+    "blue_slip_pages": 1,
+    "blank_pages": 8,
+    "region_retries": 0,
+    "preprocess_variant": "grayscale",
+    "models": [
+      "rapidocr-onnx-general-cpu"
+    ]
+  },
+  "warnings": [
+    "OCR output is line-box accurate; exact character boxes are not available from the lightweight runtime and are not fabricated.",
+    "LlamaParse output is a comparison reference, not ground truth."
+  ],
+  "label_check": null,
+  "template_key": null
+}

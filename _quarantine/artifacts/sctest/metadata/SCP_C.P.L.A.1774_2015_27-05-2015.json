@@ -1,0 +1,609 @@
+{
+  "source_name": "SCP_C.P.L.A.1774_2015_27-05-2015.pdf",
+  "source_file": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.P.L.A.1774_2015_27-05-2015.pdf",
+  "page_count": 17,
+  "extraction_mode": "digital",
+  "router": {
+    "requested": "auto",
+    "selected": "digital",
+    "mode": "digital",
+    "page_count": 17,
+    "scan_pages": [],
+    "native_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17
+    ]
+  },
+  "metadata": {
+    "court": "IN THE SUPREME COURT OF PAKISTAN",
+    "bench": "terms whereof a learned Division Bench of the High Court of",
+    "case_number": "CIVIL PETITIONS NOS.1774",
+    "decision_date": "27.5.2015",
+    "hearing_date": "27.5.2015",
+    "dates_found": [
+      "01.4.1997",
+      "06.5.1990",
+      "07.11.1997",
+      "09.1.1994",
+      "19.3.1993",
+      "19.4.1993",
+      "20.4.1993",
+      "20.8.1998",
+      "20.8.2014",
+      "21.10.1997",
+      "23.11.1994",
+      "26.10.1995",
+      "26.4.2007",
+      "27.5.2015",
+      "28.11.1997",
+      "28.9.1997",
+      "29.5.1998",
+      "29.6.1996",
+      "29.9.1997",
+      "30.11.1993",
+      "6.4.1998",
+      "8.5.1996"
+    ],
+    "judges": [
+      "MAQBOOL BAQAR"
+    ],
+    "parties": "Petitioners Versus Government of Baluchistan and others (In CP 1774/14)",
+    "citations": [],
+    "acts": [],
+    "sections": [
+      "113",
+      "133",
+      "2"
+    ],
+    "pdf_title": null,
+    "pdf_author": null,
+    "counsel": []
+  },
+  "metadata_provenance": {
+    "court": {
+      "value": "IN THE SUPREME COURT OF PAKISTAN",
+      "matched_value": "IN THE SUPREME COURT OF PAKISTAN",
+      "page": 1,
+      "bbox": [
+        144.0,
+        73.88404083251953,
+        395.4307861328125,
+        85.88764190673828
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "bench": {
+      "value": "terms whereof a learned Division Bench of the High Court of",
+      "matched_value": "terms whereof a learned Division Bench of the High Court of",
+      "page": 1,
+      "bbox": [
+        144.0,
+        743.026611328125,
+        543.9598388671875,
+        755.0302124023438
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "case_number": {
+      "value": "CIVIL PETITIONS NOS.1774",
+      "matched_value": "CIVIL PETITIONS NOS.1774",
+      "page": 1,
+      "bbox": [
+        144.0,
+        214.7640380859375,
+        475.44244384765625,
+        226.76763916015625
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "decision_date": {
+      "value": "27.5.2015",
+      "matched_value": "27.5.2015",
+      "page": 1,
+      "bbox": [
+        324.0,
+        630.2265625,
+        387.6023254394531,
+        642.2301635742188
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "hearing_date": {
+      "value": "27.5.2015",
+      "matched_value": "27.5.2015",
+      "page": 1,
+      "bbox": [
+        324.0,
+        630.2265625,
+        387.6023254394531,
+        642.2301635742188
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "dates_found": {
+      "value": [
+        "01.4.1997",
+        "06.5.1990",
+        "07.11.1997",
+        "09.1.1994",
+        "19.3.1993",
+        "19.4.1993",
+        "20.4.1993",
+        "20.8.1998",
+        "20.8.2014",
+        "21.10.1997",
+        "23.11.1994",
+        "26.10.1995",
+        "26.4.2007",
+        "27.5.2015",
+        "28.11.1997",
+        "28.9.1997",
+        "29.5.1998",
+        "29.6.1996",
+        "29.9.1997",
+        "30.11.1993",
+        "6.4.1998",
+        "8.5.1996"
+      ],
+      "matched_value": "01.4.1997",
+      "page": 5,
+      "bbox": [
+        144.0,
+        468.2265319824219,
+        543.8992919921875,
+        480.2301330566406
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 5,
+          "bbox": [
+            144.0,
+            468.2265319824219,
+            543.8992919921875,
+            480.2301330566406
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "01.4.1997"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            144.0,
+            299.2665710449219,
+            543.84228515625,
+            311.2701721191406
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "06.5.1990"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            144.0,
+            271.1865539550781,
+            543.9146118164062,
+            283.1901550292969
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "07.11.1997"
+        },
+        {
+          "page": 4,
+          "bbox": [
+            409.7510681152344,
+            665.506591796875,
+            477.2315368652344,
+            677.5101928710938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "09.1.1994"
+        },
+        {
+          "page": 4,
+          "bbox": [
+            144.0,
+            496.5465393066406,
+            543.85498046875,
+            508.5501403808594
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "19.3.1993"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            144.0,
+            721.9066162109375,
+            543.8710327148438,
+            733.9102172851562
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "19.4.1993"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            144.0,
+            806.3865966796875,
+            543.9208374023438,
+            818.3901977539062
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "20.4.1993"
+        },
+        {
+          "page": 7,
+          "bbox": [
+            216.0,
+            279.8265686035156,
+            543.9072875976562,
+            291.8301696777344
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "20.8.1998"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.0,
+            228.52842712402344,
+            437.4316101074219,
+            238.6114501953125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "20.8.2014"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            144.0,
+            438.4665222167969,
+            543.9332885742188,
+            450.4701232910156
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "21.10.1997"
+        },
+        {
+          "page": 4,
+          "bbox": [
+            144.0,
+            778.3065795898438,
+            543.846435546875,
+            790.3101806640625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "23.11.1994"
+        },
+        {
+          "page": 4,
+          "bbox": [
+            144.0,
+            440.1465759277344,
+            543.9066162109375,
+            452.1501770019531
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "26.10.1995"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            476.4384460449219,
+            665.506591796875,
+            543.9188842773438,
+            677.5101928710938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "26.4.2007"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            324.0,
+            630.2265625,
+            387.6023254394531,
+            642.2301635742188
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "27.5.2015"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            144.0,
+            607.4265747070312,
+            543.8430786132812,
+            619.43017578125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "28.11.1997"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            144.0,
+            778.3065795898438,
+            409.2023010253906,
+            790.3101806640625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "28.9.1997"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            414.4800109863281,
+            889.1865844726562,
+            543.8506469726562,
+            901.190185546875
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "29.5.1998"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            216.0,
+            73.90652465820312,
+            543.9120483398438,
+            85.91012573242188
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "29.6.1996"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            420.54345703125,
+            156.70657348632812,
+            487.92230224609375,
+            168.71017456054688
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "29.9.1997"
+        },
+        {
+          "page": 4,
+          "bbox": [
+            144.0,
+            665.506591796875,
+            218.8845977783203,
+            677.5101928710938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "30.11.1993"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            144.0,
+            832.7865600585938,
+            482.1628723144531,
+            844.7901611328125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "6.4.1998"
+        },
+        {
+          "page": 4,
+          "bbox": [
+            144.0,
+            581.026611328125,
+            543.8649291992188,
+            593.0302124023438
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "8.5.1996"
+        }
+      ]
+    },
+    "judges": {
+      "value": [
+        "MAQBOOL BAQAR"
+      ],
+      "matched_value": "MAQBOOL BAQAR",
+      "page": 1,
+      "bbox": [
+        288.0,
+        172.54653930664062,
+        487.92230224609375,
+        184.55014038085938
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "parties": {
+      "value": "Petitioners Versus Government of Baluchistan and others (In CP 1774/14)",
+      "matched_value": "Petitioners Versus Government of Baluchistan and others (In CP 1774/14)",
+      "page": 1,
+      "bbox": [
+        144.0,
+        308.6265563964844,
+        502.0823059082031,
+        377.0301208496094
+      ],
+      "confidence": 0.792,
+      "source": "native_text_parts"
+    },
+    "citations": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "acts": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "sections": {
+      "value": [
+        "113",
+        "133",
+        "2"
+      ],
+      "matched_value": "113",
+      "page": 2,
+      "bbox": [
+        144.0,
+        834.466552734375,
+        543.9559936523438,
+        846.4701538085938
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 2,
+          "bbox": [
+            144.0,
+            834.466552734375,
+            543.9559936523438,
+            846.4701538085938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "113"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            144.0,
+            749.986572265625,
+            543.88671875,
+            761.9901733398438
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "133"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            338.8800048828125,
+            38.5560302734375,
+            344.88360595703125,
+            50.66402816772461
+          ],
+          "confidence": 0.82,
+          "source": "native_text",
+          "matched_value": "2"
+        }
+      ]
+    },
+    "pdf_title": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    },
+    "pdf_author": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    }
+  },
+  "confidence": 0.881,
+  "diagnostics": {
+    "status": "PASS",
+    "failed_components": [],
+    "quality_score": 1.0,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 1.0,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 1.0
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 531,
+    "rtl_blocks": 0,
+    "ocr_blocks": 0,
+    "tables": 0,
+    "table_candidates_rejected": 0,
+    "form_headers_stripped": 0,
+    "unreliable_text_blocks": 0,
+    "digital_pages": 17
+  },
+  "warnings": [],
+  "label_check": {
+    "source": "filename",
+    "labels": {
+      "case_type": "C.P.L.A",
+      "case_number": "1774",
+      "year": "2015",
+      "decision_date": "27-05-2015",
+      "judge": "Maqbool Baqar",
+      "source": "filename"
+    },
+    "findings": [
+      {
+        "field": "case_number",
+        "state": "disagrees",
+        "label": "C.P.L.A.1774/2015",
+        "extracted": "CIVIL PETITIONS NOS.1774"
+      }
+    ]
+  },
+  "template_key": "1e0722710652dab0"
+}

@@ -1,0 +1,475 @@
+{
+  "source_name": "cp_1017_2022.pdf",
+  "source_file": "data\\pdfs\\cp_1017_2022.pdf",
+  "page_count": 5,
+  "extraction_mode": "digital",
+  "router": {
+    "requested": "auto",
+    "selected": "digital",
+    "mode": "digital",
+    "page_count": 5,
+    "scan_pages": [],
+    "native_pages": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "metadata": {
+    "court": "IN THE SUPREME COURT OF PAKISTAN",
+    "bench": null,
+    "case_number": "CIVIL PETITION NO.1017 OF 2022",
+    "decision_date": "28.01.2022",
+    "hearing_date": "27.11.2024",
+    "dates_found": [
+      "01.01.2015",
+      "01.06.2015",
+      "05.01.2018",
+      "06.05.2015",
+      "07.01.2015",
+      "08.08.2015",
+      "13.08.2014",
+      "13.09.2010",
+      "22.09.2010",
+      "24.02.2018",
+      "27.11.2024",
+      "28.01.2022",
+      "30.05.2015",
+      "30.07.2014",
+      "31.12.2014"
+    ],
+    "judges": [
+      "AYESHA A. MALIK"
+    ],
+    "parties": "…Petitioner(s) Versus Akhtar Tanveer and others",
+    "citations": [],
+    "acts": [],
+    "sections": [
+      "1973",
+      "4(b)",
+      "5"
+    ],
+    "pdf_title": null,
+    "pdf_author": null,
+    "counsel": []
+  },
+  "metadata_provenance": {
+    "court": {
+      "value": "IN THE SUPREME COURT OF PAKISTAN",
+      "matched_value": "IN THE SUPREME COURT OF PAKISTAN",
+      "page": 1,
+      "bbox": [
+        194.39999389648438,
+        87.08405303955078,
+        449.762451171875,
+        99.08765411376953
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "bench": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "case_number": {
+      "value": "CIVIL PETITION NO.1017 OF 2022",
+      "matched_value": "CIVIL PETITION NO.1017 OF 2022",
+      "page": 1,
+      "bbox": [
+        113.27999877929688,
+        199.884033203125,
+        333.6024475097656,
+        211.88763427734375
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "decision_date": {
+      "value": "28.01.2022",
+      "matched_value": "28.01.2022",
+      "page": 1,
+      "bbox": [
+        113.27999877929688,
+        215.7680206298828,
+        530.0267944335938,
+        225.85104370117188
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "hearing_date": {
+      "value": "27.11.2024",
+      "matched_value": "27.11.2024",
+      "page": 1,
+      "bbox": [
+        280.79998779296875,
+        407.5065612792969,
+        351.8423156738281,
+        419.5101623535156
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "dates_found": {
+      "value": [
+        "01.01.2015",
+        "01.06.2015",
+        "05.01.2018",
+        "06.05.2015",
+        "07.01.2015",
+        "08.08.2015",
+        "13.08.2014",
+        "13.09.2010",
+        "22.09.2010",
+        "24.02.2018",
+        "27.11.2024",
+        "28.01.2022",
+        "30.05.2015",
+        "30.07.2014",
+        "31.12.2014"
+      ],
+      "matched_value": "01.01.2015",
+      "page": 1,
+      "bbox": [
+        113.27999877929688,
+        690.466552734375,
+        530.646728515625,
+        702.4701538085938
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 1,
+          "bbox": [
+            113.27999877929688,
+            690.466552734375,
+            530.646728515625,
+            702.4701538085938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "01.01.2015"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            113.27999877929688,
+            732.70654296875,
+            530.6520385742188,
+            744.7101440429688
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "01.06.2015"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            113.27999877929688,
+            901.9066772460938,
+            530.6820068359375,
+            913.9102783203125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "05.01.2018"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            113.27999877929688,
+            711.586669921875,
+            530.6818237304688,
+            765.8302001953125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "06.05.2015"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            113.27999877929688,
+            732.70654296875,
+            530.6520385742188,
+            744.7101440429688
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "07.01.2015"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            113.27999877929688,
+            817.4265747070312,
+            530.6768798828125,
+            829.43017578125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "08.08.2015"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            113.27999877929688,
+            648.2265625,
+            530.6643676757812,
+            660.2301635742188
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "13.08.2014"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            113.27999877929688,
+            584.8665771484375,
+            530.676025390625,
+            596.8701782226562
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "13.09.2010"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            113.27999877929688,
+            605.986572265625,
+            530.6611328125,
+            617.9901733398438
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "22.09.2010"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            113.27999877929688,
+            87.10653686523438,
+            530.6561279296875,
+            99.11013793945312
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "24.02.2018"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            280.79998779296875,
+            407.5065612792969,
+            351.8423156738281,
+            419.5101623535156
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "27.11.2024"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            113.27999877929688,
+            215.7680206298828,
+            530.0267944335938,
+            225.85104370117188
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "28.01.2022"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            113.27999877929688,
+            711.586669921875,
+            530.670166015625,
+            723.5902709960938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "30.05.2015"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            113.27999877929688,
+            584.8665771484375,
+            530.676025390625,
+            596.8701782226562
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "30.07.2014"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            113.27999877929688,
+            669.3465576171875,
+            530.6695556640625,
+            681.3501586914062
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "31.12.2014"
+        }
+      ]
+    },
+    "judges": {
+      "value": [
+        "AYESHA A. MALIK"
+      ],
+      "matched_value": "AYESHA A. MALIK",
+      "page": 1,
+      "bbox": [
+        184.0800018310547,
+        143.50656127929688,
+        359.7623291015625,
+        155.51016235351562
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "parties": {
+      "value": "…Petitioner(s) Versus Akhtar Tanveer and others",
+      "matched_value": "…Petitioner(s) Versus Akhtar Tanveer and others",
+      "page": 1,
+      "bbox": [
+        113.27999877929688,
+        273.8265686035156,
+        501.122314453125,
+        328.0701599121094
+      ],
+      "confidence": 0.792,
+      "source": "native_text_parts"
+    },
+    "citations": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "acts": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "sections": {
+      "value": [
+        "1973",
+        "4(b)",
+        "5"
+      ],
+      "matched_value": "1973",
+      "page": 2,
+      "bbox": [
+        113.27999877929688,
+        354.9465637207031,
+        346.80218505859375,
+        366.9501647949219
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 2,
+          "bbox": [
+            113.27999877929688,
+            354.9465637207031,
+            346.80218505859375,
+            366.9501647949219
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "1973"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            113.27999877929688,
+            333.5865173339844,
+            530.654541015625,
+            345.5901184082031
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "4(b)"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            113.27999877929688,
+            812.6265869140625,
+            501.6021728515625,
+            824.6301879882812
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "5"
+        }
+      ]
+    },
+    "pdf_title": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    },
+    "pdf_author": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    }
+  },
+  "confidence": 0.892,
+  "diagnostics": {
+    "status": "PASS",
+    "failed_components": [],
+    "quality_score": 1.0,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 1.0,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 1.0
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 65,
+    "rtl_blocks": 0,
+    "ocr_blocks": 0,
+    "tables": 0,
+    "table_candidates_rejected": 0,
+    "form_headers_stripped": 0,
+    "unreliable_text_blocks": 0,
+    "digital_pages": 5
+  },
+  "warnings": [],
+  "template_key": "8e4e13bee577be36"
+}

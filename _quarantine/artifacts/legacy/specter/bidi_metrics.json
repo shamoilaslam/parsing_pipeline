@@ -1,0 +1,21 @@
+{
+  "native": {
+    "coverage": 1.0,
+    "cer": 0.583743842364532,
+    "wer": 0.9425287356321839,
+    "mean_block_cer": 0.5827345270420118,
+    "mean_block_wer": 0.9391463017269469
+  },
+  "python_bidi_get_display": {
+    "coverage": 1.0,
+    "cer": 0.7044334975369458,
+    "wer": 0.9655172413793104,
+    "mean_block_cer": 0.7203539318267586,
+    "mean_block_wer": 0.9658129683936135
+  },
+  "delta": {
+    "cer": 0.12068965517241381,
+    "wer": 0.02298850574712652
+  },
+  "recommendation": "do_not_apply_automatically"
+}

@@ -1,0 +1,524 @@
+{
+  "source_name": "2014LHC4864 (1).pdf",
+  "source_file": "data\\pdfs\\2014LHC4864 (1).pdf",
+  "page_count": 10,
+  "extraction_mode": "scanned",
+  "router": {
+    "requested": "auto",
+    "selected": "scanned",
+    "mode": "scanned",
+    "page_count": 10,
+    "scan_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "native_pages": []
+  },
+  "metadata": {
+    "court": null,
+    "bench": "INTHELAHOREHIGH COURT, MULTANBENCHMUTANT",
+    "case_number": "Writ Petition No. 8568 of 2013",
+    "decision_date": "12.03.2014",
+    "hearing_date": "12.03.2014",
+    "dates_found": [
+      "11.1.2005",
+      "12.03.2014"
+    ],
+    "judges": [],
+    "parties": "JUDICALDEPARTMENT Writ Petition No. 8568 of 2013 (Muhammad'Yousaf vs. State and another)",
+    "citations": [
+      "PLD 1998 SC 1445",
+      "PLD 2001 SC 521",
+      "PLD 2009 SC 11"
+    ],
+    "acts": [
+      "Anti-Terrorism Act",
+      "Anti-Terrorism Act, 1997"
+    ],
+    "sections": [
+      "1",
+      "12",
+      "2",
+      "2(t)",
+      "23",
+      "324",
+      "336-B",
+      "337-F(i)",
+      "34",
+      "6",
+      "7"
+    ],
+    "pdf_title": null,
+    "pdf_author": null,
+    "counsel": [
+      {
+        "role": "petitioner",
+        "names": "Ch. Sagheer Ahmad and Mr. M.A. Hayat..Haraj,. Advocates for the petitioner in Writ Petition No. 8568 of 2013.",
+        "page": 2,
+        "bbox": [
+          284.5,
+          616.0,
+          535.0,
+          685.0
+        ],
+        "source": "cover_text"
+      },
+      {
+        "role": "respondent no 2",
+        "names": "Syed Badar Raza Gillani, Advocate. State by: Malik Muhammad Bashir Lakhesir, A.A.G. and Mr.Muhammad Ali Shahab, D.P.G. Muhammad Tariq:Abbasi, J: This single judgment is intended to decide all the above captioned writ petitions as common questions of law and facts'are involved in the all.",
+        "page": 2,
+        "bbox": [
+          138.0,
+          681.0,
+          531.0,
+          861.5
+        ],
+        "source": "cover_text"
+      }
+    ]
+  },
+  "metadata_provenance": {
+    "court": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "bench": {
+      "value": "INTHELAHOREHIGH COURT, MULTANBENCHMUTANT",
+      "matched_value": "INTHELAHOREHIGH COURT, MULTANBENCHMUTANT",
+      "page": 2,
+      "bbox": [
+        186.0,
+        127.5,
+        484.5,
+        177.0
+      ],
+      "confidence": 0.794,
+      "source": "native_text"
+    },
+    "case_number": {
+      "value": "Writ Petition No. 8568 of 2013",
+      "matched_value": "Writ Petition No. 8568 of 2013",
+      "page": 2,
+      "bbox": [
+        210.5,
+        226.0,
+        397.0,
+        247.5
+      ],
+      "confidence": 0.87,
+      "source": "native_text"
+    },
+    "decision_date": {
+      "value": "12.03.2014",
+      "matched_value": "12.03.2014",
+      "page": 2,
+      "bbox": [
+        291.0,
+        589.5,
+        365.0,
+        607.5
+      ],
+      "confidence": 0.842,
+      "source": "native_text"
+    },
+    "hearing_date": {
+      "value": "12.03.2014",
+      "matched_value": "12.03.2014",
+      "page": 2,
+      "bbox": [
+        291.0,
+        589.5,
+        365.0,
+        607.5
+      ],
+      "confidence": 0.842,
+      "source": "native_text"
+    },
+    "dates_found": {
+      "value": [
+        "11.1.2005",
+        "12.03.2014"
+      ],
+      "matched_value": "11.1.2005",
+      "page": 8,
+      "bbox": [
+        192.0,
+        525.5,
+        460.0,
+        544.0
+      ],
+      "confidence": 0.871,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 8,
+          "bbox": [
+            192.0,
+            525.5,
+            460.0,
+            544.0
+          ],
+          "confidence": 0.871,
+          "source": "native_text",
+          "matched_value": "11.1.2005"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            291.0,
+            589.5,
+            365.0,
+            607.5
+          ],
+          "confidence": 0.842,
+          "source": "native_text",
+          "matched_value": "12.03.2014"
+        }
+      ]
+    },
+    "judges": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "parties": {
+      "value": "JUDICALDEPARTMENT Writ Petition No. 8568 of 2013 (Muhammad'Yousaf vs. State and another)",
+      "matched_value": "JUDICALDEPARTMENT Writ Petition No. 8568 of 2013 (Muhammad'Yousaf vs. State and another)",
+      "page": 2,
+      "bbox": [
+        204.5,
+        175.0,
+        470.5,
+        284.0
+      ],
+      "confidence": 0.87,
+      "source": "native_text"
+    },
+    "citations": {
+      "value": [
+        "PLD 1998 SC 1445",
+        "PLD 2001 SC 521",
+        "PLD 2009 SC 11"
+      ],
+      "matched_value": "PLD 1998 SC 1445",
+      "page": 9,
+      "bbox": [
+        96.5,
+        565.5,
+        521.5,
+        604.5
+      ],
+      "confidence": 0.876,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 9,
+          "bbox": [
+            96.5,
+            565.5,
+            521.5,
+            604.5
+          ],
+          "confidence": 0.876,
+          "source": "native_text",
+          "matched_value": "PLD 1998 SC 1445"
+        },
+        {
+          "page": 9,
+          "bbox": [
+            95.5,
+            592.5,
+            520.5,
+            631.5
+          ],
+          "confidence": 0.876,
+          "source": "native_text",
+          "matched_value": "PLD 2001 SC 521"
+        },
+        {
+          "page": 9,
+          "bbox": [
+            92.0,
+            674.0,
+            518.5,
+            712.5
+          ],
+          "confidence": 0.883,
+          "source": "native_text",
+          "matched_value": "PLD 2009 SC 11"
+        }
+      ]
+    },
+    "acts": {
+      "value": [
+        "Anti-Terrorism Act",
+        "Anti-Terrorism Act, 1997"
+      ],
+      "matched_value": "Anti-Terrorism Act",
+      "page": 3,
+      "bbox": [
+        150.0,
+        724.5,
+        538.5,
+        799.0
+      ],
+      "confidence": 0.883,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 3,
+          "bbox": [
+            150.0,
+            724.5,
+            538.5,
+            799.0
+          ],
+          "confidence": 0.883,
+          "source": "native_text",
+          "matched_value": "Anti-Terrorism Act"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            150.0,
+            724.5,
+            538.5,
+            799.0
+          ],
+          "confidence": 0.883,
+          "source": "native_text",
+          "matched_value": "Anti-Terrorism Act, 1997"
+        }
+      ]
+    },
+    "sections": {
+      "value": [
+        "1",
+        "12",
+        "2",
+        "2(t)",
+        "23",
+        "324",
+        "336-B",
+        "337-F(i)",
+        "34",
+        "6",
+        "7"
+      ],
+      "matched_value": "1",
+      "page": 5,
+      "bbox": [
+        127.5,
+        297.0,
+        551.0,
+        326.0
+      ],
+      "confidence": 0.861,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 5,
+          "bbox": [
+            127.5,
+            297.0,
+            551.0,
+            326.0
+          ],
+          "confidence": 0.861,
+          "source": "native_text",
+          "matched_value": "1"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            291.0,
+            589.5,
+            365.0,
+            607.5
+          ],
+          "confidence": 0.842,
+          "source": "native_text",
+          "matched_value": "12"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            154.0,
+            292.0,
+            167.0,
+            306.5
+          ],
+          "confidence": 0.689,
+          "source": "native_text",
+          "matched_value": "2"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            246.0,
+            811.0,
+            346.5,
+            830.0
+          ],
+          "confidence": 0.869,
+          "source": "native_text",
+          "matched_value": "2(t)"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            150.5,
+            778.0,
+            515.5,
+            799.0
+          ],
+          "confidence": 0.883,
+          "source": "native_text",
+          "matched_value": "23"
+        },
+        {
+          "page": 8,
+          "bbox": [
+            117.5,
+            671.0,
+            542.0,
+            692.5
+          ],
+          "confidence": 0.875,
+          "source": "native_text",
+          "matched_value": "324"
+        },
+        {
+          "page": 8,
+          "bbox": [
+            117.5,
+            671.0,
+            542.0,
+            692.5
+          ],
+          "confidence": 0.875,
+          "source": "native_text",
+          "matched_value": "336-B"
+        },
+        {
+          "page": 8,
+          "bbox": [
+            117.5,
+            671.0,
+            542.0,
+            692.5
+          ],
+          "confidence": 0.875,
+          "source": "native_text",
+          "matched_value": "337-F(i)"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            118.5,
+            631.0,
+            544.5,
+            664.0
+          ],
+          "confidence": 0.879,
+          "source": "native_text",
+          "matched_value": "34"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            150.0,
+            700.0,
+            541.5,
+            719.5
+          ],
+          "confidence": 0.883,
+          "source": "native_text",
+          "matched_value": "6"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            150.0,
+            700.0,
+            541.5,
+            719.5
+          ],
+          "confidence": 0.883,
+          "source": "native_text",
+          "matched_value": "7"
+        }
+      ]
+    },
+    "pdf_title": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    },
+    "pdf_author": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    }
+  },
+  "confidence": 0.839,
+  "diagnostics": {
+    "status": "REVIEW",
+    "failed_components": [
+      "numbering",
+      "metadata"
+    ],
+    "quality_score": 0.844,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 1.0,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 0.0,
+      "metadata": 0.75
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 111,
+    "tables": 0,
+    "excluded_pages": 1,
+    "blue_slip_pages": 1,
+    "blank_pages": 0,
+    "region_retries": 0,
+    "preprocess_variant": "grayscale",
+    "models": [
+      "rapidocr-arabic-urdu-cpu",
+      "rapidocr-onnx-general-cpu"
+    ]
+  },
+  "warnings": [
+    "OCR output is line-box accurate; exact character boxes are not available from the lightweight runtime and are not fabricated.",
+    "LlamaParse output is a comparison reference, not ground truth."
+  ],
+  "label_check": null,
+  "template_key": null
+}

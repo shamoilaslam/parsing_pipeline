@@ -1,0 +1,1161 @@
+{
+  "source_name": "2025LHC5084.pdf",
+  "source_file": "data\\pdfs\\2025LHC5084.pdf",
+  "page_count": 29,
+  "extraction_mode": "digital",
+  "router": {
+    "requested": "auto",
+    "selected": "digital",
+    "mode": "digital",
+    "page_count": 29,
+    "scan_pages": [],
+    "native_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29
+    ]
+  },
+  "metadata": {
+    "court": "LAHORE HIGH COURT, LAHORE",
+    "bench": "High Court, was heard by a twelve-member Bench of the Supreme Court. The Judges were equally divided (6 – 6) on the",
+    "case_number": "Crl. Misc. No. 81211/B/2024",
+    "decision_date": "06.03.2024",
+    "hearing_date": null,
+    "dates_found": [
+      "06.03.2024",
+      "13.03.2024",
+      "15.03.2024",
+      "28.04.2025"
+    ],
+    "judges": [
+      "Tariq Saleem Sheikh"
+    ],
+    "parties": "Aftab Mehmood Vs. The State and others",
+    "citations": [
+      "PLD 1955 Lahore 667",
+      "PLD 1956 FC 106",
+      "PLD 1970 SC 1",
+      "PLD 1978 Lahore 523",
+      "PLD 1989 FSC 84",
+      "PLD 1992 SC 72",
+      "PLD 1992 SC 723",
+      "PLD 2002 SC 167",
+      "PLD 2005 SC 19",
+      "PLD 2010 SC 1109",
+      "PLD 2013 SC 279"
+    ],
+    "acts": [
+      "Code of Criminal Procedure",
+      "Pakistan Penal Code"
+    ],
+    "sections": [
+      "10",
+      "11",
+      "12(a)",
+      "13",
+      "15",
+      "154",
+      "155-C",
+      "156",
+      "156(1)",
+      "156(2)",
+      "157(1)",
+      "16",
+      "161",
+      "169",
+      "17",
+      "173",
+      "18",
+      "190(1)",
+      "1958",
+      "197",
+      "2",
+      "2(1)",
+      "202",
+      "2022",
+      "28(1)",
+      "3",
+      "302",
+      "34",
+      "342",
+      "392",
+      "4(h)",
+      "497",
+      "497(2)",
+      "5",
+      "5(1)",
+      "5(2)",
+      "5(3)",
+      "537",
+      "537(a)",
+      "561-A",
+      "6(1)",
+      "6(5)",
+      "8",
+      "9",
+      "9(1)",
+      "9(5)",
+      "9(7)"
+    ],
+    "pdf_title": null,
+    "pdf_author": "assad",
+    "counsel": []
+  },
+  "metadata_provenance": {
+    "court": {
+      "value": "LAHORE HIGH COURT, LAHORE",
+      "matched_value": "LAHORE HIGH COURT, LAHORE",
+      "page": 1,
+      "bbox": [
+        164.77999877929688,
+        93.52662658691406,
+        473.67999267578125,
+        114.51534271240234
+      ],
+      "confidence": 0.89,
+      "source": "native_text"
+    },
+    "bench": {
+      "value": "High Court, was heard by a twelve-member Bench of the Supreme Court. The Judges were equally divided (6 – 6) on the",
+      "matched_value": "High Court, was heard by a twelve-member Bench of the Supreme Court. The Judges were equally divided (6 – 6) on the",
+      "page": 5,
+      "bbox": [
+        72.02400207519531,
+        816.5856323242188,
+        564.1367797851562,
+        827.6113891601562
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "case_number": {
+      "value": "Crl. Misc. No. 81211/B/2024",
+      "matched_value": "Crl. Misc. No. 81211/B/2024",
+      "page": 1,
+      "bbox": [
+        233.2100067138672,
+        160.67034912109375,
+        403.9000244140625,
+        176.21263122558594
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "decision_date": {
+      "value": "06.03.2024",
+      "matched_value": "06.03.2024",
+      "page": 1,
+      "bbox": [
+        144.02000427246094,
+        620.8003540039062,
+        565.048095703125,
+        636.3426513671875
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "hearing_date": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "dates_found": {
+      "value": [
+        "06.03.2024",
+        "13.03.2024",
+        "15.03.2024",
+        "28.04.2025"
+      ],
+      "matched_value": "06.03.2024",
+      "page": 1,
+      "bbox": [
+        144.02000427246094,
+        620.8003540039062,
+        565.048095703125,
+        636.3426513671875
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            620.8003540039062,
+            565.048095703125,
+            636.3426513671875
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "06.03.2024"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            372.54998779296875,
+            475.94036865234375,
+            565.1981811523438,
+            491.482666015625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "13.03.2024"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            216.0500030517578,
+            868.390380859375,
+            561.935302734375,
+            883.9326782226562
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "15.03.2024"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            264.7103271484375,
+            565.1443481445312,
+            280.25262451171875
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "28.04.2025"
+        }
+      ]
+    },
+    "judges": {
+      "value": [
+        "Tariq Saleem Sheikh"
+      ],
+      "matched_value": "Tariq Saleem Sheikh",
+      "page": 1,
+      "bbox": [
+        216.0500030517578,
+        475.94036865234375,
+        372.4415588378906,
+        491.482666015625
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "parties": {
+      "value": "Aftab Mehmood Vs. The State and others",
+      "matched_value": "Aftab Mehmood Vs. The State and others",
+      "page": 1,
+      "bbox": [
+        146.77999877929688,
+        190.79034423828125,
+        490.33001708984375,
+        206.33262634277344
+      ],
+      "confidence": 0.792,
+      "source": "native_text_parts"
+    },
+    "citations": {
+      "value": [
+        "PLD 1955 Lahore 667",
+        "PLD 1956 FC 106",
+        "PLD 1970 SC 1",
+        "PLD 1978 Lahore 523",
+        "PLD 1989 FSC 84",
+        "PLD 1992 SC 72",
+        "PLD 1992 SC 723",
+        "PLD 2002 SC 167",
+        "PLD 2005 SC 19",
+        "PLD 2010 SC 1109",
+        "PLD 2013 SC 279"
+      ],
+      "matched_value": "PLD 1955 Lahore 667",
+      "page": 25,
+      "bbox": [
+        385.2699890136719,
+        667.120361328125,
+        565.1915893554688,
+        682.6626586914062
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 25,
+          "bbox": [
+            385.2699890136719,
+            667.120361328125,
+            565.1915893554688,
+            682.6626586914062
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1955 Lahore 667"
+        },
+        {
+          "page": 26,
+          "bbox": [
+            217.97000122070312,
+            903.1256103515625,
+            305.7799987792969,
+            914.1513671875
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1956 FC 106"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            280.25,
+            591.400390625,
+            564.8926391601562,
+            606.9426879882812
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1970 SC 1"
+        },
+        {
+          "page": 26,
+          "bbox": [
+            179.89999389648438,
+            796.7503662109375,
+            565.2184448242188,
+            812.2926635742188
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1978 Lahore 523"
+        },
+        {
+          "page": 9,
+          "bbox": [
+            214.85000610351562,
+            144.7103271484375,
+            564.8712768554688,
+            160.2526092529297
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1989 FSC 84"
+        },
+        {
+          "page": 9,
+          "bbox": [
+            217.97000122070312,
+            217.07037353515625,
+            527.8900146484375,
+            232.61265563964844
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1992 SC 72"
+        },
+        {
+          "page": 4,
+          "bbox": [
+            404.1099853515625,
+            903.1256103515625,
+            491.9499816894531,
+            914.1513671875
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1992 SC 723"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            453.9100036621094,
+            903.1256103515625,
+            541.75,
+            914.1513671875
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 2002 SC 167"
+        },
+        {
+          "page": 9,
+          "bbox": [
+            219.2899932861328,
+            799.1856079101562,
+            293.77996826171875,
+            810.2113647460938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 2005 SC 19"
+        },
+        {
+          "page": 10,
+          "bbox": [
+            255.77000427246094,
+            120.4703369140625,
+            412.4827575683594,
+            136.0126190185547
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 2010 SC 1109"
+        },
+        {
+          "page": 15,
+          "bbox": [
+            72.02400207519531,
+            885.6055908203125,
+            271.4599914550781,
+            896.63134765625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 2013 SC 279"
+        }
+      ]
+    },
+    "acts": {
+      "value": [
+        "Code of Criminal Procedure",
+        "Pakistan Penal Code"
+      ],
+      "matched_value": "Code of Criminal Procedure",
+      "page": 3,
+      "bbox": [
+        144.02000427246094,
+        523.120361328125,
+        568.5700073242188,
+        780.2526245117188
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 3,
+          "bbox": [
+            144.02000427246094,
+            523.120361328125,
+            568.5700073242188,
+            780.2526245117188
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "Code of Criminal Procedure"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            645.0403442382812,
+            565.2099609375,
+            660.5826416015625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "Pakistan Penal Code"
+        }
+      ]
+    },
+    "sections": {
+      "value": [
+        "10",
+        "11",
+        "12(a)",
+        "13",
+        "15",
+        "154",
+        "155-C",
+        "156",
+        "156(1)",
+        "156(2)",
+        "157(1)",
+        "16",
+        "161",
+        "169",
+        "17",
+        "173",
+        "18",
+        "190(1)",
+        "1958",
+        "197",
+        "2",
+        "2(1)",
+        "202",
+        "2022",
+        "28(1)",
+        "3",
+        "302",
+        "34",
+        "342",
+        "392",
+        "4(h)",
+        "497",
+        "497(2)",
+        "5",
+        "5(1)",
+        "5(2)",
+        "5(3)",
+        "537",
+        "537(a)",
+        "561-A",
+        "6(1)",
+        "6(5)",
+        "8",
+        "9",
+        "9(1)",
+        "9(5)",
+        "9(7)"
+      ],
+      "matched_value": "10",
+      "page": 4,
+      "bbox": [
+        144.02000427246094,
+        277.43035888671875,
+        165.04998779296875,
+        292.97265625
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 4,
+          "bbox": [
+            144.02000427246094,
+            277.43035888671875,
+            165.04998779296875,
+            292.97265625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "10"
+        },
+        {
+          "page": 4,
+          "bbox": [
+            144.02000427246094,
+            549.0403442382812,
+            165.04998779296875,
+            564.5826416015625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "11"
+        },
+        {
+          "page": 23,
+          "bbox": [
+            144.02000427246094,
+            512.9203491210938,
+            565.0664672851562,
+            528.462646484375
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "12(a)"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            372.54998779296875,
+            475.94036865234375,
+            565.1981811523438,
+            491.482666015625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "13"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            524.2003173828125,
+            565.0339965820312,
+            539.7426147460938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "15"
+        },
+        {
+          "page": 10,
+          "bbox": [
+            144.02000427246094,
+            887.2503662109375,
+            564.7284545898438,
+            902.7926635742188
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "154"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            814.0303344726562,
+            565.209716796875,
+            829.5726318359375
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "155-C"
+        },
+        {
+          "page": 24,
+          "bbox": [
+            144.02000427246094,
+            846.7903442382812,
+            564.8951416015625,
+            862.3326416015625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "156"
+        },
+        {
+          "page": 26,
+          "bbox": [
+            144.02000427246094,
+            265.43035888671875,
+            564.8379516601562,
+            353.482666015625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "156(1)"
+        },
+        {
+          "page": 24,
+          "bbox": [
+            144.02000427246094,
+            846.7903442382812,
+            564.8951416015625,
+            862.3326416015625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "156(2)"
+        },
+        {
+          "page": 18,
+          "bbox": [
+            144.02000427246094,
+            784.63037109375,
+            564.6443481445312,
+            800.1726684570312
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "157(1)"
+        },
+        {
+          "page": 4,
+          "bbox": [
+            438.30999755859375,
+            349.94036865234375,
+            568.5700073242188,
+            365.482666015625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "16"
+        },
+        {
+          "page": 25,
+          "bbox": [
+            144.02000427246094,
+            691.2703857421875,
+            564.8988037109375,
+            706.8126831054688
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "161"
+        },
+        {
+          "page": 18,
+          "bbox": [
+            144.02000427246094,
+            808.7503662109375,
+            564.80859375,
+            824.2926635742188
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "169"
+        },
+        {
+          "page": 7,
+          "bbox": [
+            144.02000427246094,
+            277.43035888671875,
+            165.04998779296875,
+            292.97265625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "17"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            144.02000427246094,
+            591.400390625,
+            564.81298828125,
+            606.9426879882812
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "173"
+        },
+        {
+          "page": 7,
+          "bbox": [
+            144.02000427246094,
+            597.400390625,
+            165.04998779296875,
+            612.9426879882812
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "18"
+        },
+        {
+          "page": 12,
+          "bbox": [
+            144.02000427246094,
+            682.0303955078125,
+            564.6724243164062,
+            697.5726928710938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "190(1)"
+        },
+        {
+          "page": 8,
+          "bbox": [
+            144.02000427246094,
+            736.2703857421875,
+            564.6865234375,
+            751.8126831054688
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "1958"
+        },
+        {
+          "page": 8,
+          "bbox": [
+            216.0500030517578,
+            712.150390625,
+            565.064453125,
+            727.6926879882812
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "197"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            500.080322265625,
+            565.146484375,
+            539.7426147460938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "2"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            144.02000427246094,
+            247.31036376953125,
+            564.6162109375,
+            262.8526611328125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "2(1)"
+        },
+        {
+          "page": 11,
+          "bbox": [
+            144.02000427246094,
+            96.350341796875,
+            565.2100219726562,
+            111.89262390136719
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "202"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            144.02000427246094,
+            198.95037841796875,
+            564.9800415039062,
+            214.49266052246094
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "2022"
+        },
+        {
+          "page": 8,
+          "bbox": [
+            72.02400207519531,
+            845.6256103515625,
+            564.0228881835938,
+            856.6513671875
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "28(1)"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            524.2003173828125,
+            565.0339965820312,
+            539.7426147460938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "3"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            814.0303344726562,
+            565.209716796875,
+            829.5726318359375
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "302"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            814.0303344726562,
+            565.209716796875,
+            829.5726318359375
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "34"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            814.0303344726562,
+            565.209716796875,
+            829.5726318359375
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "342"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            645.0403442382812,
+            565.2099609375,
+            660.5826416015625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "392"
+        },
+        {
+          "page": 14,
+          "bbox": [
+            144.02000427246094,
+            72.2103271484375,
+            565.091064453125,
+            184.37266540527344
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "4(h)"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            892.5303344726562,
+            565.1441040039062,
+            908.0726318359375
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "497"
+        },
+        {
+          "page": 28,
+          "bbox": [
+            144.02000427246094,
+            464.66033935546875,
+            565.1558837890625,
+            480.20263671875
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "497(2)"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            144.02000427246094,
+            247.31036376953125,
+            564.6162109375,
+            262.8526611328125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "5"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            144.02000427246094,
+            247.31036376953125,
+            564.6162109375,
+            262.8526611328125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "5(1)"
+        },
+        {
+          "page": 12,
+          "bbox": [
+            144.02000427246094,
+            265.43035888671875,
+            565.0360717773438,
+            280.97265625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "5(2)"
+        },
+        {
+          "page": 8,
+          "bbox": [
+            144.02000427246094,
+            392.18035888671875,
+            557.3253173828125,
+            407.72265625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "5(3)"
+        },
+        {
+          "page": 10,
+          "bbox": [
+            144.02000427246094,
+            295.58038330078125,
+            565.2005615234375,
+            311.1226806640625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "537"
+        },
+        {
+          "page": 25,
+          "bbox": [
+            144.02000427246094,
+            494.80035400390625,
+            560.4100341796875,
+            510.3426513671875
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "537(a)"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            144.02000427246094,
+            144.7103271484375,
+            565.2100219726562,
+            160.2526092529297
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "561-A"
+        },
+        {
+          "page": 27,
+          "bbox": [
+            144.02000427246094,
+            500.80035400390625,
+            564.6021118164062,
+            516.3426513671875
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "6(1)"
+        },
+        {
+          "page": 8,
+          "bbox": [
+            144.02000427246094,
+            736.2703857421875,
+            564.6865234375,
+            751.8126831054688
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "6(5)"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            144.02000427246094,
+            794.830322265625,
+            158.08999633789062,
+            810.3726196289062
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "8"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            144.02000427246094,
+            668.080322265625,
+            564.6162719726562,
+            683.6226196289062
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "9"
+        },
+        {
+          "page": 14,
+          "bbox": [
+            78.50399780273438,
+            903.1256103515625,
+            326.7799987792969,
+            914.1513671875
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "9(1)"
+        },
+        {
+          "page": 23,
+          "bbox": [
+            144.02000427246094,
+            368.06036376953125,
+            564.7564086914062,
+            383.6026611328125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "9(5)"
+        },
+        {
+          "page": 23,
+          "bbox": [
+            144.02000427246094,
+            440.42034912109375,
+            564.6160888671875,
+            455.962646484375
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "9(7)"
+        }
+      ]
+    },
+    "pdf_title": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    },
+    "pdf_author": {
+      "value": "assad",
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.6,
+      "source": "pdf_metadata"
+    }
+  },
+  "confidence": 0.882,
+  "diagnostics": {
+    "status": "PASS",
+    "failed_components": [],
+    "quality_score": 1.0,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 1.0,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 1.0
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 361,
+    "rtl_blocks": 0,
+    "ocr_blocks": 0,
+    "tables": 0,
+    "table_candidates_rejected": 0,
+    "form_headers_stripped": 1,
+    "unreliable_text_blocks": 0,
+    "digital_pages": 29
+  },
+  "warnings": [],
+  "template_key": "423dbce4ba90b0aa"
+}

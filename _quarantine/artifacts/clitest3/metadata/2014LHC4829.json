@@ -1,0 +1,423 @@
+{
+  "source_name": "2014LHC4829.pdf",
+  "source_file": "data\\pdfs\\2014LHC4829.pdf",
+  "page_count": 13,
+  "extraction_mode": "scanned",
+  "router": {
+    "requested": "auto",
+    "selected": "scanned",
+    "mode": "scanned",
+    "page_count": 13,
+    "scan_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "native_pages": []
+  },
+  "metadata": {
+    "court": "IN THE LAHORE HIGH COURT RAWALPINDI BENCH, RAWALPINDI",
+    "bench": "IN THE LAHORE HIGH COURT RAWALPINDI BENCH, RAWALPINDI",
+    "case_number": "Criminal Appeal No. 641/2010",
+    "decision_date": "28.7.2010",
+    "hearing_date": "19.06.2014",
+    "dates_found": [
+      "16.5.2008",
+      "19.06.2014",
+      "19.9.2002",
+      "28.7.2010"
+    ],
+    "judges": [],
+    "parties": "Murder Reference No. 77/2010 (The State Vs. Muhammad Waseem Khan)",
+    "citations": [
+      "PLD 1980 SC 225"
+    ],
+    "acts": [],
+    "sections": [
+      "16",
+      "1979",
+      "302",
+      "34",
+      "340(2)",
+      "342",
+      "382-B"
+    ],
+    "pdf_title": null,
+    "pdf_author": null,
+    "counsel": [
+      {
+        "role": "appellant",
+        "names": "Mr. Fakhar Hayat Awan, Advocate.",
+        "page": 2,
+        "bbox": [
+          278.0,
+          411.0,
+          490.5,
+          431.0
+        ],
+        "source": "cover_text"
+      },
+      {
+        "role": "state",
+        "names": "Mirza Muhammad Usman, A.P.G.",
+        "page": 2,
+        "bbox": [
+          278.5,
+          434.5,
+          483.0,
+          452.5
+        ],
+        "source": "cover_text"
+      },
+      {
+        "role": "complainant",
+        "names": "Raja Mehfooz Ali Satti, Advocate. Muhammad Tariq Abbasi, J -- This single judgment is intended to decide the above captioned Murder reference and the Criminal Appeal as the both are outcome of single judgment dated 28.7.2010, passed by the learned Additional Sessions Judge, Rawalpindi. 2. Through the above mentioned judgment, in a criminal case registered through FIR No. 361 dated 16.5.2008 under Sections 302/34 of PPC, at Police Station Civil Lines, Rawalpindi, towards commission of Qatl-i-Amd of Ibrar Hussain, the appellant has been convicted and sentenced to death, with compensation of Rs.2,00,000/- payable to the legal heirs of the deceased, failing which to undergo 06 months S.1.",
+        "page": 2,
+        "bbox": [
+          103.5,
+          458.0,
+          525.0,
+          864.5
+        ],
+        "source": "cover_text"
+      }
+    ]
+  },
+  "metadata_provenance": {
+    "court": {
+      "value": "IN THE LAHORE HIGH COURT RAWALPINDI BENCH, RAWALPINDI",
+      "matched_value": "IN THE LAHORE HIGH COURT RAWALPINDI BENCH, RAWALPINDI",
+      "page": 2,
+      "bbox": [
+        128.0,
+        116.0,
+        494.0,
+        165.5
+      ],
+      "confidence": 0.863,
+      "source": "native_text"
+    },
+    "bench": {
+      "value": "IN THE LAHORE HIGH COURT RAWALPINDI BENCH, RAWALPINDI",
+      "matched_value": "IN THE LAHORE HIGH COURT RAWALPINDI BENCH, RAWALPINDI",
+      "page": 2,
+      "bbox": [
+        128.0,
+        116.0,
+        494.0,
+        165.5
+      ],
+      "confidence": 0.863,
+      "source": "native_text"
+    },
+    "case_number": {
+      "value": "Criminal Appeal No. 641/2010",
+      "matched_value": "Criminal Appeal No. 641/2010",
+      "page": 2,
+      "bbox": [
+        190.5,
+        263.5,
+        392.0,
+        283.5
+      ],
+      "confidence": 0.889,
+      "source": "native_text"
+    },
+    "decision_date": {
+      "value": "28.7.2010",
+      "matched_value": "28.7.2010",
+      "page": 2,
+      "bbox": [
+        111.5,
+        567.5,
+        524.0,
+        594.0
+      ],
+      "confidence": 0.843,
+      "source": "native_text"
+    },
+    "hearing_date": {
+      "value": "19.06.2014",
+      "matched_value": "19.06.2014",
+      "page": 2,
+      "bbox": [
+        278.5,
+        387.0,
+        352.0,
+        403.5
+      ],
+      "confidence": 0.82,
+      "source": "native_text"
+    },
+    "dates_found": {
+      "value": [
+        "16.5.2008",
+        "19.06.2014",
+        "19.9.2002",
+        "28.7.2010"
+      ],
+      "matched_value": "16.5.2008",
+      "page": 2,
+      "bbox": [
+        107.5,
+        675.0,
+        521.0,
+        700.0
+      ],
+      "confidence": 0.885,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 2,
+          "bbox": [
+            107.5,
+            675.0,
+            521.0,
+            700.0
+          ],
+          "confidence": 0.885,
+          "source": "native_text",
+          "matched_value": "16.5.2008"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            278.5,
+            387.0,
+            352.0,
+            403.5
+          ],
+          "confidence": 0.82,
+          "source": "native_text",
+          "matched_value": "19.06.2014"
+        },
+        {
+          "page": 8,
+          "bbox": [
+            112.5,
+            397.0,
+            526.5,
+            417.0
+          ],
+          "confidence": 0.883,
+          "source": "native_text",
+          "matched_value": "19.9.2002"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            111.5,
+            567.5,
+            524.0,
+            594.0
+          ],
+          "confidence": 0.843,
+          "source": "native_text",
+          "matched_value": "28.7.2010"
+        }
+      ]
+    },
+    "judges": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "parties": {
+      "value": "Murder Reference No. 77/2010 (The State Vs. Muhammad Waseem Khan)",
+      "matched_value": "Murder Reference No. 77/2010 (The State Vs. Muhammad Waseem Khan)",
+      "page": 2,
+      "bbox": [
+        191.0,
+        214.5,
+        459.0,
+        255.5
+      ],
+      "confidence": 0.862,
+      "source": "native_text"
+    },
+    "citations": {
+      "value": [
+        "PLD 1980 SC 225"
+      ],
+      "matched_value": "PLD 1980 SC 225",
+      "page": 10,
+      "bbox": [
+        107.5,
+        85.0,
+        530.5,
+        690.5
+      ],
+      "confidence": 0.882,
+      "source": "native_text"
+    },
+    "acts": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "sections": {
+      "value": [
+        "16",
+        "1979",
+        "302",
+        "34",
+        "340(2)",
+        "342",
+        "382-B"
+      ],
+      "matched_value": "16",
+      "page": 2,
+      "bbox": [
+        107.5,
+        675.0,
+        521.0,
+        700.0
+      ],
+      "confidence": 0.885,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 2,
+          "bbox": [
+            107.5,
+            675.0,
+            521.0,
+            700.0
+          ],
+          "confidence": 0.885,
+          "source": "native_text",
+          "matched_value": "16"
+        },
+        {
+          "page": 8,
+          "bbox": [
+            111.0,
+            465.0,
+            525.0,
+            485.0
+          ],
+          "confidence": 0.883,
+          "source": "native_text",
+          "matched_value": "1979"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            107.0,
+            707.5,
+            519.0,
+            734.0
+          ],
+          "confidence": 0.885,
+          "source": "native_text",
+          "matched_value": "302"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            107.0,
+            707.5,
+            519.0,
+            734.0
+          ],
+          "confidence": 0.885,
+          "source": "native_text",
+          "matched_value": "34"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            107.5,
+            560.5,
+            452.5,
+            583.5
+          ],
+          "confidence": 0.812,
+          "source": "native_text",
+          "matched_value": "340(2)"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            103.5,
+            653.0,
+            516.5,
+            677.0
+          ],
+          "confidence": 0.888,
+          "source": "native_text",
+          "matched_value": "342"
+        }
+      ]
+    },
+    "pdf_title": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    },
+    "pdf_author": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    }
+  },
+  "confidence": 0.852,
+  "diagnostics": {
+    "status": "REVIEW",
+    "failed_components": [
+      "headers_footers",
+      "numbering"
+    ],
+    "quality_score": 0.842,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 0.7333,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 0.0,
+      "metadata": 1.0
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 82,
+    "tables": 0,
+    "excluded_pages": 1,
+    "blue_slip_pages": 1,
+    "blank_pages": 0,
+    "region_retries": 0,
+    "preprocess_variant": "grayscale",
+    "models": [
+      "rapidocr-onnx-general-cpu"
+    ]
+  },
+  "warnings": [
+    "OCR output is line-box accurate; exact character boxes are not available from the lightweight runtime and are not fabricated.",
+    "LlamaParse output is a comparison reference, not ground truth."
+  ],
+  "template_key": null
+}

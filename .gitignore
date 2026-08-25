@@ -1,0 +1,22 @@
+# Secrets and local environments
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local model/cache material
+models/**/.cache/
+models/**/*.onnx
+
+# Generated artifacts; keep the folder README and intentionally committed reports only.
+artifacts/**
+!artifacts/README.md
+!artifacts/digital/
+!artifacts/gold/
+!artifacts/scanned/
+
+# Notebook runtime noise
+.ipynb_checkpoints/
+

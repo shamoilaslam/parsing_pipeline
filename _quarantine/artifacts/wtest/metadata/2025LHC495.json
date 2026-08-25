@@ -1,0 +1,686 @@
+{
+  "source_name": "2025LHC495.pdf",
+  "source_file": "data\\pdfs\\2025LHC495.pdf",
+  "page_count": 15,
+  "extraction_mode": "digital",
+  "router": {
+    "requested": "auto",
+    "selected": "digital",
+    "mode": "digital",
+    "page_count": 15,
+    "scan_pages": [],
+    "native_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ]
+  },
+  "metadata": {
+    "court": "IN THE LAHORE HIGH COURT, LAHORE.",
+    "bench": null,
+    "case_number": "Writ Petition No.43280 of 2022",
+    "decision_date": "20.11.2024",
+    "hearing_date": "20.11.2024",
+    "dates_found": [
+      "04.03.2020",
+      "07.06.2022",
+      "20.11.2024",
+      "25.06.2022",
+      "27.05.2020"
+    ],
+    "judges": [
+      "AHMAD NADEEM ARSHAD"
+    ],
+    "parties": "Muhammad Afzal. Versus Judge Family Court, etc.",
+    "citations": [
+      "PLD\n1995 SC 633",
+      "PLD 2011 Lahore 423",
+      "PLD 2012 SC 66"
+    ],
+    "acts": [
+      "Code of Criminal Procedure,\n1898",
+      "Pakistan Penal Code, 1860"
+    ],
+    "sections": [
+      "05",
+      "1",
+      "109",
+      "13",
+      "144",
+      "17-A",
+      "1955",
+      "1964",
+      "2",
+      "352",
+      "376",
+      "4",
+      "488",
+      "490",
+      "5",
+      "544-A(5)",
+      "545",
+      "9",
+      "90"
+    ],
+    "pdf_title": "Form No: HCJD/C-121",
+    "pdf_author": "user",
+    "counsel": [
+      {
+        "role": "petitioner",
+        "names": "Muhammad Imran Mushtaq Batalvi, Advocate.",
+        "page": 1,
+        "bbox": [
+          331.25,
+          435.0203857421875,
+          543.6099853515625,
+          466.64263916015625
+        ],
+        "source": "cover_text"
+      },
+      {
+        "role": "respondent no 2",
+        "names": "M/s Malik Muhammad Afzal Khokhar and Rana Luqman Hanif, Advocates.",
+        "page": 1,
+        "bbox": [
+          331.25,
+          483.40032958984375,
+          543.6099853515625,
+          531.1026611328125
+        ],
+        "source": "cover_text"
+      }
+    ]
+  },
+  "metadata_provenance": {
+    "court": {
+      "value": "IN THE LAHORE HIGH COURT, LAHORE.",
+      "matched_value": "IN THE LAHORE HIGH COURT, LAHORE.",
+      "page": 1,
+      "bbox": [
+        169.6999969482422,
+        149.5103759765625,
+        452.9800109863281,
+        165.0526580810547
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "bench": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "case_number": {
+      "value": "Writ Petition No.43280 of 2022",
+      "matched_value": "Writ Petition No.43280 of 2022",
+      "page": 1,
+      "bbox": [
+        215.4499969482422,
+        230.03033447265625,
+        410.6199951171875,
+        245.57261657714844
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "decision_date": {
+      "value": "20.11.2024",
+      "matched_value": "20.11.2024",
+      "page": 1,
+      "bbox": [
+        331.25,
+        406.94036865234375,
+        397.77142333984375,
+        422.482666015625
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "hearing_date": {
+      "value": "20.11.2024",
+      "matched_value": "20.11.2024",
+      "page": 1,
+      "bbox": [
+        331.25,
+        406.94036865234375,
+        397.77142333984375,
+        422.482666015625
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "dates_found": {
+      "value": [
+        "04.03.2020",
+        "07.06.2022",
+        "20.11.2024",
+        "25.06.2022",
+        "27.05.2020"
+      ],
+      "matched_value": "04.03.2020",
+      "page": 1,
+      "bbox": [
+        151.22000122070312,
+        801.3103637695312,
+        543.317138671875,
+        816.8526611328125
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 1,
+          "bbox": [
+            151.22000122070312,
+            801.3103637695312,
+            543.317138671875,
+            816.8526611328125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "04.03.2020"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            151.22000122070312,
+            270.1103515625,
+            543.146484375,
+            285.65264892578125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "07.06.2022"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            331.25,
+            406.94036865234375,
+            397.77142333984375,
+            422.482666015625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "20.11.2024"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            151.22000122070312,
+            632.2003173828125,
+            543.15283203125,
+            647.7426147460938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "25.06.2022"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            151.22000122070312,
+            873.6903686523438,
+            543.5989990234375,
+            889.232666015625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "27.05.2020"
+        }
+      ]
+    },
+    "judges": {
+      "value": [
+        "AHMAD NADEEM ARSHAD"
+      ],
+      "matched_value": "AHMAD NADEEM ARSHAD",
+      "page": 1,
+      "bbox": [
+        185.77999877929688,
+        559.7203369140625,
+        407.2402038574219,
+        575.2626342773438
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "parties": {
+      "value": "Muhammad Afzal. Versus Judge Family Court, etc.",
+      "matched_value": "Muhammad Afzal. Versus Judge Family Court, etc.",
+      "page": 1,
+      "bbox": [
+        240.52999877929688,
+        262.07037353515625,
+        385.5400085449219,
+        341.962646484375
+      ],
+      "confidence": 0.792,
+      "source": "native_text_parts"
+    },
+    "citations": {
+      "value": [
+        "PLD\n1995 SC 633",
+        "PLD 2011 Lahore 423",
+        "PLD 2012 SC 66"
+      ],
+      "matched_value": "PLD\n1995 SC 633",
+      "page": 7,
+      "bbox": [
+        151.22000122070312,
+        404.66033935546875,
+        543.6207275390625,
+        468.442626953125
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 7,
+          "bbox": [
+            151.22000122070312,
+            404.66033935546875,
+            543.6207275390625,
+            468.442626953125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD\n1995 SC 633"
+        },
+        {
+          "page": 12,
+          "bbox": [
+            400.0299987792969,
+            826.7503662109375,
+            540.0087890625,
+            842.2926635742188
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 2011 Lahore 423"
+        },
+        {
+          "page": 7,
+          "bbox": [
+            269.69000244140625,
+            740.4703369140625,
+            377.7137451171875,
+            756.0126342773438
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 2012 SC 66"
+        }
+      ]
+    },
+    "acts": {
+      "value": [
+        "Code of Criminal Procedure,\n1898",
+        "Pakistan Penal Code, 1860"
+      ],
+      "matched_value": "Code of Criminal Procedure,\n1898",
+      "page": 5,
+      "bbox": [
+        151.22000122070312,
+        101.03033447265625,
+        543.2914428710938,
+        164.8126678466797
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 5,
+          "bbox": [
+            151.22000122070312,
+            101.03033447265625,
+            543.2914428710938,
+            164.8126678466797
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "Code of Criminal Procedure,\n1898"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            151.22000122070312,
+            825.4303588867188,
+            543.5213012695312,
+            840.97265625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "Pakistan Penal Code, 1860"
+        }
+      ]
+    },
+    "sections": {
+      "value": [
+        "05",
+        "1",
+        "109",
+        "13",
+        "144",
+        "17-A",
+        "1955",
+        "1964",
+        "2",
+        "352",
+        "376",
+        "4",
+        "488",
+        "490",
+        "5",
+        "544-A(5)",
+        "545",
+        "9",
+        "90"
+      ],
+      "matched_value": "05",
+      "page": 1,
+      "bbox": [
+        151.22000122070312,
+        873.6903686523438,
+        543.5989990234375,
+        889.232666015625
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 1,
+          "bbox": [
+            151.22000122070312,
+            873.6903686523438,
+            543.5989990234375,
+            889.232666015625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "05"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            447.42999267578125,
+            173.40797424316406,
+            505.2760314941406,
+            186.6919708251953
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "1"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            151.22000122070312,
+            825.4303588867188,
+            543.5213012695312,
+            840.97265625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "109"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            151.22000122070312,
+            281.5103759765625,
+            172.25,
+            297.05267333984375
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "13"
+        },
+        {
+          "page": 10,
+          "bbox": [
+            187.22000122070312,
+            572.5603637695312,
+            543.6099853515625,
+            588.1026611328125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "144"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            151.22000122070312,
+            584.080322265625,
+            543.3062744140625,
+            599.6226196289062
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "17-A"
+        },
+        {
+          "page": 9,
+          "bbox": [
+            151.22000122070312,
+            704.830322265625,
+            543.5065307617188,
+            720.3726196289062
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "1955"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            151.22000122070312,
+            439.100341796875,
+            543.3676147460938,
+            599.6226196289062
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "1964"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            185.77999877929688,
+            483.40032958984375,
+            307.8800048828125,
+            498.942626953125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "2"
+        },
+        {
+          "page": 12,
+          "bbox": [
+            187.22000122070312,
+            559.7379760742188,
+            509.5760498046875,
+            573.02197265625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "352"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            151.22000122070312,
+            825.4303588867188,
+            543.5213012695312,
+            840.97265625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "376"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            151.22000122070312,
+            559.84033203125,
+            165.2899932861328,
+            575.3826293945312
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "4"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            151.22000122070312,
+            125.15032958984375,
+            543.2914428710938,
+            164.8126678466797
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "488"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            151.22000122070312,
+            125.15032958984375,
+            543.2914428710938,
+            140.69261169433594
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "490"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            151.22000122070312,
+            149.2703857421875,
+            165.2899932861328,
+            164.8126678466797
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "5"
+        },
+        {
+          "page": 13,
+          "bbox": [
+            187.22000122070312,
+            918.7080078125,
+            509.7460021972656,
+            931.9920043945312
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "544-A(5)"
+        },
+        {
+          "page": 14,
+          "bbox": [
+            187.22000122070312,
+            535.7379760742188,
+            319.489990234375,
+            549.02197265625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "545"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            151.22000122070312,
+            463.2203369140625,
+            543.1943969726562,
+            478.76263427734375
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "9"
+        },
+        {
+          "page": 9,
+          "bbox": [
+            151.22000122070312,
+            704.830322265625,
+            543.5065307617188,
+            720.3726196289062
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "90"
+        }
+      ]
+    },
+    "pdf_title": {
+      "value": "Form No: HCJD/C-121",
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.6,
+      "source": "pdf_metadata"
+    },
+    "pdf_author": {
+      "value": "user",
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.6,
+      "source": "pdf_metadata"
+    }
+  },
+  "confidence": 0.884,
+  "diagnostics": {
+    "status": "PASS",
+    "failed_components": [],
+    "quality_score": 1.0,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 1.0,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 1.0
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 174,
+    "rtl_blocks": 14,
+    "ocr_blocks": 0,
+    "tables": 0,
+    "table_candidates_rejected": 0,
+    "form_headers_stripped": 0,
+    "unreliable_text_blocks": 1,
+    "digital_pages": 15
+  },
+  "warnings": [
+    "Arabic-script text is preserved as native visual-source text plus rendered crops.",
+    "1 block(s) carry unreliable native text (see block.text_status); their characters are retained but must not be indexed or cited without OCR/VLM review."
+  ],
+  "label_check": null,
+  "template_key": "a4ffd9beb25b1c17"
+}

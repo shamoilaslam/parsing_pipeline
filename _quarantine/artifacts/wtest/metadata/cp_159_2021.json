@@ -1,0 +1,252 @@
+{
+  "source_name": "cp_159_2021.pdf",
+  "source_file": "data\\pdfs\\cp_159_2021.pdf",
+  "page_count": 4,
+  "extraction_mode": "scanned",
+  "router": {
+    "requested": "auto",
+    "selected": "scanned",
+    "mode": "scanned",
+    "page_count": 4,
+    "scan_pages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "native_pages": []
+  },
+  "metadata": {
+    "court": "Supreme Court Rules, 1980 (\"Rules\"). Relevant",
+    "bench": "C.P.159/2021 (Against the order of Lahore High Court, Multan Bench dated 11.02.2020, passed in T.R.No.8/2019)",
+    "case_number": "C.P.159/2021 (Against the order of Lahore High Court, Multan Bench dated 11.02.2020, passed in T.R.No.8/2019)",
+    "decision_date": "12.10.2021",
+    "hearing_date": "12.10.2021",
+    "dates_found": [
+      "11.02.2020",
+      "12.10.2021"
+    ],
+    "judges": [
+      "Syed Mansoor Ali Shah"
+    ],
+    "parties": ".. Petitioner(s) Versus FalahudDinQureshi",
+    "citations": [],
+    "acts": [],
+    "sections": [],
+    "pdf_title": "c.p._159_2021",
+    "pdf_author": "CamScanner",
+    "counsel": []
+  },
+  "metadata_provenance": {
+    "court": {
+      "value": "Supreme Court Rules, 1980 (\"Rules\"). Relevant",
+      "matched_value": "Supreme Court Rules, 1980 (\"Rules\"). Relevant",
+      "page": 1,
+      "bbox": [
+        375.5,
+        1516.5,
+        987.0,
+        1541.0
+      ],
+      "confidence": 0.857,
+      "source": "native_text"
+    },
+    "bench": {
+      "value": "C.P.159/2021 (Against the order of Lahore High Court, Multan Bench dated 11.02.2020, passed in T.R.No.8/2019)",
+      "matched_value": "C.P.159/2021 (Against the order of Lahore High Court, Multan Bench dated 11.02.2020, passed in T.R.No.8/2019)",
+      "page": 1,
+      "bbox": [
+        262.5,
+        403.5,
+        804.5,
+        473.5
+      ],
+      "confidence": 0.864,
+      "source": "native_text"
+    },
+    "case_number": {
+      "value": "C.P.159/2021 (Against the order of Lahore High Court, Multan Bench dated 11.02.2020, passed in T.R.No.8/2019)",
+      "matched_value": "C.P.159/2021 (Against the order of Lahore High Court, Multan Bench dated 11.02.2020, passed in T.R.No.8/2019)",
+      "page": 1,
+      "bbox": [
+        262.5,
+        403.5,
+        804.5,
+        473.5
+      ],
+      "confidence": 0.864,
+      "source": "native_text"
+    },
+    "decision_date": {
+      "value": "12.10.2021",
+      "matched_value": "12.10.2021",
+      "page": 1,
+      "bbox": [
+        526.5,
+        798.5,
+        646.0,
+        816.5
+      ],
+      "confidence": 0.816,
+      "source": "native_text"
+    },
+    "hearing_date": {
+      "value": "12.10.2021",
+      "matched_value": "12.10.2021",
+      "page": 1,
+      "bbox": [
+        526.5,
+        798.5,
+        646.0,
+        816.5
+      ],
+      "confidence": 0.816,
+      "source": "native_text"
+    },
+    "dates_found": {
+      "value": [
+        "11.02.2020",
+        "12.10.2021"
+      ],
+      "matched_value": "11.02.2020",
+      "page": 1,
+      "bbox": [
+        262.5,
+        453.0,
+        702.0,
+        473.5
+      ],
+      "confidence": 0.864,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 1,
+          "bbox": [
+            262.5,
+            453.0,
+            702.0,
+            473.5
+          ],
+          "confidence": 0.864,
+          "source": "native_text",
+          "matched_value": "11.02.2020"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            526.5,
+            798.5,
+            646.0,
+            816.5
+          ],
+          "confidence": 0.816,
+          "source": "native_text",
+          "matched_value": "12.10.2021"
+        }
+      ]
+    },
+    "judges": {
+      "value": [
+        "Syed Mansoor Ali Shah"
+      ],
+      "matched_value": "Syed Mansoor Ali Shah",
+      "page": 1,
+      "bbox": [
+        392.5,
+        898.5,
+        987.5,
+        923.5
+      ],
+      "confidence": 0.873,
+      "source": "native_text"
+    },
+    "parties": {
+      "value": ".. Petitioner(s) Versus FalahudDinQureshi",
+      "matched_value": ".. Petitioner(s) Versus FalahudDinQureshi",
+      "page": 1,
+      "bbox": [
+        264.5,
+        561.5,
+        983.0,
+        645.0
+      ],
+      "confidence": 0.737,
+      "source": "native_text_parts"
+    },
+    "citations": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "acts": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "sections": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "pdf_title": {
+      "value": "c.p._159_2021",
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.6,
+      "source": "pdf_metadata"
+    },
+    "pdf_author": {
+      "value": "CamScanner",
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.6,
+      "source": "pdf_metadata"
+    }
+  },
+  "confidence": 0.841,
+  "diagnostics": {
+    "status": "PASS",
+    "failed_components": [],
+    "quality_score": 1.0,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 1.0,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 1.0
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 79,
+    "tables": 0,
+    "excluded_pages": 0,
+    "blue_slip_pages": 0,
+    "blank_pages": 0,
+    "region_retries": 0,
+    "preprocess_variant": "grayscale",
+    "models": [
+      "rapidocr-onnx-general-cpu"
+    ]
+  },
+  "warnings": [
+    "OCR output is line-box accurate; exact character boxes are not available from the lightweight runtime and are not fabricated.",
+    "LlamaParse output is a comparison reference, not ground truth."
+  ],
+  "label_check": null,
+  "template_key": null
+}

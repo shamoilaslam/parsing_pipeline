@@ -1,0 +1,76 @@
+{
+  "source_name": "cp_159_2021.pdf",
+  "source_file": "data\\pdfs\\cp_159_2021.pdf",
+  "page_count": 4,
+  "extraction_mode": "scanned",
+  "router": {
+    "requested": "auto",
+    "selected": "scanned",
+    "mode": "scanned",
+    "page_count": 4,
+    "scan_pages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "native_pages": []
+  },
+  "metadata": {
+    "court": "Supreme Court Rules, 1980 (\"Rules\"). Relevant",
+    "bench": "C.P.159/2021 (Against the order of Lahore High Court, Multan Bench dated 11.02.2020, passed in T.R.No.8/2019)",
+    "case_number": "C.P.159/2021 (Against the order of Lahore High Court, Multan Bench dated 11.02.2020, passed in T.R.No.8/2019)",
+    "decision_date": "11.02.2020",
+    "hearing_date": "12.10.2021",
+    "dates_found": [
+      "11.02.2020",
+      "12.10.2021"
+    ],
+    "judges": [
+      "Syed Mansoor Ali Shah"
+    ],
+    "parties": ".. Petitioner(s) Versus FalahudDinQureshi",
+    "citations": [],
+    "acts": [],
+    "sections": [],
+    "pdf_title": "c.p._159_2021",
+    "pdf_author": "CamScanner"
+  },
+  "metadata_provenance": null,
+  "confidence": 0.841,
+  "diagnostics": {
+    "status": "REVIEW",
+    "failed_components": [
+      "metadata"
+    ],
+    "quality_score": 0.969,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 1.0,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 0.75
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 79,
+    "tables": 0,
+    "excluded_pages": 0,
+    "blue_slip_pages": 0,
+    "blank_pages": 0,
+    "region_retries": 0,
+    "preprocess_variant": "grayscale",
+    "models": [
+      "rapidocr-onnx-general-cpu"
+    ]
+  },
+  "warnings": [
+    "OCR output is line-box accurate; exact character boxes are not available from the lightweight runtime and are not fabricated.",
+    "LlamaParse output is a comparison reference, not ground truth."
+  ],
+  "template_key": null
+}

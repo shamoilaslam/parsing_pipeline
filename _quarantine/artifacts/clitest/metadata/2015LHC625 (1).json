@@ -1,0 +1,695 @@
+{
+  "source_name": "2015LHC625 (1).pdf",
+  "source_file": "data\\pdfs\\2015LHC625 (1).pdf",
+  "page_count": 18,
+  "extraction_mode": "digital",
+  "router": {
+    "requested": "auto",
+    "selected": "digital",
+    "mode": "digital",
+    "page_count": 18,
+    "scan_pages": [],
+    "native_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ]
+  },
+  "metadata": {
+    "court": "IN THE LAHORE HIGH COURT, LAHORE",
+    "bench": null,
+    "case_number": "appeal was not",
+    "decision_date": "23.04.2009",
+    "hearing_date": "03.02.2015",
+    "dates_found": [
+      "03.02.2015",
+      "05.09.2009",
+      "05.10.2009",
+      "09.07.2009",
+      "15.09.1992",
+      "15.10.2009",
+      "19.04.2001",
+      "23.04.2009",
+      "24.01.2009",
+      "25.05.2001",
+      "28.10.2009"
+    ],
+    "judges": [
+      "MAHMOOD AHMAD BHATTI"
+    ],
+    "parties": "Muhammad Azam, etc. Versus Abdul Qayyum Khan, etc.",
+    "citations": [
+      "PLD\n1956 FC 72",
+      "PLD\n1975 SC 331",
+      "PLD 1949 PC 45",
+      "PLD 1970 SC 287",
+      "PLD 1973 SC 236",
+      "PLD 1975 SC 331",
+      "PLD 1976 SC 258",
+      "PLD 1977 SC 599",
+      "PLD 1985 SC 153",
+      "PLD 1990 SC 692",
+      "PLD 1997\nSC 397",
+      "PLD 1997 SC 397",
+      "PLD 2003 SC 628",
+      "PLD 2008 SC 577"
+    ],
+    "acts": [],
+    "sections": [
+      "19",
+      "1908",
+      "3",
+      "489-F",
+      "5"
+    ],
+    "pdf_title": "Form No: HCJD/C-121",
+    "pdf_author": "Court",
+    "counsel": [
+      {
+        "role": "appellants",
+        "names": "Mirza Aamer Baig Advocate.",
+        "page": 1,
+        "bbox": [
+          306.0699920654297,
+          271.10003662109375,
+          527.5800170898438,
+          287.80999755859375
+        ],
+        "source": "cover_table"
+      },
+      {
+        "role": "respondent no 1",
+        "names": "M/s. Anwar Akhtar and Ishtiaq\nAhmad Advocates.",
+        "page": 1,
+        "bbox": [
+          306.0699920654297,
+          287.80999755859375,
+          527.5800170898438,
+          320.53000895182294
+        ],
+        "source": "cover_table"
+      }
+    ]
+  },
+  "metadata_provenance": {
+    "court": {
+      "value": "IN THE LAHORE HIGH COURT, LAHORE",
+      "matched_value": "IN THE LAHORE HIGH COURT, LAHORE",
+      "page": 1,
+      "bbox": [
+        128.4199981689453,
+        113.46199798583984,
+        488.0799865722656,
+        133.38800048828125
+      ],
+      "confidence": 0.89,
+      "source": "native_text"
+    },
+    "bench": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "case_number": {
+      "value": "appeal was not",
+      "matched_value": "appeal was not",
+      "page": 6,
+      "bbox": [
+        144.02000427246094,
+        376.4603271484375,
+        530.3023681640625,
+        392.00262451171875
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "decision_date": {
+      "value": "23.04.2009",
+      "matched_value": "23.04.2009",
+      "page": 1,
+      "bbox": [
+        144.02000427246094,
+        385.34033203125,
+        530.7538452148438,
+        400.88262939453125
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "hearing_date": {
+      "value": "03.02.2015",
+      "matched_value": "03.02.2015",
+      "page": 1,
+      "bbox": [
+        84.56400394439697,
+        254.46004231770834,
+        527.5800170898438,
+        320.53000895182294
+      ],
+      "confidence": 0.98,
+      "source": "native_text"
+    },
+    "dates_found": {
+      "value": [
+        "03.02.2015",
+        "05.09.2009",
+        "05.10.2009",
+        "09.07.2009",
+        "15.09.1992",
+        "15.10.2009",
+        "19.04.2001",
+        "23.04.2009",
+        "24.01.2009",
+        "25.05.2001",
+        "28.10.2009"
+      ],
+      "matched_value": "03.02.2015",
+      "page": 1,
+      "bbox": [
+        84.56400394439697,
+        254.46004231770834,
+        527.5800170898438,
+        320.53000895182294
+      ],
+      "confidence": 0.98,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 1,
+          "bbox": [
+            84.56400394439697,
+            254.46004231770834,
+            527.5800170898438,
+            320.53000895182294
+          ],
+          "confidence": 0.98,
+          "source": "native_text",
+          "matched_value": "03.02.2015"
+        },
+        {
+          "page": 7,
+          "bbox": [
+            144.02000427246094,
+            86.63037109375,
+            530.1337890625,
+            102.17265319824219
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "05.09.2009"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            144.02000427246094,
+            746.7103271484375,
+            530.7066650390625,
+            762.2526245117188
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "05.10.2009"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            417.5003662109375,
+            530.747802734375,
+            433.04266357421875
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "09.07.2009"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            852.2103271484375,
+            530.1619262695312,
+            867.7526245117188
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "15.09.1992"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            144.02000427246094,
+            778.9903564453125,
+            530.176025390625,
+            794.5326538085938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "15.10.2009"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            144.02000427246094,
+            86.63037109375,
+            530.3724975585938,
+            102.17265319824219
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "19.04.2001"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            144.02000427246094,
+            385.34033203125,
+            530.7538452148438,
+            400.88262939453125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "23.04.2009"
+        },
+        {
+          "page": 7,
+          "bbox": [
+            144.02000427246094,
+            215.390380859375,
+            530.274169921875,
+            230.9326629638672
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "24.01.2009"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            144.02000427246094,
+            118.79034423828125,
+            530.2461547851562,
+            134.33262634277344
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "25.05.2001"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            144.02000427246094,
+            778.9903564453125,
+            530.176025390625,
+            794.5326538085938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "28.10.2009"
+        }
+      ]
+    },
+    "judges": {
+      "value": [
+        "MAHMOOD AHMAD BHATTI"
+      ],
+      "matched_value": "MAHMOOD AHMAD BHATTI",
+      "page": 1,
+      "bbox": [
+        162.02000427246094,
+        353.18035888671875,
+        366.25994873046875,
+        368.72265625
+      ],
+      "confidence": 0.88,
+      "source": "native_text"
+    },
+    "parties": {
+      "value": "Muhammad Azam, etc. Versus Abdul Qayyum Khan, etc.",
+      "matched_value": "Muhammad Azam, etc. Versus Abdul Qayyum Khan, etc.",
+      "page": 1,
+      "bbox": [
+        90.02400207519531,
+        200.5103759765625,
+        489.4759216308594,
+        216.0526580810547
+      ],
+      "confidence": 0.792,
+      "source": "native_text_parts"
+    },
+    "citations": {
+      "value": [
+        "PLD\n1956 FC 72",
+        "PLD\n1975 SC 331",
+        "PLD 1949 PC 45",
+        "PLD 1970 SC 287",
+        "PLD 1973 SC 236",
+        "PLD 1975 SC 331",
+        "PLD 1976 SC 258",
+        "PLD 1977 SC 599",
+        "PLD 1985 SC 153",
+        "PLD 1990 SC 692",
+        "PLD 1997\nSC 397",
+        "PLD 1997 SC 397",
+        "PLD 2003 SC 628",
+        "PLD 2008 SC 577"
+      ],
+      "matched_value": "PLD\n1956 FC 72",
+      "page": 17,
+      "bbox": [
+        198.0500030517578,
+        215.39263916015625,
+        522.2962036132812,
+        476.5093688964844
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 17,
+          "bbox": [
+            198.0500030517578,
+            215.39263916015625,
+            522.2962036132812,
+            476.5093688964844
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD\n1956 FC 72"
+        },
+        {
+          "page": 12,
+          "bbox": [
+            180.0500030517578,
+            355.70263671875,
+            513.0830688476562,
+            370.0493469238281
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD\n1975 SC 331"
+        },
+        {
+          "page": 17,
+          "bbox": [
+            198.0500030517578,
+            484.6026306152344,
+            519.0950927734375,
+            498.9493408203125
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1949 PC 45"
+        },
+        {
+          "page": 16,
+          "bbox": [
+            198.0500030517578,
+            684.68798828125,
+            506.9179992675781,
+            697.9719848632812
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1970 SC 287"
+        },
+        {
+          "page": 17,
+          "bbox": [
+            198.0500030517578,
+            574.24267578125,
+            519.1339721679688,
+            588.5894165039062
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1973 SC 236"
+        },
+        {
+          "page": 12,
+          "bbox": [
+            180.0500030517578,
+            355.70263671875,
+            513.0830688476562,
+            370.0493469238281
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1975 SC 331"
+        },
+        {
+          "page": 17,
+          "bbox": [
+            198.0500030517578,
+            349.942626953125,
+            519.0950927734375,
+            364.2893371582031
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1976 SC 258"
+        },
+        {
+          "page": 10,
+          "bbox": [
+            162.02000427246094,
+            703.0325927734375,
+            513.0933837890625,
+            717.3793334960938
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1977 SC 599"
+        },
+        {
+          "page": 16,
+          "bbox": [
+            293.5899963378906,
+            344.18035888671875,
+            408.2406005859375,
+            359.72265625
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1985 SC 153"
+        },
+        {
+          "page": 18,
+          "bbox": [
+            198.0500030517578,
+            109.0726318359375,
+            409.29998779296875,
+            123.41935729980469
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1990 SC 692"
+        },
+        {
+          "page": 12,
+          "bbox": [
+            180.0500030517578,
+            86.63262939453125,
+            513.1812133789062,
+            571.9093627929688
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1997\nSC 397"
+        },
+        {
+          "page": 12,
+          "bbox": [
+            180.0500030517578,
+            86.63262939453125,
+            513.1812133789062,
+            571.9093627929688
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 1997 SC 397"
+        },
+        {
+          "page": 16,
+          "bbox": [
+            220.3699951171875,
+            553.600341796875,
+            335.0487060546875,
+            569.1426391601562
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 2003 SC 628"
+        },
+        {
+          "page": 8,
+          "bbox": [
+            365.1099853515625,
+            650.1103515625,
+            483.3699951171875,
+            665.6526489257812
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "PLD 2008 SC 577"
+        }
+      ]
+    },
+    "acts": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "sections": {
+      "value": [
+        "19",
+        "1908",
+        "3",
+        "489-F",
+        "5"
+      ],
+      "matched_value": "19",
+      "page": 3,
+      "bbox": [
+        144.02000427246094,
+        86.63037109375,
+        530.3724975585938,
+        102.17265319824219
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 3,
+          "bbox": [
+            144.02000427246094,
+            86.63037109375,
+            530.3724975585938,
+            102.17265319824219
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "19"
+        },
+        {
+          "page": 4,
+          "bbox": [
+            144.02000427246094,
+            510.400390625,
+            530.2462158203125,
+            525.9426879882812
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "1908"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            144.02000427246094,
+            199.31036376953125,
+            165.52999877929688,
+            214.85264587402344
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "3"
+        },
+        {
+          "page": 7,
+          "bbox": [
+            144.02000427246094,
+            247.67034912109375,
+            530.4345703125,
+            263.212646484375
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "489-F"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            162.02000427246094,
+            634.0003662109375,
+            172.61000061035156,
+            649.5426635742188
+          ],
+          "confidence": 0.93,
+          "source": "native_text",
+          "matched_value": "5"
+        }
+      ]
+    },
+    "pdf_title": {
+      "value": "Form No: HCJD/C-121",
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.6,
+      "source": "pdf_metadata"
+    },
+    "pdf_author": {
+      "value": "Court",
+      "matched_value": "Court",
+      "page": 1,
+      "bbox": [
+        128.4199981689453,
+        113.46199798583984,
+        488.0799865722656,
+        133.38800048828125
+      ],
+      "confidence": 0.89,
+      "source": "native_text"
+    }
+  },
+  "confidence": 0.882,
+  "diagnostics": {
+    "status": "PASS",
+    "failed_components": [],
+    "quality_score": 1.0,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 1.0,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 1.0
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 344,
+    "rtl_blocks": 0,
+    "ocr_blocks": 0,
+    "tables": 1,
+    "table_candidates_rejected": 0,
+    "form_headers_stripped": 0,
+    "unreliable_text_blocks": 0,
+    "digital_pages": 18
+  },
+  "warnings": [],
+  "template_key": "56267e2caa1f33ff"
+}

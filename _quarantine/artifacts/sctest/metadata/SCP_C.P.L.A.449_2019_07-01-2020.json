@@ -1,0 +1,363 @@
+{
+  "source_name": "SCP_C.P.L.A.449_2019_07-01-2020.pdf",
+  "source_file": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.P.L.A.449_2019_07-01-2020.pdf",
+  "page_count": 7,
+  "extraction_mode": "scanned",
+  "router": {
+    "requested": "auto",
+    "selected": "scanned",
+    "mode": "scanned",
+    "page_count": 7,
+    "scan_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "native_pages": []
+  },
+  "metadata": {
+    "court": "IN THE SUPREME COURT OF PAKISTAN",
+    "bench": null,
+    "case_number": "WP No. 3074/2017)",
+    "decision_date": "07.01.2020",
+    "hearing_date": "07.01.2020",
+    "dates_found": [
+      "07.01.2020",
+      "07.12.2018",
+      "12.07.2017",
+      "16.08.2017",
+      "28.03.2017"
+    ],
+    "judges": [
+      "Maqbool Baqar"
+    ],
+    "parties": "M/s Sui Southern Gas Company Limited Versus Respondent(s)",
+    "citations": [],
+    "acts": [],
+    "sections": [
+      "19(4)",
+      "2(xxxii)",
+      "2012"
+    ],
+    "pdf_title": null,
+    "pdf_author": null,
+    "counsel": []
+  },
+  "metadata_provenance": {
+    "court": {
+      "value": "IN THE SUPREME COURT OF PAKISTAN",
+      "matched_value": "IN THE SUPREME COURT OF PAKISTAN",
+      "page": 1,
+      "bbox": [
+        246.5,
+        75.5,
+        484.0,
+        88.5
+      ],
+      "confidence": 0.86,
+      "source": "native_text"
+    },
+    "bench": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "case_number": {
+      "value": "WP No. 3074/2017)",
+      "matched_value": "WP No. 3074/2017)",
+      "page": 1,
+      "bbox": [
+        144.0,
+        154.0,
+        318.0,
+        289.0
+      ],
+      "confidence": 0.847,
+      "source": "native_text"
+    },
+    "decision_date": {
+      "value": "07.01.2020",
+      "matched_value": "07.01.2020",
+      "page": 1,
+      "bbox": [
+        280.5,
+        462.5,
+        361.5,
+        474.5
+      ],
+      "confidence": 0.86,
+      "source": "native_text"
+    },
+    "hearing_date": {
+      "value": "07.01.2020",
+      "matched_value": "07.01.2020",
+      "page": 1,
+      "bbox": [
+        280.5,
+        462.5,
+        361.5,
+        474.5
+      ],
+      "confidence": 0.86,
+      "source": "native_text"
+    },
+    "dates_found": {
+      "value": [
+        "07.01.2020",
+        "07.12.2018",
+        "12.07.2017",
+        "16.08.2017",
+        "28.03.2017"
+      ],
+      "matched_value": "07.01.2020",
+      "page": 1,
+      "bbox": [
+        280.5,
+        462.5,
+        361.5,
+        474.5
+      ],
+      "confidence": 0.86,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 1,
+          "bbox": [
+            280.5,
+            462.5,
+            361.5,
+            474.5
+          ],
+          "confidence": 0.86,
+          "source": "native_text",
+          "matched_value": "07.01.2020"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            145.0,
+            255.0,
+            311.0,
+            266.0
+          ],
+          "confidence": 0.847,
+          "source": "native_text",
+          "matched_value": "07.12.2018"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            148.0,
+            763.5,
+            521.0,
+            780.5
+          ],
+          "confidence": 0.884,
+          "source": "native_text",
+          "matched_value": "12.07.2017"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            212.5,
+            507.5,
+            517.5,
+            522.0
+          ],
+          "confidence": 0.878,
+          "source": "native_text",
+          "matched_value": "16.08.2017"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            147.5,
+            686.0,
+            522.0,
+            702.5
+          ],
+          "confidence": 0.893,
+          "source": "native_text",
+          "matched_value": "28.03.2017"
+        }
+      ]
+    },
+    "judges": {
+      "value": [
+        "Maqbool Baqar"
+      ],
+      "matched_value": "Maqbool Baqar",
+      "page": 1,
+      "bbox": [
+        144.5,
+        166.0,
+        295.5,
+        180.0
+      ],
+      "confidence": 0.847,
+      "source": "native_text"
+    },
+    "parties": {
+      "value": "M/s Sui Southern Gas Company Limited Versus Respondent(s)",
+      "matched_value": "M/s Sui Southern Gas Company Limited Versus Respondent(s)",
+      "page": 1,
+      "bbox": [
+        145.0,
+        300.5,
+        511.0,
+        368.0
+      ],
+      "confidence": 0.773,
+      "source": "native_text_parts"
+    },
+    "citations": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "acts": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "sections": {
+      "value": [
+        "19(4)",
+        "2(xxxii)",
+        "2012"
+      ],
+      "matched_value": "19(4)",
+      "page": 3,
+      "bbox": [
+        152.0,
+        557.5,
+        525.5,
+        579.5
+      ],
+      "confidence": 0.886,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 3,
+          "bbox": [
+            152.0,
+            557.5,
+            525.5,
+            579.5
+          ],
+          "confidence": 0.886,
+          "source": "native_text",
+          "matched_value": "19(4)"
+        },
+        {
+          "page": 4,
+          "bbox": [
+            142.5,
+            201.5,
+            516.5,
+            217.5
+          ],
+          "confidence": 0.882,
+          "source": "native_text",
+          "matched_value": "2(xxxii)"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            151.5,
+            557.5,
+            525.5,
+            683.5
+          ],
+          "confidence": 0.886,
+          "source": "native_text",
+          "matched_value": "2012"
+        }
+      ]
+    },
+    "pdf_title": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    },
+    "pdf_author": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    }
+  },
+  "confidence": 0.854,
+  "diagnostics": {
+    "status": "REVIEW",
+    "failed_components": [
+      "headers_footers"
+    ],
+    "quality_score": 0.875,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 0.0,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 1.0
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 68,
+    "tables": 0,
+    "excluded_pages": 0,
+    "blue_slip_pages": 0,
+    "blank_pages": 0,
+    "region_retries": 0,
+    "preprocess_variant": "grayscale",
+    "models": [
+      "rapidocr-onnx-general-cpu"
+    ]
+  },
+  "warnings": [
+    "OCR output is line-box accurate; exact character boxes are not available from the lightweight runtime and are not fabricated.",
+    "LlamaParse output is a comparison reference, not ground truth."
+  ],
+  "label_check": {
+    "source": "filename",
+    "labels": {
+      "case_type": "C.P.L.A",
+      "case_number": "449",
+      "year": "2019",
+      "decision_date": "07-01-2020",
+      "judge": "Maqbool Baqar",
+      "source": "filename"
+    },
+    "findings": [
+      {
+        "field": "case_number",
+        "state": "disagrees",
+        "label": "C.P.L.A.449/2019",
+        "extracted": "WP No. 3074/2017)"
+      }
+    ]
+  },
+  "template_key": null
+}

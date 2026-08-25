@@ -1,0 +1,261 @@
+{
+  "output_dir": "artifacts\\clitest",
+  "inputs": [
+    "data\\pdfs"
+  ],
+  "pdfs_found": 22,
+  "parsed": 22,
+  "failed": 0,
+  "settings": {
+    "engine": "auto",
+    "rtl_mode": "image",
+    "preprocess_variant": "grayscale",
+    "render_scale": 2.0
+  },
+  "documents": [
+    {
+      "pdf": "data\\pdfs\\2013LHC3273.pdf",
+      "stem": "2013LHC3273",
+      "pages": 7,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Writ Petition No.23303/13",
+      "confidence": 0.883,
+      "status": "PASS",
+      "quality_score": 1.0
+    },
+    {
+      "pdf": "data\\pdfs\\2013LHC4394.pdf",
+      "stem": "2013LHC4394",
+      "pages": 18,
+      "route": "scanned",
+      "extraction_mode": "scanned",
+      "case_number": "petitioners with respondent No.l.",
+      "confidence": 0.861,
+      "status": "REVIEW",
+      "quality_score": 0.904
+    },
+    {
+      "pdf": "data\\pdfs\\2014LHC4829.pdf",
+      "stem": "2014LHC4829",
+      "pages": 13,
+      "route": "scanned",
+      "extraction_mode": "scanned",
+      "case_number": "Criminal Appeal No. 641/2010",
+      "confidence": 0.852,
+      "status": "REVIEW",
+      "quality_score": 0.81
+    },
+    {
+      "pdf": "data\\pdfs\\2014LHC4864 (1).pdf",
+      "stem": "2014LHC4864 (1)",
+      "pages": 10,
+      "route": "scanned",
+      "extraction_mode": "scanned",
+      "case_number": "Writ Petition No. 8568 of 2013",
+      "confidence": 0.839,
+      "status": "REVIEW",
+      "quality_score": 0.797
+    },
+    {
+      "pdf": "data\\pdfs\\2015LHC625 (1).pdf",
+      "stem": "2015LHC625 (1)",
+      "pages": 18,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "appeal was not",
+      "confidence": 0.882,
+      "status": "PASS",
+      "quality_score": 1.0
+    },
+    {
+      "pdf": "data\\pdfs\\2018LHC1986 (1).pdf",
+      "stem": "2018LHC1986 (1)",
+      "pages": 105,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Criminal Revision No.9027/2017.",
+      "confidence": 0.899,
+      "status": "PASS",
+      "quality_score": 0.991
+    },
+    {
+      "pdf": "data\\pdfs\\2021LHC9943.pdf",
+      "stem": "2021LHC9943",
+      "pages": 2,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Crl. Misc. No.49770-B of 2021",
+      "confidence": 0.878,
+      "status": "REVIEW",
+      "quality_score": 0.875
+    },
+    {
+      "pdf": "data\\pdfs\\2023LHC5924.pdf",
+      "stem": "2023LHC5924",
+      "pages": 9,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "W.P No.10464 of 2021",
+      "confidence": 0.883,
+      "status": "PASS",
+      "quality_score": 1.0
+    },
+    {
+      "pdf": "data\\pdfs\\2023LHC6744.pdf",
+      "stem": "2023LHC6744",
+      "pages": 10,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "W.P No.10312/2023",
+      "confidence": 0.886,
+      "status": "REVIEW",
+      "quality_score": 0.979
+    },
+    {
+      "pdf": "data\\pdfs\\2024LHC1690.pdf",
+      "stem": "2024LHC1690",
+      "pages": 7,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Civil Revision No.21823 of 2024",
+      "confidence": 0.881,
+      "status": "PASS",
+      "quality_score": 1.0
+    },
+    {
+      "pdf": "data\\pdfs\\2024LHC2628.pdf",
+      "stem": "2024LHC2628",
+      "pages": 33,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "COS No.28 of 2014",
+      "confidence": 0.898,
+      "status": "REVIEW",
+      "quality_score": 0.956
+    },
+    {
+      "pdf": "data\\pdfs\\2024LHC4594.pdf",
+      "stem": "2024LHC4594",
+      "pages": 16,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Appeal No.195930 of 2018",
+      "confidence": 0.884,
+      "status": "REVIEW",
+      "quality_score": 0.875
+    },
+    {
+      "pdf": "data\\pdfs\\2024LHC5682.pdf",
+      "stem": "2024LHC5682",
+      "pages": 19,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Writ Petition No.48984/2024",
+      "confidence": 0.894,
+      "status": "PASS",
+      "quality_score": 1.0
+    },
+    {
+      "pdf": "data\\pdfs\\2024LHC6559.pdf",
+      "stem": "2024LHC6559",
+      "pages": 19,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Criminal Appeal No. 964/J/2023",
+      "confidence": 0.893,
+      "status": "PASS",
+      "quality_score": 1.0
+    },
+    {
+      "pdf": "data\\pdfs\\2025LHC495.pdf",
+      "stem": "2025LHC495",
+      "pages": 15,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Writ Petition No.43280 of 2022",
+      "confidence": 0.884,
+      "status": "PASS",
+      "quality_score": 1.0
+    },
+    {
+      "pdf": "data\\pdfs\\2025LHC5084.pdf",
+      "stem": "2025LHC5084",
+      "pages": 29,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Crl. Misc. No. 81211/B/2024",
+      "confidence": 0.882,
+      "status": "PASS",
+      "quality_score": 1.0
+    },
+    {
+      "pdf": "data\\pdfs\\2025PCrlj57.pdf",
+      "stem": "2025PCrlj57",
+      "pages": 6,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Criminal Appeal No. 320 of 2024",
+      "confidence": 0.913,
+      "status": "REVIEW",
+      "quality_score": 0.969
+    },
+    {
+      "pdf": "data\\pdfs\\c.p._954_2022 (1).pdf",
+      "stem": "c.p._954_2022 (1)",
+      "pages": 5,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "Civil Petitions No. 954",
+      "confidence": 0.882,
+      "status": "PASS",
+      "quality_score": 1.0
+    },
+    {
+      "pdf": "data\\pdfs\\cp_1017_2022.pdf",
+      "stem": "cp_1017_2022",
+      "pages": 5,
+      "route": "digital",
+      "extraction_mode": "digital",
+      "case_number": "CIVIL PETITION NO.1017 OF 2022",
+      "confidence": 0.892,
+      "status": "PASS",
+      "quality_score": 1.0
+    },
+    {
+      "pdf": "data\\pdfs\\cp_159_2021.pdf",
+      "stem": "cp_159_2021",
+      "pages": 4,
+      "route": "scanned",
+      "extraction_mode": "scanned",
+      "case_number": "C.P.159/2021 (Against the order of Lahore High Court, Multan Bench dated 11.02.2020, passed in T.R.No.8/2019)",
+      "confidence": 0.841,
+      "status": "REVIEW",
+      "quality_score": 0.969
+    },
+    {
+      "pdf": "data\\pdfs\\CR-378-2018.pdf",
+      "stem": "CR-378-2018",
+      "pages": 14,
+      "route": "scanned",
+      "extraction_mode": "scanned",
+      "case_number": "CivilRevision No.378/2018.",
+      "confidence": 0.844,
+      "status": "REVIEW",
+      "quality_score": 0.934
+    },
+    {
+      "pdf": "data\\pdfs\\LHC-CASE2.pdf",
+      "stem": "LHC-CASE2",
+      "pages": 6,
+      "route": "scanned",
+      "extraction_mode": "mixed_native_and_ocr",
+      "case_number": "Writ Petition No.40844of",
+      "confidence": 0.837,
+      "status": "REVIEW",
+      "quality_score": 0.945
+    }
+  ],
+  "failures": [],
+  "duplicate_stems": []
+}

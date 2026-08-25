@@ -1,0 +1,395 @@
+{
+  "source_name": "SCP_C.P.L.A.1444_2019_19-09-2019.pdf",
+  "source_file": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.P.L.A.1444_2019_19-09-2019.pdf",
+  "page_count": 11,
+  "extraction_mode": "scanned",
+  "router": {
+    "requested": "auto",
+    "selected": "scanned",
+    "mode": "scanned",
+    "page_count": 11,
+    "scan_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "native_pages": []
+  },
+  "metadata": {
+    "court": null,
+    "bench": null,
+    "case_number": "Civil Revision No.253698of",
+    "decision_date": "19.09.2019",
+    "hearing_date": "19.09.2019",
+    "dates_found": [
+      "05.12.2018",
+      "06.03.2019",
+      "06.04.2018",
+      "06.4.2018",
+      "12.2.2018",
+      "13.11.2018",
+      "13.12.2007",
+      "13.12.2017",
+      "18.7.2018",
+      "19.09.2019",
+      "24.01.2018"
+    ],
+    "judges": [
+      "MAQBOOL BAQAR"
+    ],
+    "parties": "Company (Pvt.) Ltd., and others Versus M/s Educational Excellence Ltd.",
+    "citations": [],
+    "acts": [],
+    "sections": [],
+    "pdf_title": null,
+    "pdf_author": null,
+    "counsel": []
+  },
+  "metadata_provenance": {
+    "court": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "bench": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "case_number": {
+      "value": "Civil Revision No.253698of",
+      "matched_value": "Civil Revision No.253698of",
+      "page": 1,
+      "bbox": [
+        115.0,
+        130.5,
+        324.5,
+        282.0
+      ],
+      "confidence": 0.846,
+      "source": "native_text"
+    },
+    "decision_date": {
+      "value": "19.09.2019",
+      "matched_value": "19.09.2019",
+      "page": 1,
+      "bbox": [
+        293.5,
+        470.5,
+        363.0,
+        484.0
+      ],
+      "confidence": 0.85,
+      "source": "native_text"
+    },
+    "hearing_date": {
+      "value": "19.09.2019",
+      "matched_value": "19.09.2019",
+      "page": 1,
+      "bbox": [
+        293.5,
+        470.5,
+        363.0,
+        484.0
+      ],
+      "confidence": 0.85,
+      "source": "native_text"
+    },
+    "dates_found": {
+      "value": [
+        "05.12.2018",
+        "06.03.2019",
+        "06.04.2018",
+        "06.4.2018",
+        "12.2.2018",
+        "13.11.2018",
+        "13.12.2007",
+        "13.12.2017",
+        "18.7.2018",
+        "19.09.2019",
+        "24.01.2018"
+      ],
+      "matched_value": "05.12.2018",
+      "page": 7,
+      "bbox": [
+        104.5,
+        582.5,
+        481.5,
+        603.5
+      ],
+      "confidence": 0.88,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 7,
+          "bbox": [
+            104.5,
+            582.5,
+            481.5,
+            603.5
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "05.12.2018"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            116.0,
+            220.5,
+            321.5,
+            236.0
+          ],
+          "confidence": 0.846,
+          "source": "native_text",
+          "matched_value": "06.03.2019"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            111.0,
+            54.5,
+            486.0,
+            75.0
+          ],
+          "confidence": 0.87,
+          "source": "native_text",
+          "matched_value": "06.04.2018"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            112.0,
+            531.0,
+            456.5,
+            553.0
+          ],
+          "confidence": 0.85,
+          "source": "native_text",
+          "matched_value": "06.4.2018"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            111.0,
+            451.5,
+            486.0,
+            473.5
+          ],
+          "confidence": 0.85,
+          "source": "native_text",
+          "matched_value": "12.2.2018"
+        },
+        {
+          "page": 7,
+          "bbox": [
+            105.5,
+            268.5,
+            486.5,
+            525.5
+          ],
+          "confidence": 0.88,
+          "source": "native_text",
+          "matched_value": "13.11.2018"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            107.0,
+            724.0,
+            485.0,
+            738.0
+          ],
+          "confidence": 0.874,
+          "source": "native_text",
+          "matched_value": "13.12.2007"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            109.0,
+            566.5,
+            483.0,
+            585.5
+          ],
+          "confidence": 0.875,
+          "source": "native_text",
+          "matched_value": "13.12.2017"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            190.0,
+            643.0,
+            497.0,
+            662.0
+          ],
+          "confidence": 0.874,
+          "source": "native_text",
+          "matched_value": "18.7.2018"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            293.5,
+            470.5,
+            363.0,
+            484.0
+          ],
+          "confidence": 0.85,
+          "source": "native_text",
+          "matched_value": "19.09.2019"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            116.5,
+            342.0,
+            492.5,
+            363.5
+          ],
+          "confidence": 0.877,
+          "source": "native_text",
+          "matched_value": "24.01.2018"
+        }
+      ]
+    },
+    "judges": {
+      "value": [
+        "MAQBOOL BAQAR"
+      ],
+      "matched_value": "MAQBOOL BAQAR",
+      "page": 1,
+      "bbox": [
+        117.0,
+        143.0,
+        268.5,
+        158.5
+      ],
+      "confidence": 0.846,
+      "source": "native_text"
+    },
+    "parties": {
+      "value": "Company (Pvt.) Ltd., and others Versus M/s Educational Excellence Ltd.",
+      "matched_value": "Company (Pvt.) Ltd., and others Versus M/s Educational Excellence Ltd.",
+      "page": 1,
+      "bbox": [
+        114.0,
+        280.0,
+        326.0,
+        347.0
+      ],
+      "confidence": 0.781,
+      "source": "native_text_parts"
+    },
+    "citations": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "acts": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "sections": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "pdf_title": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    },
+    "pdf_author": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    }
+  },
+  "confidence": 0.855,
+  "diagnostics": {
+    "status": "REVIEW",
+    "failed_components": [
+      "metadata"
+    ],
+    "quality_score": 0.969,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 1.0,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 0.75
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 78,
+    "tables": 0,
+    "excluded_pages": 0,
+    "blue_slip_pages": 0,
+    "blank_pages": 0,
+    "region_retries": 0,
+    "preprocess_variant": "grayscale",
+    "models": [
+      "rapidocr-onnx-general-cpu"
+    ]
+  },
+  "warnings": [
+    "OCR output is line-box accurate; exact character boxes are not available from the lightweight runtime and are not fabricated.",
+    "LlamaParse output is a comparison reference, not ground truth."
+  ],
+  "label_check": {
+    "source": "filename",
+    "labels": {
+      "case_type": "C.P.L.A",
+      "case_number": "1444",
+      "year": "2019",
+      "decision_date": "19-09-2019",
+      "judge": "Maqbool Baqar",
+      "source": "filename"
+    },
+    "findings": [
+      {
+        "field": "case_number",
+        "state": "disagrees",
+        "label": "C.P.L.A.1444/2019",
+        "extracted": "Civil Revision No.253698of"
+      }
+    ]
+  },
+  "template_key": null
+}

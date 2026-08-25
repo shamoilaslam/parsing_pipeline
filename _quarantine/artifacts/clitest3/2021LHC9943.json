@@ -1,0 +1,3286 @@
+{
+  "schema_version": "specter.v1",
+  "document": {
+    "source_file": "data\\pdfs\\2021LHC9943.pdf",
+    "source_name": "2021LHC9943.pdf",
+    "engine": "pymupdf-native",
+    "extraction_mode": "digital",
+    "page_count": 2,
+    "pdf_metadata": {
+      "format": "PDF 1.5",
+      "title": "Form No:HCJD/C-121",
+      "author": "javed",
+      "subject": "",
+      "keywords": "",
+      "creator": "Microsoft® Word 2010",
+      "producer": "Microsoft® Word 2010",
+      "creationDate": "D:20230317093306+05'00'",
+      "modDate": "D:20230317093306+05'00'",
+      "trapped": "",
+      "encryption": null
+    },
+    "metadata": {
+      "court": "LAHORE HIGH COURT, LAHORE",
+      "bench": null,
+      "case_number": "Crl. Misc. No.49770-B of 2021",
+      "decision_date": "13.07.2021",
+      "hearing_date": null,
+      "dates_found": [
+        "13.07.2021",
+        "18.07.2021",
+        "30.09.2021"
+      ],
+      "judges": [],
+      "parties": "Hussain Butt Versus The State etc.",
+      "citations": [],
+      "acts": [],
+      "sections": [
+        "489-F",
+        "497"
+      ],
+      "pdf_title": "Form No:HCJD/C-121",
+      "pdf_author": "javed",
+      "counsel": []
+    },
+    "metadata_provenance": {
+      "court": {
+        "value": "LAHORE HIGH COURT, LAHORE",
+        "matched_value": "LAHORE HIGH COURT, LAHORE",
+        "page": 1,
+        "bbox": [
+          175.5800018310547,
+          105.04664611816406,
+          484.47998046875,
+          126.03536224365234
+        ],
+        "confidence": 0.89,
+        "source": "native_text"
+      },
+      "bench": {
+        "value": null,
+        "matched_value": null,
+        "page": null,
+        "bbox": [],
+        "confidence": 0.0,
+        "source": "no_source_span"
+      },
+      "case_number": {
+        "value": "Crl. Misc. No.49770-B of 2021",
+        "matched_value": "Crl. Misc. No.49770-B of 2021",
+        "page": 1,
+        "bbox": [
+          323.2099914550781,
+          179.15032958984375,
+          502.9300231933594,
+          194.69261169433594
+        ],
+        "confidence": 0.88,
+        "source": "native_text"
+      },
+      "decision_date": {
+        "value": "13.07.2021",
+        "matched_value": "13.07.2021",
+        "page": 1,
+        "bbox": [
+          187.22000122070312,
+          411.8603515625,
+          543.6099853515625,
+          427.40264892578125
+        ],
+        "confidence": 0.88,
+        "source": "native_text"
+      },
+      "hearing_date": {
+        "value": null,
+        "matched_value": null,
+        "page": null,
+        "bbox": [],
+        "confidence": 0.0,
+        "source": "no_source_span"
+      },
+      "dates_found": {
+        "value": [
+          "13.07.2021",
+          "18.07.2021",
+          "30.09.2021"
+        ],
+        "matched_value": "13.07.2021",
+        "page": 1,
+        "bbox": [
+          187.22000122070312,
+          411.8603515625,
+          543.6099853515625,
+          427.40264892578125
+        ],
+        "confidence": 0.88,
+        "source": "native_text",
+        "occurrences": [
+          {
+            "page": 1,
+            "bbox": [
+              187.22000122070312,
+              411.8603515625,
+              543.6099853515625,
+              427.40264892578125
+            ],
+            "confidence": 0.88,
+            "source": "native_text",
+            "matched_value": "13.07.2021"
+          },
+          {
+            "page": 2,
+            "bbox": [
+              187.22000122070312,
+              579.400390625,
+              543.2352294921875,
+              594.9426879882812
+            ],
+            "confidence": 0.88,
+            "source": "native_text",
+            "matched_value": "18.07.2021"
+          },
+          {
+            "page": 1,
+            "bbox": [
+              100.81999969482422,
+              303.2603759765625,
+              167.3300018310547,
+              318.80267333984375
+            ],
+            "confidence": 0.88,
+            "source": "native_text",
+            "matched_value": "30.09.2021"
+          }
+        ]
+      },
+      "judges": {
+        "value": [],
+        "matched_value": null,
+        "page": null,
+        "bbox": [],
+        "confidence": 0.0,
+        "source": "no_source_span"
+      },
+      "parties": {
+        "value": "Hussain Butt Versus The State etc.",
+        "matched_value": "Hussain Butt Versus The State etc.",
+        "page": 1,
+        "bbox": [
+          128.3000030517578,
+          215.9903564453125,
+          484.69000244140625,
+          247.61265563964844
+        ],
+        "confidence": 0.792,
+        "source": "native_text_parts"
+      },
+      "citations": {
+        "value": [],
+        "matched_value": null,
+        "page": null,
+        "bbox": [],
+        "confidence": 0.0,
+        "source": "no_source_span"
+      },
+      "acts": {
+        "value": [],
+        "matched_value": null,
+        "page": null,
+        "bbox": [],
+        "confidence": 0.0,
+        "source": "no_source_span"
+      },
+      "sections": {
+        "value": [
+          "489-F",
+          "497"
+        ],
+        "matched_value": "489-F",
+        "page": 1,
+        "bbox": [
+          187.22000122070312,
+          435.9803466796875,
+          543.5546264648438,
+          451.52264404296875
+        ],
+        "confidence": 0.88,
+        "source": "native_text",
+        "occurrences": [
+          {
+            "page": 1,
+            "bbox": [
+              187.22000122070312,
+              435.9803466796875,
+              543.5546264648438,
+              451.52264404296875
+            ],
+            "confidence": 0.88,
+            "source": "native_text",
+            "matched_value": "489-F"
+          },
+          {
+            "page": 2,
+            "bbox": [
+              187.22000122070312,
+              531.0403442382812,
+              543.1619873046875,
+              546.5826416015625
+            ],
+            "confidence": 0.88,
+            "source": "native_text",
+            "matched_value": "497"
+          }
+        ]
+      },
+      "pdf_title": {
+        "value": "Form No:HCJD/C-121",
+        "matched_value": "Form No:HCJD/C-121",
+        "page": 1,
+        "bbox": [
+          269.0899963378906,
+          72.34797668457031,
+          389.1099853515625,
+          85.6319808959961
+        ],
+        "confidence": 0.88,
+        "source": "native_text"
+      },
+      "pdf_author": {
+        "value": "javed",
+        "matched_value": null,
+        "page": null,
+        "bbox": [],
+        "confidence": 0.6,
+        "source": "pdf_metadata"
+      }
+    },
+    "cover_fields": [],
+    "fingerprint": {
+      "page_size": {
+        "width": 612.0,
+        "height": 1008.0,
+        "variants": [
+          "612.0x1008.0"
+        ]
+      },
+      "margins": {
+        "left": 95.41,
+        "right": 68.41,
+        "top": 47.03,
+        "bottom": 106.41
+      },
+      "header_band": [],
+      "footer_band": [],
+      "font_distribution": {
+        "14.0": 110,
+        "11.0": 6,
+        "12.0": 3,
+        "16.0": 3,
+        "19.0": 1
+      },
+      "column_count": 2,
+      "logo_or_image_present": true,
+      "text_density": 0.002778,
+      "page_text_density": [
+        0.002568,
+        0.002989
+      ],
+      "template_key": "3f61e02bf5ea3bfc"
+    },
+    "confidence": 0.878,
+    "confidence_policy": "heuristic; validate low-confidence pages with a layout/OCR fallback",
+    "stats": {
+      "blocks": 30,
+      "rtl_blocks": 0,
+      "ocr_blocks": 0,
+      "tables": 0,
+      "table_candidates_rejected": 0,
+      "form_headers_stripped": 1,
+      "unreliable_text_blocks": 0,
+      "digital_pages": 2
+    },
+    "urdu_ocr": null,
+    "warnings": [],
+    "router": {
+      "requested": "auto",
+      "selected": "digital",
+      "mode": "digital",
+      "page_count": 2,
+      "scan_pages": [],
+      "native_pages": [
+        1,
+        2
+      ]
+    },
+    "diagnostics": {
+      "status": "REVIEW",
+      "failed_components": [
+        "headers_footers"
+      ],
+      "quality_score": 0.875,
+      "quality_profile": {
+        "reading_order": 1.0,
+        "headers_footers": 0.0,
+        "tables": 1.0,
+        "bboxes": 1.0,
+        "text_continuity": 1.0,
+        "paragraph_geometry": 1.0,
+        "numbering": 1.0,
+        "metadata": 1.0
+      },
+      "policy": "diagnostic only; failed components are retried independently"
+    }
+  },
+  "pages": [
+    {
+      "page_number": 1,
+      "width": 612.0,
+      "height": 1008.0,
+      "rotation": 0,
+      "blocks": [
+        {
+          "id": "p1_b0",
+          "type": "text",
+          "text": "Form No:HCJD/C-121",
+          "markdown": "<u>**Form No:HCJD/C-121**</u> ",
+          "bbox": [
+            269.0899963378906,
+            72.34797668457031,
+            389.1099853515625,
+            85.6319808959961
+          ],
+          "spans": [
+            {
+              "text": "Form No:HCJD/C-121 ",
+              "bbox": [
+                269.0899963378906,
+                72.34797668457031,
+                389.1099853515625,
+                85.6319808959961
+              ],
+              "font": "Times New Roman,Bold",
+              "size": 12.0,
+              "flags": 20,
+              "script": "en",
+              "emphasis": {
+                "bold": true,
+                "underline": true
+              }
+            }
+          ],
+          "line_bboxes": [
+            [
+              269.0899963378906,
+              72.34797668457031,
+              389.1099853515625,
+              85.6319808959961
+            ]
+          ],
+          "font_sizes": [
+            12.0
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 0,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 0,
+          "end_index": 30,
+          "document_reading_order": 0
+        },
+        {
+          "id": "p1_b1",
+          "type": "heading",
+          "text": "ORDER SHEET",
+          "markdown": "<u>**ORDER SHEET**</u> ",
+          "bbox": [
+            270.04998779296875,
+            86.47965240478516,
+            389.2599792480469,
+            104.14736938476562
+          ],
+          "spans": [
+            {
+              "text": "ORDER SHEET ",
+              "bbox": [
+                270.04998779296875,
+                86.47965240478516,
+                389.2599792480469,
+                104.14736938476562
+              ],
+              "font": "Times New Roman,Bold",
+              "size": 15.96,
+              "flags": 20,
+              "script": "en",
+              "emphasis": {
+                "bold": true,
+                "underline": true
+              }
+            }
+          ],
+          "line_bboxes": [
+            [
+              270.04998779296875,
+              86.47965240478516,
+              389.2599792480469,
+              104.14736938476562
+            ]
+          ],
+          "font_sizes": [
+            15.96
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 1,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.89,
+            "reasons": [
+              "short_centered_or_large"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "heading_level": 2,
+          "start_index": 35,
+          "end_index": 58,
+          "document_reading_order": 1
+        },
+        {
+          "id": "p1_b2",
+          "type": "heading",
+          "text": "LAHORE HIGH COURT, LAHORE",
+          "markdown": "<u>**LAHORE HIGH COURT, LAHORE**</u> ",
+          "bbox": [
+            175.5800018310547,
+            105.04664611816406,
+            484.47998046875,
+            126.03536224365234
+          ],
+          "spans": [
+            {
+              "text": "LAHORE HIGH COURT, LAHORE ",
+              "bbox": [
+                175.5800018310547,
+                105.04664611816406,
+                484.47998046875,
+                126.03536224365234
+              ],
+              "font": "Times New Roman,Bold",
+              "size": 18.96,
+              "flags": 20,
+              "script": "en",
+              "emphasis": {
+                "bold": true,
+                "underline": true
+              }
+            }
+          ],
+          "line_bboxes": [
+            [
+              175.5800018310547,
+              105.04664611816406,
+              484.47998046875,
+              126.03536224365234
+            ]
+          ],
+          "font_sizes": [
+            18.96
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 2,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.89,
+            "reasons": [
+              "short_centered_or_large"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "heading_level": 1,
+          "start_index": 62,
+          "end_index": 99,
+          "document_reading_order": 2
+        },
+        {
+          "id": "p1_b3",
+          "type": "heading",
+          "text": "JUDICIAL DEPARTMENT",
+          "markdown": "<u>**JUDICIAL DEPARTMENT**</u> ",
+          "bbox": [
+            229.97000122070312,
+            126.6796646118164,
+            429.2200012207031,
+            144.34738159179688
+          ],
+          "spans": [
+            {
+              "text": "JUDICIAL DEPARTMENT ",
+              "bbox": [
+                229.97000122070312,
+                126.6796646118164,
+                429.2200012207031,
+                144.34738159179688
+              ],
+              "font": "Times New Roman,Bold",
+              "size": 15.96,
+              "flags": 20,
+              "script": "en",
+              "emphasis": {
+                "bold": true,
+                "underline": true
+              }
+            }
+          ],
+          "line_bboxes": [
+            [
+              229.97000122070312,
+              126.6796646118164,
+              429.2200012207031,
+              144.34738159179688
+            ]
+          ],
+          "font_sizes": [
+            15.96
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 3,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.89,
+            "reasons": [
+              "short_centered_or_large"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "heading_level": 2,
+          "start_index": 104,
+          "end_index": 135,
+          "document_reading_order": 3
+        },
+        {
+          "id": "p1_b4",
+          "type": "text",
+          "text": "Crl. Misc. No.49770-B of 2021",
+          "markdown": "Crl. Misc. No.49770-B of 2021 ",
+          "bbox": [
+            323.2099914550781,
+            179.15032958984375,
+            502.9300231933594,
+            194.69261169433594
+          ],
+          "spans": [
+            {
+              "text": "Crl. Misc. No.49770-B of 2021 ",
+              "bbox": [
+                323.2099914550781,
+                179.15032958984375,
+                502.9300231933594,
+                194.69261169433594
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              323.2099914550781,
+              179.15032958984375,
+              502.9300231933594,
+              194.69261169433594
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 4,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 137,
+          "end_index": 167,
+          "document_reading_order": 4
+        },
+        {
+          "id": "p1_b5",
+          "type": "heading",
+          "text": "Case No.",
+          "markdown": "<u>**Case No.**</u> ",
+          "bbox": [
+            201.64999389648438,
+            179.59963989257812,
+            266.1199951171875,
+            197.26736450195312
+          ],
+          "spans": [
+            {
+              "text": "Case No. ",
+              "bbox": [
+                201.64999389648438,
+                179.59963989257812,
+                266.1199951171875,
+                197.26736450195312
+              ],
+              "font": "Times New Roman,Bold",
+              "size": 15.96,
+              "flags": 20,
+              "script": "en",
+              "emphasis": {
+                "bold": true,
+                "underline": true
+              }
+            }
+          ],
+          "line_bboxes": [
+            [
+              201.64999389648438,
+              179.59963989257812,
+              266.1199951171875,
+              197.26736450195312
+            ]
+          ],
+          "font_sizes": [
+            15.96
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 5,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.89,
+            "reasons": [
+              "short_centered_or_large"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "heading_level": 2,
+          "start_index": 172,
+          "end_index": 192,
+          "document_reading_order": 5
+        },
+        {
+          "id": "p1_b6",
+          "type": "text",
+          "text": "Bilal Moeen Butt alias Bilal",
+          "markdown": "Bilal Moeen Butt alias Bilal ",
+          "bbox": [
+            86.06400299072266,
+            215.9903564453125,
+            246.6254425048828,
+            231.5326385498047
+          ],
+          "spans": [
+            {
+              "text": "Bilal Moeen Butt alias Bilal ",
+              "bbox": [
+                86.06400299072266,
+                215.9903564453125,
+                246.6254425048828,
+                231.5326385498047
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              86.06400299072266,
+              215.9903564453125,
+              246.6254425048828,
+              231.5326385498047
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 6,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 194,
+          "end_index": 223,
+          "document_reading_order": 6
+        },
+        {
+          "id": "p1_b7",
+          "type": "text",
+          "text": "Versus",
+          "markdown": "<u>**Versus**</u> ",
+          "bbox": [
+            283.6099853515625,
+            216.2303466796875,
+            328.4000244140625,
+            231.7726287841797
+          ],
+          "spans": [
+            {
+              "text": "Versus ",
+              "bbox": [
+                283.6099853515625,
+                216.2303466796875,
+                328.4000244140625,
+                231.7726287841797
+              ],
+              "font": "Times New Roman,Bold",
+              "size": 14.04,
+              "flags": 20,
+              "script": "en",
+              "emphasis": {
+                "bold": true,
+                "underline": true
+              }
+            }
+          ],
+          "line_bboxes": [
+            [
+              283.6099853515625,
+              216.2303466796875,
+              328.4000244140625,
+              231.7726287841797
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 7,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 225,
+          "end_index": 243,
+          "document_reading_order": 7
+        },
+        {
+          "id": "p1_b8",
+          "type": "text",
+          "text": "The State etc.",
+          "markdown": "The State etc. ",
+          "bbox": [
+            404.5899963378906,
+            215.9903564453125,
+            484.69000244140625,
+            231.5326385498047
+          ],
+          "spans": [
+            {
+              "text": "The State etc. ",
+              "bbox": [
+                404.5899963378906,
+                215.9903564453125,
+                484.69000244140625,
+                231.5326385498047
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              404.5899963378906,
+              215.9903564453125,
+              484.69000244140625,
+              231.5326385498047
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 8,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 245,
+          "end_index": 260,
+          "document_reading_order": 8
+        },
+        {
+          "id": "p1_b9",
+          "type": "text",
+          "text": "Hussain Butt",
+          "markdown": "Hussain Butt ",
+          "bbox": [
+            128.3000030517578,
+            232.07037353515625,
+            204.55999755859375,
+            247.61265563964844
+          ],
+          "spans": [
+            {
+              "text": "Hussain Butt ",
+              "bbox": [
+                128.3000030517578,
+                232.07037353515625,
+                204.55999755859375,
+                247.61265563964844
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              128.3000030517578,
+              232.07037353515625,
+              204.55999755859375,
+              247.61265563964844
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 9,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 262,
+          "end_index": 275,
+          "document_reading_order": 9
+        },
+        {
+          "id": "p1_b10",
+          "type": "form_header",
+          "text": "S.No. of order/\nProceedings | Date of order/\nProceedings | Order with signature of Judge and that of\nParties of counsel, where necessary.",
+          "markdown": "| S.No. of order/ Proceedings | Date of order/ Proceedings | Order with signature of Judge and that of Parties of counsel, where necessary. |\n| --- | --- | --- |",
+          "bbox": [
+            25.19999885559082,
+            264.260009765625,
+            547.2999877929688,
+            290.05999755859375
+          ],
+          "rows": [
+            [
+              "S.No. of order/\nProceedings",
+              "Date of order/\nProceedings",
+              "Order with signature of Judge and that of\nParties of counsel, where necessary."
+            ]
+          ],
+          "cells": [
+            {
+              "row": 0,
+              "column": 0,
+              "row_span": 1,
+              "column_span": 1,
+              "bbox": [
+                25.19999885559082,
+                264.260009765625,
+                106.22000503540039,
+                290.05999755859375
+              ],
+              "text": "S.No. of order/\nProceedings",
+              "words": [
+                {
+                  "text": "S.No.",
+                  "bbox": [
+                    30.600000381469727,
+                    264.6233825683594,
+                    55.68287658691406,
+                    276.84466552734375
+                  ]
+                },
+                {
+                  "text": "of",
+                  "bbox": [
+                    58.442874908447266,
+                    264.6233825683594,
+                    67.63919830322266,
+                    276.84466552734375
+                  ]
+                },
+                {
+                  "text": "order/",
+                  "bbox": [
+                    70.43231964111328,
+                    264.6233825683594,
+                    96.64128875732422,
+                    276.84466552734375
+                  ]
+                },
+                {
+                  "text": "Proceedings",
+                  "bbox": [
+                    30.600000381469727,
+                    277.3433532714844,
+                    84.43103790283203,
+                    289.56463623046875
+                  ]
+                }
+              ]
+            },
+            {
+              "row": 0,
+              "column": 1,
+              "row_span": 1,
+              "column_span": 1,
+              "bbox": [
+                106.22000503540039,
+                264.260009765625,
+                187.2199935913086,
+                290.05999755859375
+              ],
+              "text": "Date of order/\nProceedings",
+              "words": [
+                {
+                  "text": "Date",
+                  "bbox": [
+                    111.62000274658203,
+                    264.6233825683594,
+                    132.46353149414062,
+                    276.84466552734375
+                  ]
+                },
+                {
+                  "text": "of",
+                  "bbox": [
+                    139.4297637939453,
+                    264.6233825683594,
+                    148.62608337402344,
+                    276.84466552734375
+                  ]
+                },
+                {
+                  "text": "order/",
+                  "bbox": [
+                    155.60336303710938,
+                    264.6233825683594,
+                    181.8343963623047,
+                    276.84466552734375
+                  ]
+                },
+                {
+                  "text": "Proceedings",
+                  "bbox": [
+                    111.62000274658203,
+                    277.3433532714844,
+                    165.45106506347656,
+                    289.56463623046875
+                  ]
+                }
+              ]
+            },
+            {
+              "row": 0,
+              "column": 2,
+              "row_span": 1,
+              "column_span": 1,
+              "bbox": [
+                187.2199935913086,
+                264.260009765625,
+                547.2999877929688,
+                290.05999755859375
+              ],
+              "text": "Order with signature of Judge and that of\nParties of counsel, where necessary.",
+              "words": [
+                {
+                  "text": "Order",
+                  "bbox": [
+                    276.6499938964844,
+                    264.6233825683594,
+                    302.3731994628906,
+                    276.84466552734375
+                  ]
+                },
+                {
+                  "text": "with",
+                  "bbox": [
+                    305.2099914550781,
+                    264.6233825683594,
+                    324.7618408203125,
+                    276.84466552734375
+                  ]
+                },
+                {
+                  "text": "signature",
+                  "bbox": [
+                    327.4004211425781,
+                    264.6233825683594,
+                    367.7957763671875,
+                    276.84466552734375
+                  ]
+                },
+                {
+                  "text": "of",
+                  "bbox": [
+                    370.4564208984375,
+                    264.6233825683594,
+                    379.6527404785156,
+                    276.84466552734375
+                  ]
+                },
+                {
+                  "text": "Judge",
+                  "bbox": [
+                    382.3244323730469,
+                    264.6233825683594,
+                    407.85992431640625,
+                    276.84466552734375
+                  ]
+                },
+                {
+                  "text": "and",
+                  "bbox": [
+                    410.61993408203125,
+                    264.6233825683594,
+                    426.5837707519531,
+                    276.84466552734375
+                  ]
+                },
+                {
+                  "text": "that",
+                  "bbox": [
+                    429.3437805175781,
+                    264.6233825683594,
+                    445.84857177734375,
+                    276.84466552734375
+                  ]
+                },
+                {
+                  "text": "of",
+                  "bbox": [
+                    448.6527404785156,
+                    264.6233825683594,
+                    457.7276306152344,
+                    276.84466552734375
+                  ]
+                },
+                {
+                  "text": "Parties",
+                  "bbox": [
+                    289.1300048828125,
+                    277.3433532714844,
+                    319.0925598144531,
+                    289.56463623046875
+                  ]
+                },
+                {
+                  "text": "of",
+                  "bbox": [
+                    321.8525695800781,
+                    277.3433532714844,
+                    331.04888916015625,
+                    289.56463623046875
+                  ]
+                },
+                {
+                  "text": "counsel,",
+                  "bbox": [
+                    333.74267578125,
+                    277.3433532714844,
+                    370.2077941894531,
+                    289.56463623046875
+                  ]
+                },
+                {
+                  "text": "where",
+                  "bbox": [
+                    372.84637451171875,
+                    277.3433532714844,
+                    399.7066955566406,
+                    289.56463623046875
+                  ]
+                },
+                {
+                  "text": "necessary.",
+                  "bbox": [
+                    402.4667053222656,
+                    277.3433532714844,
+                    447.929443359375,
+                    289.56463623046875
+                  ]
+                }
+              ]
+            }
+          ],
+          "html": "<table><tr><th>S.No. of order/\nProceedings</th><th>Date of order/\nProceedings</th><th>Order with signature of Judge and that of\nParties of counsel, where necessary.</th></tr></table>",
+          "reading_order": 10,
+          "language": "en",
+          "source": "pymupdf-find_tables",
+          "table_strategy": "pymupdf-native-find_tables",
+          "confidence": {
+            "score": 0.95,
+            "reasons": [
+              "order_sheet_boilerplate"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "text_status": "logical_native"
+          },
+          "order_date": {
+            "value": "30.09.2021",
+            "bbox": [
+              100.81999969482422,
+              303.2603759765625,
+              163.8800048828125,
+              318.80267333984375
+            ]
+          },
+          "start_index": null,
+          "end_index": null,
+          "document_reading_order": 10
+        },
+        {
+          "id": "p1_b11",
+          "type": "text",
+          "text": "30.09.2021 Mr. Muhammad Tallal Dar, Advocate for the petitioner.",
+          "markdown": "30.09.2021 Mr. Muhammad Tallal Dar, Advocate for the petitioner. ",
+          "bbox": [
+            100.81999969482422,
+            303.2603759765625,
+            503.1700134277344,
+            318.80267333984375
+          ],
+          "spans": [
+            {
+              "text": "30.09.2021 ",
+              "bbox": [
+                100.81999969482422,
+                303.2603759765625,
+                167.3300018310547,
+                318.80267333984375
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "Mr. Muhammad Tallal Dar, Advocate for the petitioner. ",
+              "bbox": [
+                185.4199981689453,
+                303.2603759765625,
+                503.1700134277344,
+                318.80267333984375
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              100.81999969482422,
+              303.2603759765625,
+              503.1700134277344,
+              318.80267333984375
+            ]
+          ],
+          "font_sizes": [
+            14.04,
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 11,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 277,
+          "end_index": 342,
+          "document_reading_order": 11
+        },
+        {
+          "id": "p1_b12",
+          "type": "text",
+          "text": "Mr. Irfan Zia, Deputy Prosecutor General along with Amin, ASI with record. Ch. Sarfraz Ali Deyal, Advocate for the complainant.",
+          "markdown": "Mr. Irfan Zia, Deputy Prosecutor General along with Amin, ASI with record. Ch. Sarfraz Ali Deyal, Advocate for the complainant. ",
+          "bbox": [
+            185.4199981689453,
+            319.34033203125,
+            540.010009765625,
+            367.16265869140625
+          ],
+          "spans": [
+            {
+              "text": "Mr. Irfan Zia, Deputy Prosecutor General along with Amin, ",
+              "bbox": [
+                185.4199981689453,
+                319.34033203125,
+                540.010009765625,
+                334.88262939453125
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "ASI with record. ",
+              "bbox": [
+                185.4199981689453,
+                335.54034423828125,
+                282.6800231933594,
+                351.0826416015625
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "Ch. Sarfraz Ali Deyal, Advocate for the complainant. ",
+              "bbox": [
+                185.4199981689453,
+                351.620361328125,
+                488.4100036621094,
+                367.16265869140625
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              185.4199981689453,
+              319.34033203125,
+              540.010009765625,
+              334.88262939453125
+            ],
+            [
+              185.4199981689453,
+              335.54034423828125,
+              282.6800231933594,
+              351.0826416015625
+            ],
+            [
+              185.4199981689453,
+              351.620361328125,
+              488.4100036621094,
+              367.16265869140625
+            ]
+          ],
+          "font_sizes": [
+            14.04,
+            14.04,
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 12,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 344,
+          "end_index": 472,
+          "document_reading_order": 12
+        },
+        {
+          "id": "p1_b13",
+          "type": "text",
+          "text": "Bilal Moeen Butt alias Bilal Hussain Butt, petitioner",
+          "markdown": "Bilal Moeen Butt alias Bilal Hussain Butt, petitioner ",
+          "bbox": [
+            223.25,
+            387.7403564453125,
+            543.6099853515625,
+            403.28265380859375
+          ],
+          "spans": [
+            {
+              "text": "Bilal Moeen Butt alias Bilal Hussain Butt, petitioner ",
+              "bbox": [
+                223.25,
+                387.7403564453125,
+                543.6099853515625,
+                403.28265380859375
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              223.25,
+              387.7403564453125,
+              543.6099853515625,
+              403.28265380859375
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 13,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 474,
+          "end_index": 528,
+          "document_reading_order": 13
+        },
+        {
+          "id": "p1_b14",
+          "type": "text",
+          "text": "seeks post arrest bail in case FIR No.932 dated 13.07.2021 registered for offence under Section 489-F, PPC at Police Station Mozang District Lahore.",
+          "markdown": "seeks post arrest bail in case FIR No.932 dated 13.07.2021 registered for offence under Section 489-F, PPC at Police Station Mozang District Lahore. ",
+          "bbox": [
+            187.22000122070312,
+            411.8603515625,
+            543.6099853515625,
+            475.76263427734375
+          ],
+          "spans": [
+            {
+              "text": "seeks post arrest bail in case FIR No.932 dated 13.07.2021 ",
+              "bbox": [
+                187.22000122070312,
+                411.8603515625,
+                543.6099853515625,
+                427.40264892578125
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "registered for offence under Section 489-F, PPC at Police ",
+              "bbox": [
+                187.22000122070312,
+                435.9803466796875,
+                543.5546264648438,
+                451.52264404296875
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "Station Mozang District Lahore. ",
+              "bbox": [
+                187.22000122070312,
+                460.2203369140625,
+                371.9800109863281,
+                475.76263427734375
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              187.22000122070312,
+              411.8603515625,
+              543.6099853515625,
+              427.40264892578125
+            ],
+            [
+              187.22000122070312,
+              435.9803466796875,
+              543.5546264648438,
+              451.52264404296875
+            ],
+            [
+              187.22000122070312,
+              460.2203369140625,
+              371.9800109863281,
+              475.76263427734375
+            ]
+          ],
+          "font_sizes": [
+            14.04,
+            14.04,
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 14,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 530,
+          "end_index": 679,
+          "document_reading_order": 14
+        },
+        {
+          "id": "p1_b15",
+          "type": "text",
+          "text": "2.",
+          "markdown": "2. ",
+          "bbox": [
+            187.22000122070312,
+            496.3603515625,
+            201.2899932861328,
+            511.90264892578125
+          ],
+          "spans": [
+            {
+              "text": "2. ",
+              "bbox": [
+                187.22000122070312,
+                496.3603515625,
+                201.2899932861328,
+                511.90264892578125
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              187.22000122070312,
+              496.3603515625,
+              201.2899932861328,
+              511.90264892578125
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 15,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 681,
+          "end_index": 684,
+          "document_reading_order": 15
+        },
+        {
+          "id": "p1_b16",
+          "type": "text",
+          "text": "The allegation against the petitioner is that he issued a",
+          "markdown": "The allegation against the petitioner is that he issued a ",
+          "bbox": [
+            223.25,
+            496.3603515625,
+            543.5230102539062,
+            511.90264892578125
+          ],
+          "spans": [
+            {
+              "text": "The allegation against the petitioner is that he issued a ",
+              "bbox": [
+                223.25,
+                496.3603515625,
+                543.5230102539062,
+                511.90264892578125
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              223.25,
+              496.3603515625,
+              543.5230102539062,
+              511.90264892578125
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 16,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 686,
+          "end_index": 744,
+          "document_reading_order": 16
+        },
+        {
+          "id": "p1_b17",
+          "type": "text",
+          "text": "cheque amounting to Rs.32,88,535/- to the complainant which was dishonoured by the concerned bank on its presentation.",
+          "markdown": "cheque amounting to Rs.32,88,535/- to the complainant which was dishonoured by the concerned bank on its presentation. ",
+          "bbox": [
+            187.22000122070312,
+            520.4803466796875,
+            543.458251953125,
+            560.1426391601562
+          ],
+          "spans": [
+            {
+              "text": "cheque amounting to Rs.32,88,535/- to the complainant which ",
+              "bbox": [
+                187.22000122070312,
+                520.4803466796875,
+                543.458251953125,
+                536.0226440429688
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "was dishonoured by the concerned bank on its presentation. ",
+              "bbox": [
+                187.22000122070312,
+                544.600341796875,
+                524.77001953125,
+                560.1426391601562
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              187.22000122070312,
+              520.4803466796875,
+              543.458251953125,
+              536.0226440429688
+            ],
+            [
+              187.22000122070312,
+              544.600341796875,
+              524.77001953125,
+              560.1426391601562
+            ]
+          ],
+          "font_sizes": [
+            14.04,
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 17,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block",
+              "merged_adjacent_native_lines"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 746,
+          "end_index": 865,
+          "document_reading_order": 17
+        },
+        {
+          "id": "p1_b18",
+          "type": "text",
+          "text": "3.",
+          "markdown": "3. ",
+          "bbox": [
+            187.22000122070312,
+            580.84033203125,
+            201.2899932861328,
+            596.3826293945312
+          ],
+          "spans": [
+            {
+              "text": "3. ",
+              "bbox": [
+                187.22000122070312,
+                580.84033203125,
+                201.2899932861328,
+                596.3826293945312
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              187.22000122070312,
+              580.84033203125,
+              201.2899932861328,
+              596.3826293945312
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 18,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 867,
+          "end_index": 870,
+          "document_reading_order": 18
+        },
+        {
+          "id": "p1_b19",
+          "type": "text",
+          "text": "Arguments heard. Record perused.",
+          "markdown": "Arguments heard. Record perused. ",
+          "bbox": [
+            223.25,
+            580.84033203125,
+            421.5400085449219,
+            596.3826293945312
+          ],
+          "spans": [
+            {
+              "text": "Arguments heard. Record perused. ",
+              "bbox": [
+                223.25,
+                580.84033203125,
+                421.5400085449219,
+                596.3826293945312
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              223.25,
+              580.84033203125,
+              421.5400085449219,
+              596.3826293945312
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 19,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 872,
+          "end_index": 905,
+          "document_reading_order": 19
+        },
+        {
+          "id": "p1_b20",
+          "type": "text",
+          "text": "4.",
+          "markdown": "4. ",
+          "bbox": [
+            187.22000122070312,
+            616.9603271484375,
+            201.2899932861328,
+            632.5026245117188
+          ],
+          "spans": [
+            {
+              "text": "4. ",
+              "bbox": [
+                187.22000122070312,
+                616.9603271484375,
+                201.2899932861328,
+                632.5026245117188
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              187.22000122070312,
+              616.9603271484375,
+              201.2899932861328,
+              632.5026245117188
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 20,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 907,
+          "end_index": 910,
+          "document_reading_order": 20
+        },
+        {
+          "id": "p1_b21",
+          "type": "text",
+          "text": "According to the contents of the crime report, the total",
+          "markdown": "According to the contents of the crime report, the total ",
+          "bbox": [
+            223.25,
+            616.9603271484375,
+            543.1935424804688,
+            632.5026245117188
+          ],
+          "spans": [
+            {
+              "text": "According to the contents of the crime report, the total ",
+              "bbox": [
+                223.25,
+                616.9603271484375,
+                543.1935424804688,
+                632.5026245117188
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              223.25,
+              616.9603271484375,
+              543.1935424804688,
+              632.5026245117188
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 21,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 912,
+          "end_index": 969,
+          "document_reading_order": 21
+        },
+        {
+          "id": "p1_b22",
+          "type": "text",
+          "text": "liability of the petitioner was Rs.95,00,000/- against which Rs.62,11,465/- were admittedly paid by him to the complainant when he issued the subject cheque for the payment of remaining smaller amount of Rs.32,88,535/- that stands returned. Similarly, during the arguments, learned counsel appearing on behalf of the complainant responding the argument furnished by learned counsel for the petitioner to the effect that according to petitioner’s bank statement, he has already paid the amount more than Rs.95,00,000/- to the complainant, admits that the petitioner was having regular business with the complainant and during the same out of",
+          "markdown": "liability of the petitioner was Rs.95,00,000/- against which Rs.62,11,465/- were admittedly paid by him to the complainant when he issued the subject cheque for the payment of remaining smaller amount of Rs.32,88,535/- that stands returned. Similarly, during the arguments, learned counsel appearing on behalf of the complainant responding the argument furnished by learned counsel for the petitioner to the effect that according to petitioner’s bank statement, he has already paid the amount more than Rs.95,00,000/- to the complainant, admits that the petitioner was having regular business with the complainant and during the same out of ",
+          "bbox": [
+            187.22000122070312,
+            641.080322265625,
+            543.6075439453125,
+            898.1126708984375
+          ],
+          "spans": [
+            {
+              "text": "liability of the petitioner was Rs.95,00,000/- against which ",
+              "bbox": [
+                187.22000122070312,
+                641.080322265625,
+                543.52197265625,
+                656.6226196289062
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "Rs.62,11,465/- were admittedly paid by him to the ",
+              "bbox": [
+                187.22000122070312,
+                665.2003173828125,
+                543.287353515625,
+                680.7426147460938
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "complainant when he issued the subject cheque for the ",
+              "bbox": [
+                187.22000122070312,
+                689.4703369140625,
+                543.1619873046875,
+                705.0126342773438
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "payment of remaining smaller amount of Rs.32,88,535/- that ",
+              "bbox": [
+                187.22000122070312,
+                713.59033203125,
+                543.6075439453125,
+                729.1326293945312
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "stands returned. Similarly, during the arguments, learned ",
+              "bbox": [
+                187.22000122070312,
+                737.7103271484375,
+                543.55078125,
+                753.2526245117188
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "counsel appearing on behalf of the complainant responding the ",
+              "bbox": [
+                187.22000122070312,
+                761.830322265625,
+                543.2321166992188,
+                777.3726196289062
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "argument furnished by learned counsel for the petitioner to the ",
+              "bbox": [
+                187.22000122070312,
+                785.9503784179688,
+                543.4591674804688,
+                801.49267578125
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "effect that according to petitioner’s bank statement, he has ",
+              "bbox": [
+                187.22000122070312,
+                810.1903686523438,
+                543.1759643554688,
+                825.732666015625
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "already paid the amount more than Rs.95,00,000/- to the ",
+              "bbox": [
+                187.22000122070312,
+                834.3103637695312,
+                543.58056640625,
+                849.8526611328125
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "complainant, admits that the petitioner was having regular ",
+              "bbox": [
+                187.22000122070312,
+                858.4303588867188,
+                543.1739501953125,
+                873.97265625
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "business with the complainant and during the same out of ",
+              "bbox": [
+                187.22000122070312,
+                882.5703735351562,
+                543.0354614257812,
+                898.1126708984375
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              187.22000122070312,
+              641.080322265625,
+              543.52197265625,
+              656.6226196289062
+            ],
+            [
+              187.22000122070312,
+              665.2003173828125,
+              543.287353515625,
+              680.7426147460938
+            ],
+            [
+              187.22000122070312,
+              689.4703369140625,
+              543.1619873046875,
+              705.0126342773438
+            ],
+            [
+              187.22000122070312,
+              713.59033203125,
+              543.6075439453125,
+              729.1326293945312
+            ],
+            [
+              187.22000122070312,
+              737.7103271484375,
+              543.55078125,
+              753.2526245117188
+            ],
+            [
+              187.22000122070312,
+              761.830322265625,
+              543.2321166992188,
+              777.3726196289062
+            ],
+            [
+              187.22000122070312,
+              785.9503784179688,
+              543.4591674804688,
+              801.49267578125
+            ],
+            [
+              187.22000122070312,
+              810.1903686523438,
+              543.1759643554688,
+              825.732666015625
+            ],
+            [
+              187.22000122070312,
+              834.3103637695312,
+              543.58056640625,
+              849.8526611328125
+            ],
+            [
+              187.22000122070312,
+              858.4303588867188,
+              543.1739501953125,
+              873.97265625
+            ],
+            [
+              187.22000122070312,
+              882.5703735351562,
+              543.0354614257812,
+              898.1126708984375
+            ]
+          ],
+          "font_sizes": [
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 22,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 971,
+          "end_index": 1612,
+          "document_reading_order": 22
+        }
+      ],
+      "markdown": "<u>**Form No:HCJD/C-121**</u> \n\n## <u>**ORDER SHEET**</u> \n\n# <u>**LAHORE HIGH COURT, LAHORE**</u> \n\n## <u>**JUDICIAL DEPARTMENT**</u> \n\nCrl. Misc. No.49770-B of 2021 \n\n## <u>**Case No.**</u> \n\nBilal Moeen Butt alias Bilal \n\n<u>**Versus**</u> \n\nThe State etc. \n\nHussain Butt \n\n30.09.2021 Mr. Muhammad Tallal Dar, Advocate for the petitioner. \n\nMr. Irfan Zia, Deputy Prosecutor General along with Amin, ASI with record. Ch. Sarfraz Ali Deyal, Advocate for the complainant. \n\nBilal Moeen Butt alias Bilal Hussain Butt, petitioner \n\nseeks post arrest bail in case FIR No.932 dated 13.07.2021 registered for offence under Section 489-F, PPC at Police Station Mozang District Lahore. \n\n2. \n\nThe allegation against the petitioner is that he issued a \n\ncheque amounting to Rs.32,88,535/- to the complainant which was dishonoured by the concerned bank on its presentation. \n\n3. \n\nArguments heard. Record perused. \n\n4. \n\nAccording to the contents of the crime report, the total \n\nliability of the petitioner was Rs.95,00,000/- against which Rs.62,11,465/- were admittedly paid by him to the complainant when he issued the subject cheque for the payment of remaining smaller amount of Rs.32,88,535/- that stands returned. Similarly, during the arguments, learned counsel appearing on behalf of the complainant responding the argument furnished by learned counsel for the petitioner to the effect that according to petitioner’s bank statement, he has already paid the amount more than Rs.95,00,000/- to the complainant, admits that the petitioner was having regular business with the complainant and during the same out of ",
+      "confidence": 0.885,
+      "extraction": "digital"
+    },
+    {
+      "page_number": 2,
+      "width": 612.0,
+      "height": 1008.0,
+      "rotation": 0,
+      "blocks": [
+        {
+          "id": "p2_b0",
+          "type": "header",
+          "text": "- 2 -",
+          "markdown": "- 2 - ",
+          "bbox": [
+            520.0599975585938,
+            21.708024978637695,
+            543.0999755859375,
+            34.99202346801758
+          ],
+          "spans": [
+            {
+              "text": "- 2 - ",
+              "bbox": [
+                520.0599975585938,
+                21.708024978637695,
+                543.0999755859375,
+                34.99202346801758
+              ],
+              "font": "Times New Roman",
+              "size": 12.0,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              520.0599975585938,
+              21.708024978637695,
+              543.0999755859375,
+              34.99202346801758
+            ]
+          ],
+          "font_sizes": [
+            12.0
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 0,
+          "decorative": true,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.82,
+            "reasons": [
+              "top_band"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 0,
+          "end_index": 6,
+          "document_reading_order": 23
+        },
+        {
+          "id": "p2_b1",
+          "type": "text",
+          "text": "Crl. Misc. No.49770-B of 2021",
+          "markdown": "Crl. Misc. No.49770-B of 2021 ",
+          "bbox": [
+            160.22000122070312,
+            35.50801086425781,
+            314.2099914550781,
+            48.79201126098633
+          ],
+          "spans": [
+            {
+              "text": "Crl. Misc. No.49770-B of 2021 ",
+              "bbox": [
+                160.22000122070312,
+                35.50801086425781,
+                314.2099914550781,
+                48.79201126098633
+              ],
+              "font": "Times New Roman",
+              "size": 12.0,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              160.22000122070312,
+              35.50801086425781,
+              314.2099914550781,
+              48.79201126098633
+            ]
+          ],
+          "font_sizes": [
+            12.0
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 1,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 8,
+          "end_index": 38,
+          "document_reading_order": 24
+        },
+        {
+          "id": "p2_b2",
+          "type": "text",
+          "text": "Rs.2,36,94,499/-, he paid Rs.2,00,45,964/- on different times through bank transactions. This reflects a regular and smooth business relationship of the two parties and the fact that the petitioner had been paying the due amounts to the complainant which leads this Court to hold that dishonest intention of the petitioner at the time of issuance of subject cheque, in the peculiar circumstances of this case, is the question that requires determination by the learned trial court after recording of evidence. This makes the case of the petitioner one of further inquiry into his guilt. The previous criminal record of the petitioner argued by the learned Prosecutor, in the light of above facts, is not sufficient to disentitle him to the grant of post arrest bail when he has made out his case one of further inquiry. It has also been noticed that except the case in hand, the remaining seven cases allegedly registered against the petitioner previously pertains to years 2008 & 2009 but the prosecution is not in a position to argue the conviction of the petitioner in any of those seven cases. Moreover, the offence alleged against the petitioner does not fall within the prohibitory clause of Section 497 of the Code of Criminal Procedure, 1898. He is behind the bars since his arrest on 18.07.2021. Conclusion of trial is not in sight. Taking stock of the whole discussion, this Court is of the opinion that keeping the petitioner further incarcerated till indefinite period is neither likely to serve any useful purpose nor seems justified hence, this petition is allowed and the petitioner is admitted to post arrest bail subject to his furnishing bail bonds in the sum of Rs.5,00,000/- with two surety each in the like amount to the satisfaction of the learned trial court.",
+          "markdown": "Rs.2,36,94,499/-, he paid Rs.2,00,45,964/- on different times through bank transactions. This reflects a regular and smooth business relationship of the two parties and the fact that the petitioner had been paying the due amounts to the complainant which leads this Court to hold that dishonest intention of the petitioner at the time of issuance of subject cheque, in the peculiar circumstances of this case, is the question that requires determination by the learned trial court after recording of evidence. This makes the case of the petitioner one of further inquiry into his guilt. The previous criminal record of the petitioner argued by the learned Prosecutor, in the light of above facts, is not sufficient to disentitle him to the grant of post arrest bail when he has made out his case one of further inquiry. It has also been noticed that except the case in hand, the remaining seven cases allegedly registered against the petitioner previously pertains to years 2008 & 2009 but the prosecution is not in a position to argue the conviction of the petitioner in any of those seven cases. Moreover, the offence alleged against the petitioner does not fall within the prohibitory clause of Section 497 of the Code of Criminal Procedure, 1898. He is behind the bars since his arrest on 18.07.2021. Conclusion of trial is not in sight. Taking stock of the whole discussion, this Court is of the opinion that keeping the petitioner further incarcerated till indefinite period is neither likely to serve any useful purpose nor seems justified hence, this petition is allowed and the petitioner is admitted to post arrest bail subject to his furnishing bail bonds in the sum of Rs.5,00,000/- with two surety each in the like amount to the satisfaction of the learned trial court. ",
+          "bbox": [
+            187.22000122070312,
+            72.2103271484375,
+            543.568359375,
+            764.0526733398438
+          ],
+          "spans": [
+            {
+              "text": "Rs.2,36,94,499/-, he paid Rs.2,00,45,964/- on different times ",
+              "bbox": [
+                187.22000122070312,
+                72.2103271484375,
+                543.4883422851562,
+                87.75260925292969
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "through bank transactions. This reflects a regular and smooth ",
+              "bbox": [
+                187.22000122070312,
+                96.350341796875,
+                543.4379272460938,
+                111.89262390136719
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "business relationship of the two parties and the fact that the ",
+              "bbox": [
+                187.22000122070312,
+                120.4703369140625,
+                543.2014770507812,
+                136.0126190185547
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "petitioner had been paying the due amounts to the complainant ",
+              "bbox": [
+                187.22000122070312,
+                144.7103271484375,
+                543.1619262695312,
+                160.2526092529297
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "which leads this Court to hold that dishonest intention of the ",
+              "bbox": [
+                187.22000122070312,
+                168.83038330078125,
+                543.0494384765625,
+                184.37266540527344
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "petitioner at the time of issuance of subject cheque, in the ",
+              "bbox": [
+                187.22000122070312,
+                192.95037841796875,
+                543.4432373046875,
+                208.49266052246094
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "peculiar circumstances of this case, is the question that ",
+              "bbox": [
+                187.22000122070312,
+                217.07037353515625,
+                543.3975830078125,
+                232.61265563964844
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "requires determination by the learned trial court after ",
+              "bbox": [
+                187.22000122070312,
+                241.31036376953125,
+                543.1759643554688,
+                256.8526611328125
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "recording of evidence. This makes the case of the petitioner ",
+              "bbox": [
+                187.22000122070312,
+                265.43035888671875,
+                543.1338500976562,
+                280.97265625
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "one of further inquiry into his guilt. The previous criminal ",
+              "bbox": [
+                187.22000122070312,
+                289.58038330078125,
+                543.1477661132812,
+                305.1226806640625
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "record of the petitioner argued by the learned Prosecutor, in ",
+              "bbox": [
+                187.22000122070312,
+                313.70037841796875,
+                543.4866333007812,
+                329.24267578125
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "the light of above facts, is not sufficient to disentitle him to the ",
+              "bbox": [
+                187.22000122070312,
+                337.94036865234375,
+                543.1196899414062,
+                353.482666015625
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "grant of post arrest bail when he has made out his case one of ",
+              "bbox": [
+                187.22000122070312,
+                362.06036376953125,
+                543.0777587890625,
+                377.6026611328125
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "further inquiry. It has also been noticed that except the case in ",
+              "bbox": [
+                187.22000122070312,
+                386.18035888671875,
+                543.22998046875,
+                401.72265625
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "hand, the remaining seven cases allegedly registered against ",
+              "bbox": [
+                187.22000122070312,
+                410.30035400390625,
+                543.4966430664062,
+                425.8426513671875
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "the petitioner previously pertains to years 2008 & 2009 but the ",
+              "bbox": [
+                187.22000122070312,
+                434.42034912109375,
+                543.1337890625,
+                449.962646484375
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "prosecution is not in a position to argue the conviction of the ",
+              "bbox": [
+                187.22000122070312,
+                458.66033935546875,
+                543.1759643554688,
+                474.20263671875
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "petitioner in any of those seven cases. Moreover, the offence ",
+              "bbox": [
+                187.22000122070312,
+                482.80035400390625,
+                543.4611206054688,
+                498.3426513671875
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "alleged against the petitioner does not fall within the ",
+              "bbox": [
+                187.22000122070312,
+                506.92034912109375,
+                543.568359375,
+                522.462646484375
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "prohibitory clause of Section 497 of the Code of Criminal ",
+              "bbox": [
+                187.22000122070312,
+                531.0403442382812,
+                543.1619873046875,
+                546.5826416015625
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "Procedure, 1898. He is behind the bars since his arrest on ",
+              "bbox": [
+                187.22000122070312,
+                555.2803955078125,
+                543.3004760742188,
+                570.8226928710938
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "18.07.2021. Conclusion of trial is not in sight. Taking stock of ",
+              "bbox": [
+                187.22000122070312,
+                579.400390625,
+                543.2352294921875,
+                594.9426879882812
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "the whole discussion, this Court is of the opinion that keeping ",
+              "bbox": [
+                187.22000122070312,
+                603.5203857421875,
+                543.0776977539062,
+                619.0626831054688
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "the petitioner further incarcerated till indefinite period is ",
+              "bbox": [
+                187.22000122070312,
+                627.640380859375,
+                543.2180786132812,
+                643.1826782226562
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "neither likely to serve any useful purpose nor seems justified ",
+              "bbox": [
+                187.22000122070312,
+                651.88037109375,
+                543.1478881835938,
+                667.4226684570312
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "hence, this petition is allowed and the petitioner is admitted to ",
+              "bbox": [
+                187.22000122070312,
+                676.0303955078125,
+                543.0916137695312,
+                691.5726928710938
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "post arrest bail subject to his furnishing bail bonds in the sum ",
+              "bbox": [
+                187.22000122070312,
+                700.150390625,
+                543.1619262695312,
+                715.6926879882812
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "of Rs.5,00,000/- with two surety each in the like amount to the ",
+              "bbox": [
+                187.22000122070312,
+                724.2703857421875,
+                543.2514038085938,
+                739.8126831054688
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "satisfaction of the learned trial court. ",
+              "bbox": [
+                187.22000122070312,
+                748.5103759765625,
+                396.82000732421875,
+                764.0526733398438
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              187.22000122070312,
+              72.2103271484375,
+              543.4883422851562,
+              87.75260925292969
+            ],
+            [
+              187.22000122070312,
+              96.350341796875,
+              543.4379272460938,
+              111.89262390136719
+            ],
+            [
+              187.22000122070312,
+              120.4703369140625,
+              543.2014770507812,
+              136.0126190185547
+            ],
+            [
+              187.22000122070312,
+              144.7103271484375,
+              543.1619262695312,
+              160.2526092529297
+            ],
+            [
+              187.22000122070312,
+              168.83038330078125,
+              543.0494384765625,
+              184.37266540527344
+            ],
+            [
+              187.22000122070312,
+              192.95037841796875,
+              543.4432373046875,
+              208.49266052246094
+            ],
+            [
+              187.22000122070312,
+              217.07037353515625,
+              543.3975830078125,
+              232.61265563964844
+            ],
+            [
+              187.22000122070312,
+              241.31036376953125,
+              543.1759643554688,
+              256.8526611328125
+            ],
+            [
+              187.22000122070312,
+              265.43035888671875,
+              543.1338500976562,
+              280.97265625
+            ],
+            [
+              187.22000122070312,
+              289.58038330078125,
+              543.1477661132812,
+              305.1226806640625
+            ],
+            [
+              187.22000122070312,
+              313.70037841796875,
+              543.4866333007812,
+              329.24267578125
+            ],
+            [
+              187.22000122070312,
+              337.94036865234375,
+              543.1196899414062,
+              353.482666015625
+            ],
+            [
+              187.22000122070312,
+              362.06036376953125,
+              543.0777587890625,
+              377.6026611328125
+            ],
+            [
+              187.22000122070312,
+              386.18035888671875,
+              543.22998046875,
+              401.72265625
+            ],
+            [
+              187.22000122070312,
+              410.30035400390625,
+              543.4966430664062,
+              425.8426513671875
+            ],
+            [
+              187.22000122070312,
+              434.42034912109375,
+              543.1337890625,
+              449.962646484375
+            ],
+            [
+              187.22000122070312,
+              458.66033935546875,
+              543.1759643554688,
+              474.20263671875
+            ],
+            [
+              187.22000122070312,
+              482.80035400390625,
+              543.4611206054688,
+              498.3426513671875
+            ],
+            [
+              187.22000122070312,
+              506.92034912109375,
+              543.568359375,
+              522.462646484375
+            ],
+            [
+              187.22000122070312,
+              531.0403442382812,
+              543.1619873046875,
+              546.5826416015625
+            ],
+            [
+              187.22000122070312,
+              555.2803955078125,
+              543.3004760742188,
+              570.8226928710938
+            ],
+            [
+              187.22000122070312,
+              579.400390625,
+              543.2352294921875,
+              594.9426879882812
+            ],
+            [
+              187.22000122070312,
+              603.5203857421875,
+              543.0776977539062,
+              619.0626831054688
+            ],
+            [
+              187.22000122070312,
+              627.640380859375,
+              543.2180786132812,
+              643.1826782226562
+            ],
+            [
+              187.22000122070312,
+              651.88037109375,
+              543.1478881835938,
+              667.4226684570312
+            ],
+            [
+              187.22000122070312,
+              676.0303955078125,
+              543.0916137695312,
+              691.5726928710938
+            ],
+            [
+              187.22000122070312,
+              700.150390625,
+              543.1619262695312,
+              715.6926879882812
+            ],
+            [
+              187.22000122070312,
+              724.2703857421875,
+              543.2514038085938,
+              739.8126831054688
+            ],
+            [
+              187.22000122070312,
+              748.5103759765625,
+              396.82000732421875,
+              764.0526733398438
+            ]
+          ],
+          "font_sizes": [
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04,
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 2,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines",
+              "merged_adjacent_native_lines"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 40,
+          "end_index": 1823,
+          "document_reading_order": 25
+        },
+        {
+          "id": "p2_b3",
+          "type": "text",
+          "text": "(Syed Shahbaz Ali Rizvi)",
+          "markdown": "                (Syed Shahbaz Ali Rizvi) ",
+          "bbox": [
+            295.25,
+            796.390380859375,
+            516.72998046875,
+            811.9326782226562
+          ],
+          "spans": [
+            {
+              "text": "     ",
+              "bbox": [
+                295.25,
+                796.390380859375,
+                312.8000183105469,
+                811.9326782226562
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            },
+            {
+              "text": "           (Syed Shahbaz Ali Rizvi) ",
+              "bbox": [
+                331.25,
+                796.390380859375,
+                516.72998046875,
+                811.9326782226562
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              295.25,
+              796.390380859375,
+              516.72998046875,
+              811.9326782226562
+            ]
+          ],
+          "font_sizes": [
+            14.04,
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 3,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 1825,
+          "end_index": 1866,
+          "document_reading_order": 26
+        },
+        {
+          "id": "p2_b4",
+          "type": "text",
+          "text": "Judge",
+          "markdown": "     Judge     ",
+          "bbox": [
+            403.2699890136719,
+            812.4703369140625,
+            471.010009765625,
+            828.0126342773438
+          ],
+          "spans": [
+            {
+              "text": "     Judge     ",
+              "bbox": [
+                403.2699890136719,
+                812.4703369140625,
+                471.010009765625,
+                828.0126342773438
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              403.2699890136719,
+              812.4703369140625,
+              471.010009765625,
+              828.0126342773438
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 4,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 1868,
+          "end_index": 1883,
+          "document_reading_order": 27
+        },
+        {
+          "id": "p2_b5",
+          "type": "text",
+          "text": "APPROVED FOR REPORTING",
+          "markdown": "<u>**APPROVED FOR REPORTING**</u> ",
+          "bbox": [
+            223.25,
+            844.870361328125,
+            425.9800109863281,
+            860.4126586914062
+          ],
+          "spans": [
+            {
+              "text": "APPROVED FOR REPORTING ",
+              "bbox": [
+                223.25,
+                844.870361328125,
+                425.9800109863281,
+                860.4126586914062
+              ],
+              "font": "Times New Roman,Bold",
+              "size": 14.04,
+              "flags": 20,
+              "script": "en",
+              "emphasis": {
+                "bold": true,
+                "underline": true
+              }
+            }
+          ],
+          "line_bboxes": [
+            [
+              223.25,
+              844.870361328125,
+              425.9800109863281,
+              860.4126586914062
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 5,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 1885,
+          "end_index": 1919,
+          "document_reading_order": 28
+        },
+        {
+          "id": "p2_b6",
+          "type": "text",
+          "text": "Judge",
+          "markdown": "      Judge      ",
+          "bbox": [
+            403.2699890136719,
+            889.5303344726562,
+            478.80999755859375,
+            905.0726318359375
+          ],
+          "spans": [
+            {
+              "text": "      Judge      ",
+              "bbox": [
+                403.2699890136719,
+                889.5303344726562,
+                478.80999755859375,
+                905.0726318359375
+              ],
+              "font": "Times New Roman",
+              "size": 14.04,
+              "flags": 4,
+              "script": "en"
+            }
+          ],
+          "line_bboxes": [
+            [
+              403.2699890136719,
+              889.5303344726562,
+              478.80999755859375,
+              905.0726318359375
+            ]
+          ],
+          "font_sizes": [
+            14.04
+          ],
+          "contains_rtl": false,
+          "rtl_visual_order": false,
+          "reading_order": 6,
+          "decorative": false,
+          "language": "en",
+          "source": "pymupdf-native",
+          "confidence": {
+            "score": 0.88,
+            "reasons": [
+              "native_text_block"
+            ]
+          },
+          "rtl": {
+            "contains_rtl": false,
+            "visual_order_detected": false,
+            "text_status": "logical_native"
+          },
+          "start_index": 1921,
+          "end_index": 1938,
+          "document_reading_order": 29
+        }
+      ],
+      "markdown": "- 2 - \n\nCrl. Misc. No.49770-B of 2021 \n\nRs.2,36,94,499/-, he paid Rs.2,00,45,964/- on different times through bank transactions. This reflects a regular and smooth business relationship of the two parties and the fact that the petitioner had been paying the due amounts to the complainant which leads this Court to hold that dishonest intention of the petitioner at the time of issuance of subject cheque, in the peculiar circumstances of this case, is the question that requires determination by the learned trial court after recording of evidence. This makes the case of the petitioner one of further inquiry into his guilt. The previous criminal record of the petitioner argued by the learned Prosecutor, in the light of above facts, is not sufficient to disentitle him to the grant of post arrest bail when he has made out his case one of further inquiry. It has also been noticed that except the case in hand, the remaining seven cases allegedly registered against the petitioner previously pertains to years 2008 & 2009 but the prosecution is not in a position to argue the conviction of the petitioner in any of those seven cases. Moreover, the offence alleged against the petitioner does not fall within the prohibitory clause of Section 497 of the Code of Criminal Procedure, 1898. He is behind the bars since his arrest on 18.07.2021. Conclusion of trial is not in sight. Taking stock of the whole discussion, this Court is of the opinion that keeping the petitioner further incarcerated till indefinite period is neither likely to serve any useful purpose nor seems justified hence, this petition is allowed and the petitioner is admitted to post arrest bail subject to his furnishing bail bonds in the sum of Rs.5,00,000/- with two surety each in the like amount to the satisfaction of the learned trial court. \n\n                (Syed Shahbaz Ali Rizvi) \n\n     Judge     \n\n<u>**APPROVED FOR REPORTING**</u> \n\n      Judge      ",
+      "confidence": 0.871,
+      "extraction": "digital"
+    }
+  ],
+  "markdown": "<u>**Form No:HCJD/C-121**</u> \n\n## <u>**ORDER SHEET**</u> \n\n# <u>**LAHORE HIGH COURT, LAHORE**</u> \n\n## <u>**JUDICIAL DEPARTMENT**</u> \n\nCrl. Misc. No.49770-B of 2021 \n\n## <u>**Case No.**</u> \n\nBilal Moeen Butt alias Bilal \n\n<u>**Versus**</u> \n\nThe State etc. \n\nHussain Butt \n\n30.09.2021 Mr. Muhammad Tallal Dar, Advocate for the petitioner. \n\nMr. Irfan Zia, Deputy Prosecutor General along with Amin, ASI with record. Ch. Sarfraz Ali Deyal, Advocate for the complainant. \n\nBilal Moeen Butt alias Bilal Hussain Butt, petitioner \n\nseeks post arrest bail in case FIR No.932 dated 13.07.2021 registered for offence under Section 489-F, PPC at Police Station Mozang District Lahore. \n\n2. \n\nThe allegation against the petitioner is that he issued a \n\ncheque amounting to Rs.32,88,535/- to the complainant which was dishonoured by the concerned bank on its presentation. \n\n3. \n\nArguments heard. Record perused. \n\n4. \n\nAccording to the contents of the crime report, the total \n\nliability of the petitioner was Rs.95,00,000/- against which Rs.62,11,465/- were admittedly paid by him to the complainant when he issued the subject cheque for the payment of remaining smaller amount of Rs.32,88,535/- that stands returned. Similarly, during the arguments, learned counsel appearing on behalf of the complainant responding the argument furnished by learned counsel for the petitioner to the effect that according to petitioner’s bank statement, he has already paid the amount more than Rs.95,00,000/- to the complainant, admits that the petitioner was having regular business with the complainant and during the same out of \n\n---\n\n- 2 - \n\nCrl. Misc. No.49770-B of 2021 \n\nRs.2,36,94,499/-, he paid Rs.2,00,45,964/- on different times through bank transactions. This reflects a regular and smooth business relationship of the two parties and the fact that the petitioner had been paying the due amounts to the complainant which leads this Court to hold that dishonest intention of the petitioner at the time of issuance of subject cheque, in the peculiar circumstances of this case, is the question that requires determination by the learned trial court after recording of evidence. This makes the case of the petitioner one of further inquiry into his guilt. The previous criminal record of the petitioner argued by the learned Prosecutor, in the light of above facts, is not sufficient to disentitle him to the grant of post arrest bail when he has made out his case one of further inquiry. It has also been noticed that except the case in hand, the remaining seven cases allegedly registered against the petitioner previously pertains to years 2008 & 2009 but the prosecution is not in a position to argue the conviction of the petitioner in any of those seven cases. Moreover, the offence alleged against the petitioner does not fall within the prohibitory clause of Section 497 of the Code of Criminal Procedure, 1898. He is behind the bars since his arrest on 18.07.2021. Conclusion of trial is not in sight. Taking stock of the whole discussion, this Court is of the opinion that keeping the petitioner further incarcerated till indefinite period is neither likely to serve any useful purpose nor seems justified hence, this petition is allowed and the petitioner is admitted to post arrest bail subject to his furnishing bail bonds in the sum of Rs.5,00,000/- with two surety each in the like amount to the satisfaction of the learned trial court. \n\n                (Syed Shahbaz Ali Rizvi) \n\n     Judge     \n\n<u>**APPROVED FOR REPORTING**</u> \n\n      Judge      "
+}

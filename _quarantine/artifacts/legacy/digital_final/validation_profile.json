@@ -1,0 +1,71 @@
+{
+  "quality_profile": {
+    "reading_order": 1.0,
+    "headers_footers": 0.973,
+    "tables": 1.0,
+    "bboxes": 1.0,
+    "text_continuity": 1.0,
+    "metadata": 1.0
+  },
+  "components": {
+    "reading_order": {
+      "score": 1.0,
+      "pages": 19,
+      "issues": []
+    },
+    "headers_footers": {
+      "score": 0.973,
+      "repeated_signatures": {
+        "header": [
+          "- # -",
+          "crl. appeal no.#/j/#"
+        ],
+        "footer": []
+      },
+      "issues": [
+        {
+          "kind": "header",
+          "signature": "stereo. hcjda # judgment sheet",
+          "reason": "single_page_band_candidate",
+          "page": 1
+        }
+      ]
+    },
+    "tables": {
+      "score": 1.0,
+      "tables": 1,
+      "results": [
+        {
+          "id": "p1_b7",
+          "rows": 4,
+          "columns": 2,
+          "rectangular": true,
+          "cell_coverage": 1.0,
+          "has_cell_bboxes": true,
+          "issues": []
+        }
+      ]
+    },
+    "bboxes": {
+      "score": 1.0,
+      "blocks": 109,
+      "issues": []
+    },
+    "text_continuity": {
+      "score": 1.0,
+      "issues": []
+    },
+    "metadata": {
+      "score": 1.0,
+      "present": [
+        "court",
+        "case_number",
+        "decision_date",
+        "parties"
+      ],
+      "missing": []
+    }
+  },
+  "retry_components": [],
+  "policy": "diagnostic only; validators never rewrite parser output"
+}

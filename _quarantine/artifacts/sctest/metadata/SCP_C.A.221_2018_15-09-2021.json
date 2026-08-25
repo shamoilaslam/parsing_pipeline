@@ -1,0 +1,454 @@
+{
+  "source_name": "SCP_C.A.221_2018_15-09-2021.pdf",
+  "source_file": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Maqbool Baqar\\SCP_C.A.221_2018_15-09-2021.pdf",
+  "page_count": 7,
+  "extraction_mode": "scanned",
+  "router": {
+    "requested": "auto",
+    "selected": "scanned",
+    "mode": "scanned",
+    "page_count": 7,
+    "scan_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "native_pages": []
+  },
+  "metadata": {
+    "court": "IN THE SUPREME COURT OF PAKISTAN",
+    "bench": "PRESENT Mr. Justice Maqboo! Baqar Mr. Justice Munib Akhtar Mr. Justice Qazi Muhammad Amin Khan (AFR) CIVIL APPEAL NO. 221/2018 (Against the judgrnent dated 28.11.2017 of the Lahore High Court, Multan Bench passed in RSA No. 8/1998) Haq Nawaz etc.",
+    "case_number": "CIVIL APPEAL NO. 221/2018",
+    "decision_date": "15.09.2021",
+    "hearing_date": "15.09.2021",
+    "dates_found": [
+      "02.9.1974",
+      "03.1.1987",
+      "03.2.1976",
+      "04.3.1981",
+      "05.9.1974",
+      "14.10.1974",
+      "15.09.2021",
+      "17.2.1973",
+      "21.2.1985",
+      "25.10.1975",
+      "28.11.2017",
+      "30.10.1975"
+    ],
+    "judges": [
+      "Magbool Bagar"
+    ],
+    "parties": "Appellant(s) Versus Banaras etc.",
+    "citations": [],
+    "acts": [],
+    "sections": [
+      "215",
+      "52"
+    ],
+    "pdf_title": null,
+    "pdf_author": null,
+    "counsel": []
+  },
+  "metadata_provenance": {
+    "court": {
+      "value": "IN THE SUPREME COURT OF PAKISTAN",
+      "matched_value": "IN THE SUPREME COURT OF PAKISTAN",
+      "page": 1,
+      "bbox": [
+        234.0,
+        0.0,
+        444.0,
+        15.5
+      ],
+      "confidence": 0.862,
+      "source": "native_text"
+    },
+    "bench": {
+      "value": "PRESENT Mr. Justice Maqboo! Baqar Mr. Justice Munib Akhtar Mr. Justice Qazi Muhammad Amin Khan (AFR) CIVIL APPEAL NO. 221/2018 (Against the judgrnent dated 28.11.2017 of the Lahore High Court, Multan Bench passed in RSA No. 8/1998) Haq Nawaz etc.",
+      "matched_value": "PRESENT Mr. Justice Maqboo! Baqar Mr. Justice Munib Akhtar Mr. Justice Qazi Muhammad Amin Khan (AFR) CIVIL APPEAL NO. 221/2018 (Against the judgrnent dated 28.11.2017 of the Lahore High Court, Multan Bench passed in RSA No. 8/1998) Haq Nawaz etc.",
+      "page": 1,
+      "bbox": [
+        114.5,
+        40.5,
+        357.0,
+        197.0
+      ],
+      "confidence": 0.853,
+      "source": "native_text"
+    },
+    "case_number": {
+      "value": "CIVIL APPEAL NO. 221/2018",
+      "matched_value": "CIVIL APPEAL NO. 221/2018",
+      "page": 1,
+      "bbox": [
+        116.0,
+        120.5,
+        276.5,
+        138.0
+      ],
+      "confidence": 0.853,
+      "source": "native_text"
+    },
+    "decision_date": {
+      "value": "15.09.2021",
+      "matched_value": "15.09.2021",
+      "page": 1,
+      "bbox": [
+        308.5,
+        391.0,
+        375.0,
+        406.0
+      ],
+      "confidence": 0.823,
+      "source": "native_text"
+    },
+    "hearing_date": {
+      "value": "15.09.2021",
+      "matched_value": "15.09.2021",
+      "page": 1,
+      "bbox": [
+        308.5,
+        391.0,
+        375.0,
+        406.0
+      ],
+      "confidence": 0.823,
+      "source": "native_text"
+    },
+    "dates_found": {
+      "value": [
+        "02.9.1974",
+        "03.1.1987",
+        "03.2.1976",
+        "04.3.1981",
+        "05.9.1974",
+        "14.10.1974",
+        "15.09.2021",
+        "17.2.1973",
+        "21.2.1985",
+        "25.10.1975",
+        "28.11.2017",
+        "30.10.1975"
+      ],
+      "matched_value": "02.9.1974",
+      "page": 2,
+      "bbox": [
+        96.0,
+        231.0,
+        496.0,
+        397.0
+      ],
+      "confidence": 0.871,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 2,
+          "bbox": [
+            96.0,
+            231.0,
+            496.0,
+            397.0
+          ],
+          "confidence": 0.871,
+          "source": "native_text",
+          "matched_value": "02.9.1974"
+        },
+        {
+          "page": 4,
+          "bbox": [
+            121.0,
+            417.5,
+            517.5,
+            435.5
+          ],
+          "confidence": 0.872,
+          "source": "native_text",
+          "matched_value": "03.1.1987"
+        },
+        {
+          "page": 5,
+          "bbox": [
+            112.5,
+            219.0,
+            511.0,
+            242.0
+          ],
+          "confidence": 0.879,
+          "source": "native_text",
+          "matched_value": "03.2.1976"
+        },
+        {
+          "page": 4,
+          "bbox": [
+            119.5,
+            358.5,
+            516.5,
+            376.0
+          ],
+          "confidence": 0.872,
+          "source": "native_text",
+          "matched_value": "04.3.1981"
+        },
+        {
+          "page": 3,
+          "bbox": [
+            81.5,
+            772.0,
+            477.5,
+            794.5
+          ],
+          "confidence": 0.876,
+          "source": "native_text",
+          "matched_value": "05.9.1974"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            98.5,
+            659.5,
+            495.5,
+            682.5
+          ],
+          "confidence": 0.859,
+          "source": "native_text",
+          "matched_value": "14.10.1974"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            308.5,
+            391.0,
+            375.0,
+            406.0
+          ],
+          "confidence": 0.823,
+          "source": "native_text",
+          "matched_value": "15.09.2021"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            96.5,
+            347.0,
+            494.5,
+            368.0
+          ],
+          "confidence": 0.871,
+          "source": "native_text",
+          "matched_value": "17.2.1973"
+        },
+        {
+          "page": 4,
+          "bbox": [
+            119.5,
+            358.5,
+            516.5,
+            376.0
+          ],
+          "confidence": 0.872,
+          "source": "native_text",
+          "matched_value": "21.2.1985"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            102.5,
+            25.5,
+            499.5,
+            46.0
+          ],
+          "confidence": 0.871,
+          "source": "native_text",
+          "matched_value": "25.10.1975"
+        },
+        {
+          "page": 1,
+          "bbox": [
+            116.5,
+            135.5,
+            272.0,
+            149.0
+          ],
+          "confidence": 0.853,
+          "source": "native_text",
+          "matched_value": "28.11.2017"
+        },
+        {
+          "page": 2,
+          "bbox": [
+            101.0,
+            83.0,
+            498.0,
+            105.5
+          ],
+          "confidence": 0.871,
+          "source": "native_text",
+          "matched_value": "30.10.1975"
+        }
+      ]
+    },
+    "judges": {
+      "value": [
+        "Magbool Bagar"
+      ],
+      "matched_value": "Magbool Bagar",
+      "page": 1,
+      "bbox": [
+        176.0,
+        427.0,
+        500.5,
+        447.0
+      ],
+      "confidence": 0.874,
+      "source": "native_text"
+    },
+    "parties": {
+      "value": "Appellant(s) Versus Banaras etc.",
+      "matched_value": "Appellant(s) Versus Banaras etc.",
+      "page": 1,
+      "bbox": [
+        112.5,
+        188.0,
+        533.5,
+        259.0
+      ],
+      "confidence": 0.754,
+      "source": "native_text_parts"
+    },
+    "citations": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "acts": {
+      "value": [],
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "no_source_span"
+    },
+    "sections": {
+      "value": [
+        "215",
+        "52"
+      ],
+      "matched_value": "215",
+      "page": 3,
+      "bbox": [
+        86.5,
+        595.5,
+        485.0,
+        620.5
+      ],
+      "confidence": 0.878,
+      "source": "native_text",
+      "occurrences": [
+        {
+          "page": 3,
+          "bbox": [
+            86.5,
+            595.5,
+            485.0,
+            620.5
+          ],
+          "confidence": 0.878,
+          "source": "native_text",
+          "matched_value": "215"
+        },
+        {
+          "page": 6,
+          "bbox": [
+            112.5,
+            852.5,
+            509.5,
+            869.0
+          ],
+          "confidence": 0.887,
+          "source": "native_text",
+          "matched_value": "52"
+        }
+      ]
+    },
+    "pdf_title": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    },
+    "pdf_author": {
+      "value": null,
+      "matched_value": null,
+      "page": null,
+      "bbox": [],
+      "confidence": 0.0,
+      "source": "pdf_metadata"
+    }
+  },
+  "confidence": 0.868,
+  "diagnostics": {
+    "status": "PASS",
+    "failed_components": [],
+    "quality_score": 1.0,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 1.0,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 1.0
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 52,
+    "tables": 0,
+    "excluded_pages": 0,
+    "blue_slip_pages": 0,
+    "blank_pages": 0,
+    "region_retries": 0,
+    "preprocess_variant": "grayscale",
+    "models": [
+      "rapidocr-onnx-general-cpu"
+    ]
+  },
+  "warnings": [
+    "OCR output is line-box accurate; exact character boxes are not available from the lightweight runtime and are not fabricated.",
+    "LlamaParse output is a comparison reference, not ground truth."
+  ],
+  "label_check": {
+    "source": "filename",
+    "labels": {
+      "case_type": "C.A",
+      "case_number": "221",
+      "year": "2018",
+      "decision_date": "15-09-2021",
+      "judge": "Maqbool Baqar",
+      "source": "filename"
+    },
+    "findings": [
+      {
+        "field": "judges",
+        "state": "disagrees",
+        "label": [
+          "Maqbool Baqar"
+        ],
+        "extracted": [
+          "Magbool Bagar"
+        ]
+      }
+    ]
+  },
+  "template_key": null
+}

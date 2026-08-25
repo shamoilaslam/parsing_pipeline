@@ -1,0 +1,71 @@
+{
+  "reference_note": "LlamaParse output; not ground truth",
+  "layout": {
+    "ground_truth_blocks": 89,
+    "predicted_blocks": 91,
+    "matched_blocks": 87,
+    "match_coverage": 0.9775280898876404,
+    "bbox_iou_mean": 0.8887692222761432,
+    "layout_f1_at_0_5": 0.9111111111111111,
+    "reading_order_kendall_tau": 1.0,
+    "table_count": {
+      "ground_truth": 1,
+      "predicted": 1
+    },
+    "quality_gate": {
+      "required": {
+        "reading_order_tau": 0.95,
+        "layout_f1": 0.9,
+        "mean_iou": 0.85
+      },
+      "observed": {
+        "reading_order_tau": 1.0,
+        "layout_f1": 0.9111111111111111,
+        "mean_iou": 0.8887692222761432
+      },
+      "passed": true
+    }
+  },
+  "text": {
+    "matched_blocks": 87,
+    "cer": 0.029909029429088768,
+    "wer": 0.033379888268156424,
+    "by_type_and_script": {
+      "header:en": {
+        "matched_blocks": 19,
+        "cer": 0.25603217158176944,
+        "wer": 0.44565217391304346
+      },
+      "heading:en": {
+        "matched_blocks": 4,
+        "cer": 0.0,
+        "wer": 0.0
+      },
+      "text:en": {
+        "matched_blocks": 35,
+        "cer": 0.03781936786518599,
+        "wer": 0.02875882946518668
+      },
+      "table:en": {
+        "matched_blocks": 1,
+        "cer": 0.3722627737226277,
+        "wer": 0.41509433962264153
+      },
+      "list:en": {
+        "matched_blocks": 23,
+        "cer": 0.009099761592961955,
+        "wer": 0.01236937513329068
+      },
+      "footer:en": {
+        "matched_blocks": 4,
+        "cer": 0.1719869706840391,
+        "wer": 0.2015810276679842
+      },
+      "text:ur": {
+        "matched_blocks": 1,
+        "cer": 0.012315270935960592,
+        "wer": 0.07865168539325842
+      }
+    }
+  }
+}

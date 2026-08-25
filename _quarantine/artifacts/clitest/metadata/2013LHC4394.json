@@ -1,0 +1,106 @@
+{
+  "source_name": "2013LHC4394.pdf",
+  "source_file": "data\\pdfs\\2013LHC4394.pdf",
+  "page_count": 18,
+  "extraction_mode": "scanned",
+  "router": {
+    "requested": "auto",
+    "selected": "scanned",
+    "mode": "scanned",
+    "page_count": 18,
+    "scan_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "native_pages": []
+  },
+  "metadata": {
+    "court": null,
+    "bench": "INTHELAHOREHIGHCOURT MULTAN BENCH MULTAN. JUDICIAL DEPARTMENT",
+    "case_number": "petitioners with respondent No.l.",
+    "decision_date": "21.07.2009",
+    "hearing_date": "10.12.2013",
+    "dates_found": [
+      "10.12.2013",
+      "17.06.2009",
+      "18.06.2009",
+      "21.07.2009",
+      "29.10.2008"
+    ],
+    "judges": [
+      "SHOAIB SAEED"
+    ],
+    "parties": null,
+    "citations": [],
+    "acts": [],
+    "sections": [
+      "15",
+      "1912",
+      "2",
+      "20",
+      "30",
+      "5",
+      "6",
+      "68",
+      "68(3)",
+      "84",
+      "85"
+    ],
+    "pdf_title": null,
+    "pdf_author": null
+  },
+  "metadata_provenance": null,
+  "confidence": 0.861,
+  "diagnostics": {
+    "status": "REVIEW",
+    "failed_components": [
+      "headers_footers",
+      "metadata"
+    ],
+    "quality_score": 0.904,
+    "quality_profile": {
+      "reading_order": 1.0,
+      "headers_footers": 0.8571,
+      "tables": 1.0,
+      "bboxes": 1.0,
+      "text_continuity": 1.0,
+      "paragraph_geometry": 1.0,
+      "numbering": 1.0,
+      "metadata": 0.375
+    },
+    "policy": "diagnostic only; failed components are retried independently"
+  },
+  "stats": {
+    "blocks": 63,
+    "tables": 0,
+    "excluded_pages": 9,
+    "blue_slip_pages": 1,
+    "blank_pages": 8,
+    "region_retries": 0,
+    "preprocess_variant": "grayscale",
+    "models": [
+      "rapidocr-onnx-general-cpu"
+    ]
+  },
+  "warnings": [
+    "OCR output is line-box accurate; exact character boxes are not available from the lightweight runtime and are not fabricated.",
+    "LlamaParse output is a comparison reference, not ground truth."
+  ],
+  "template_key": null
+}
