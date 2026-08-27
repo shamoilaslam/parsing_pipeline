@@ -20,12 +20,17 @@ keep each page from the one that can read it.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
+import re
+from collections import Counter
 from pathlib import Path
 
 import fitz
 
-from specter.courts import matches_case_number, matches_judge, path_labels, same_date
+from specter.courts import (IHC_ORDER, court_id, matches_case_number, matches_judge,
+                            path_labels, same_date)
+from specter.statutes import detect_structure, extract_statute_metadata, statute_labels
 from specter.scanned_parser import _dominant_page_image, ScannedParser
 from specter.specter_parser import PUA_CHAR_RE, SpecterParser, write_result
 
@@ -117,21 +122,27 @@ def _merge_native_pages(scanned: dict[str, object], digital: dict[str, object], 
 
 
 def parse_pdf(pdf: Path, out: Path, engine: str = "auto", rtl_mode: str = "image", render_scale: float = 2.0,
-              preprocess_variant: str = "grayscale", retry_threshold: float = 0.45) -> dict[str, object]:
+              preprocess_variant: str = "grayscale", retry_threshold: float = 0.45,
+              stem: str | None = None, save_page_images: bool = False) -> dict[str, object]:
     """Route one PDF to the engine that can read it, per page where they differ."""
     route = classify_pdf(pdf)
     selected = engine if engine != "auto" else ("scanned" if route["mode"] != "digital" else "digital")
     if selected == "digital":
-        result = SpecterParser(rtl_mode=rtl_mode).parse(pdf, out)
+        result = SpecterParser(rtl_mode=rtl_mode).parse(pdf, out, stem=stem)
     else:
         # OCR only the pages that need it.  A mixed document's readable pages
         # are taken from the digital parse below, so OCR-ing them costs ~30s
         # each and the result is thrown away.
         result = ScannedParser(render_scale=render_scale, preprocess_variant=preprocess_variant,
-                               retry_threshold=retry_threshold).parse(pdf, out, ocr_pages=route["scan_pages"])
+                               retry_threshold=retry_threshold,
+                               save_page_images=save_page_images).parse(pdf, out, ocr_pages=route["scan_pages"],
+                                                                       stem=stem)
         if route["native_pages"]:
-            result = _merge_native_pages(result, SpecterParser(rtl_mode=rtl_mode).parse(pdf, out), route["native_pages"])
+            result = _merge_native_pages(result, SpecterParser(rtl_mode=rtl_mode).parse(pdf, out, stem=stem),
+                                         route["native_pages"])
     result["document"]["router"] = {"requested": engine, "selected": selected, **route}
+    if stem:
+        result["document"]["output_stem"] = stem
     return result
 
 
@@ -146,11 +157,12 @@ def write_metadata(result: dict[str, object], output_dir: Path) -> Path:
     document = result["document"]
     meta_dir = output_dir / "metadata"
     meta_dir.mkdir(parents=True, exist_ok=True)
-    path = meta_dir / f"{Path(document['source_name']).stem}.json"
+    stem = document.get("output_stem") or Path(document["source_name"]).stem
+    path = meta_dir / f"{stem}.json"
     payload = {key: document.get(key) for key in (
         "source_name", "source_file", "page_count", "extraction_mode", "router",
-        "metadata", "metadata_provenance", "confidence", "diagnostics", "stats", "warnings",
-        "label_check",
+        "document_kind", "metadata", "metadata_provenance", "confidence", "diagnostics",
+        "stats", "warnings", "label_check", "structure", "source_metadata",
     )}
     payload["template_key"] = (document.get("fingerprint") or {}).get("template_key")
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -170,22 +182,74 @@ def expand_paths(requested: list[Path], recursive: bool = False) -> list[Path]:
     return paths
 
 
+# An Act has no court, no parties and no decision date.  Reporting them as
+# empty makes a consumer decide which fields are meaningless for which kind of
+# document; dropping them says it once, here.  Citations and referenced acts
+# stay: a statute cites other statutes.
+JUDGMENT_ONLY_FIELDS = frozenset({
+    "parties", "petitioner", "respondent", "judges", "bench", "counsel",
+    "case_number", "court", "court_id", "hearing_date", "hearing_date_iso",
+    "decision_date", "decision_date_iso",
+    # In a judgment "sections" means the provisions it cites.  Beside a
+    # statute's own section_count that reads as a contradiction, and the
+    # statute's real sections are in ``structure`` with their pages and boxes.
+    "sections",
+})
+
+
+def apply_document_kind(result: dict[str, object], pdf: Path) -> dict[str, object]:
+    """Say what kind of document this is, and give a statute a statute's fields.
+
+    Three kinds so far.  A judgment and a statute answer different questions:
+    running the judgment extractor over an Act reports no parties, no bench and
+    no decision date, because an Act has none -- and says nothing about the
+    thing a lawyer actually cites, which is a numbered section.  An interim
+    order is a judgment's near relative but not the same document, and is
+    marked so a reader can ask for one and not the other.
+
+    Done here rather than in the parser so the parser stays about the page and
+    the router stays the one place that knows what kind of document this is.
+    """
+    if not statute_labels(pdf):
+        # An interim order is not the judgment: it decides a step in the case,
+        # is often a single page, and states no final disposition.  A corpus
+        # that files the two together and calls both "judgment" would answer
+        # "what did the court hold" with an adjournment.
+        result["document"].setdefault(
+            "document_kind", "order" if IHC_ORDER.match(pdf.name) else "judgment")
+        return result
+    document = result["document"]
+    structure = detect_structure(result.get("pages", []))
+    text = "\n".join(block["text"] for page in result.get("pages", []) for block in page.get("blocks", []))
+    statute = extract_statute_metadata(text, structure)
+    document["document_kind"] = "statute"
+    # Judgment fields an Act does not have are dropped rather than reported as
+    # empty; a consumer should not have to know which are meaningless here.
+    metadata = {key: value for key, value in (document.get("metadata") or {}).items()
+                if key not in JUDGMENT_ONLY_FIELDS}
+    document["metadata"] = {**metadata, **statute}
+    document["structure"] = structure
+    return result
+
+
 def apply_path_labels(result: dict[str, object], pdf: Path) -> dict[str, object]:
-    """Corroborate extracted metadata against labels stated by the file path.
+    """Corroborate extracted metadata against what the corpus states about itself.
 
-    The SC corpus names the case and its decision date in the filename and the
-    judge in the folder, which covers the 20% of documents that never state
-    their decision date in the text at all.
+    Two corpora say more than the page does.  SC names the case and its
+    decision date in the filename and the judge in the folder, which covers the
+    20% of documents that never state their decision date in the text at all.
+    IHC publishes a ``meta.json`` beside every judgment naming the parties, the
+    bench, the author, the filing category and the date of the order.
 
-    Two rules keep this honest.  A label only ever *fills* a field extraction
-    left empty -- it never overwrites a value that was found on the page, since
-    the scraper can be wrong too.  And a filled field is marked
-    ``source="filename"`` with an empty bbox, because there is no page region
-    to point at; the provenance contract stays sound.
+    Two rules keep both honest.  A label only ever *fills* a field extraction
+    left empty -- it never overwrites a value found on the page, since the
+    scraper can be wrong too.  And a filled field is marked with its source and
+    an empty bbox, because there is no page region to point at; the provenance
+    contract stays sound.
 
     Deliberately applied by the CLI rather than inside ``parse_pdf``: the
     benchmark measures extraction, and folding labels in there would score the
-    filename against itself.
+    corpus against itself.
     """
     labels = path_labels(pdf)
     if not labels:
@@ -193,15 +257,19 @@ def apply_path_labels(result: dict[str, object], pdf: Path) -> dict[str, object]
     document = result["document"]
     metadata = document.setdefault("metadata", {})
     provenance = document.get("metadata_provenance") or {}
-    # Not every court's filenames state every part.  LHC names a year and a
-    # number but no case type, and composing one anyway wrote "None.5924/2023"
-    # into the metadata -- a label worse than no label.
-    number, year, case_type = labels.get("case_number"), labels.get("year"), labels.get("case_type")
     stated = {
-        "case_number": f"{case_type + '.' if case_type else ''}{number}/{year}" if number and year else None,
+        "case_number": labels.get("case_number_stated"),
         "decision_date": labels.get("decision_date"),
-        "judges": [labels["judge"]] if labels.get("judge") else None,
+        "judges": labels.get("judges") or ([labels["judge"]] if labels.get("judge") else None),
         "neutral_citation": labels.get("neutral_citation"),
+        # Filling the court matters most where the heading is the part OCR
+        # damaged, which is exactly where extraction returns nothing.
+        "court": labels.get("court"),
+        "court_id": labels.get("court_id"),
+        "parties": labels.get("parties"),
+        "petitioner": labels.get("petitioner"),
+        "respondent": labels.get("respondent"),
+        "category": labels.get("category"),
     }
     agrees = {
         "case_number": lambda value: matches_case_number(labels, value),
@@ -210,7 +278,23 @@ def apply_path_labels(result: dict[str, object], pdf: Path) -> dict[str, object]
         # Nothing in the text states a neutral citation, so it is always a
         # fill and never a disagreement.
         "neutral_citation": lambda value: value == labels.get("neutral_citation"),
+        "court": lambda value: court_id(value) == labels.get("court_id"),
+        "court_id": lambda value: value == labels.get("court_id"),
+        # A party name is filled from a label but never checked against one.
+        # The corpus writes a display title -- "FOP etc", "MD, OGDCL etc",
+        # "Toyata Islamabad Moters" -- where the cause title prints the name in
+        # full.  Comparing them reported a disagreement on 176 of 281
+        # documents and not one of them was actionable, which is how a check
+        # that fires on half a corpus stops being a check.  Party extraction is
+        # measured against these labels in the benchmark, where the caveat can
+        # be stated; it is not worth reporting per document.
+        "parties": lambda value: True,
+        "petitioner": lambda value: True,
+        "respondent": lambda value: True,
+        # Nothing on the page states the court's own filing category.
+        "category": lambda value: value == labels.get("category"),
     }
+    source = labels.get("source", "filename")
     findings = []
     for field, value in stated.items():
         if not value:
@@ -219,21 +303,58 @@ def apply_path_labels(result: dict[str, object], pdf: Path) -> dict[str, object]
         if not current:
             metadata[field] = value
             provenance[field] = {"value": value, "matched_value": None, "page": None,
-                                 "bbox": [], "confidence": 0.5, "source": "filename"}
-            findings.append({"field": field, "state": "filled_from_filename", "label": value})
+                                 "bbox": [], "confidence": 0.5, "source": source}
+            findings.append({"field": field, "state": f"filled_from_{source}", "label": value})
         elif not agrees[field](current):
             findings.append({"field": field, "state": "disagrees", "label": value, "extracted": current})
     document["metadata_provenance"] = provenance
-    document["label_check"] = {"source": "filename", "labels": labels, "findings": findings}
+    # The record the corpus published is kept whole beside the canonical
+    # fields.  It carries more than the pipeline models -- the filing category,
+    # the laws discussed, every hearing and its short order -- and discarding
+    # what is not modelled yet would mean re-reading 22,000 files to get it back.
+    if labels.get("sidecar"):
+        document["source_metadata"] = labels["sidecar"]
+    document["label_check"] = {
+        "source": source,
+        "labels": {key: value for key, value in labels.items() if key != "sidecar"},
+        "findings": findings,
+    }
     return result
 
 
-def _row(pdf: Path, result: dict[str, object]) -> dict[str, object]:
+SAFE_NAME_RE = re.compile(r"[^A-Za-z0-9._-]+")
+MAX_STEM = 110
+
+
+def output_stems(pdfs: list[Path]) -> dict[Path, str]:
+    """One output name per document, distinct across the whole run.
+
+    A corpus whose filenames are already distinct keeps them, which is what
+    makes an output folder browsable and keeps every existing LHC and SC path
+    unchanged.  IHC's is not: it gives each case a folder and calls the file
+    inside it ``judgment.pdf``, so 21,712 of its 60,529 PDFs share one name.
+    Those are named after the case folder they came from, plus a digest of the
+    path -- the same case number recurs under different judges and years, so
+    the folder alone is not distinct either.
+    """
+    counts = Counter(pdf.stem for pdf in pdfs)
+    stems: dict[Path, str] = {}
+    for pdf in pdfs:
+        if counts[pdf.stem] == 1:
+            stems[pdf] = pdf.stem
+            continue
+        context = SAFE_NAME_RE.sub("_", pdf.parent.name).strip("_")
+        digest = hashlib.sha1(str(pdf).encode("utf-8", "replace")).hexdigest()[:8]
+        stems[pdf] = f"{context}_{pdf.stem}"[:MAX_STEM] + f"_{digest}"
+    return stems
+
+
+def _row(pdf: Path, result: dict[str, object], stem: str | None = None) -> dict[str, object]:
     document = result["document"]
     diagnostics = document.get("diagnostics") or {}
     return {
         "pdf": str(pdf),
-        "stem": pdf.stem,
+        "stem": stem or document.get("output_stem") or pdf.stem,
         "pages": document.get("page_count"),
         "route": (document.get("router") or {}).get("selected"),
         "extraction_mode": document.get("extraction_mode"),
@@ -252,14 +373,16 @@ def _parse_one(job: tuple) -> tuple[dict[str, object] | None, dict[str, object] 
     this process or in a worker pool without the two paths diverging.  One
     unreadable PDF must never end a 30,000-document run.
     """
-    pdf, out, engine, rtl_mode, render_scale, preprocess_variant, retry_threshold = job
+    pdf, out, engine, rtl_mode, render_scale, preprocess_variant, retry_threshold, stem, page_images = job
     try:
         result = parse_pdf(pdf, out, engine=engine, rtl_mode=rtl_mode, render_scale=render_scale,
-                           preprocess_variant=preprocess_variant, retry_threshold=retry_threshold)
+                           preprocess_variant=preprocess_variant, retry_threshold=retry_threshold,
+                           stem=stem, save_page_images=page_images)
+        apply_document_kind(result, pdf)
         apply_path_labels(result, pdf)
         write_result(result, out)
         write_metadata(result, out)
-        return _row(pdf, result), None
+        return _row(pdf, result, stem), None
     except Exception as error:
         return None, {"pdf": str(pdf), "error": f"{type(error).__name__}: {error}"}
 
@@ -276,6 +399,7 @@ def main() -> None:
     parser.add_argument("--recursive", action="store_true", help="descend into sub-folders")
     parser.add_argument("--skip-existing", action="store_true", help="resume a part-finished run: skip PDFs whose JSON already exists")
     parser.add_argument("--quiet", action="store_true", help="suppress the per-document line")
+    parser.add_argument("--page-images", action="store_true", help="also keep the rendered page image of every scanned page; it is OCR input, nothing reads it back, and it was 63%% of a corpus run's bytes -- `specter inspect` re-renders from the source PDF instead")
     parser.add_argument("--workers", type=int, default=1, help="parse this many documents in parallel; documents are independent, so this scales close to linearly")
     args = parser.parse_args()
     pdfs = expand_paths(args.pdf, args.recursive)
@@ -285,28 +409,26 @@ def main() -> None:
     args.out.mkdir(parents=True, exist_ok=True)
     documents: list[dict[str, object]] = []
     failures: list[dict[str, object]] = []
-    collisions: list[dict[str, str]] = []
-    seen: dict[str, Path] = {}
+    # Outputs are keyed by stem, so a corpus that reuses a filename needs names
+    # assigned before anything is written.  Every document is parsed; none is
+    # skipped for sharing a name.
+    stems = output_stems(pdfs)
+    renamed = [{"pdf": str(pdf), "stem": stem} for pdf, stem in stems.items() if stem != pdf.stem]
     jobs: list[tuple] = []
 
     for pdf in pdfs:
-        # Outputs are keyed by stem, so two same-named PDFs in different
-        # sub-folders would silently overwrite each other.  Report instead.
-        if pdf.stem in seen:
-            collisions.append({"stem": pdf.stem, "kept": str(seen[pdf.stem]), "skipped": str(pdf)})
-            continue
-        seen[pdf.stem] = pdf
-        meta_path = args.out / "metadata" / f"{pdf.stem}.json"
-        if args.skip_existing and (args.out / f"{pdf.stem}.json").exists():
+        stem = stems[pdf]
+        meta_path = args.out / "metadata" / f"{stem}.json"
+        if args.skip_existing and (args.out / f"{stem}.json").exists():
             # Rebuild the manifest row from the metadata already on disk, so a
             # resumed run still produces a manifest covering the whole corpus.
             if meta_path.exists():
-                documents.append(_row(pdf, {"document": json.loads(meta_path.read_text(encoding="utf-8"))}))
+                documents.append(_row(pdf, {"document": json.loads(meta_path.read_text(encoding="utf-8"))}, stem))
             else:
-                documents.append({"pdf": str(pdf), "stem": pdf.stem, "status": "SKIPPED_EXISTING"})
+                documents.append({"pdf": str(pdf), "stem": stem, "status": "SKIPPED_EXISTING"})
             continue
         jobs.append((pdf, args.out, args.engine, args.rtl_mode, args.render_scale,
-                     args.preprocess_variant, args.retry_threshold))
+                     args.preprocess_variant, args.retry_threshold, stem, args.page_images))
 
     # Documents are independent, so the only shared state is the output folder
     # and each job writes files named after its own stem.  Collision and
@@ -342,9 +464,9 @@ def main() -> None:
                      "workers": args.workers},
         "documents": documents,
         "failures": failures,
-        "duplicate_stems": collisions,
+        "renamed_for_uniqueness": renamed,
         "label_check": {
-            "filled_from_filename": sum(1 for row in documents for finding in (row.get("label_findings") or []) if finding.endswith("filled_from_filename")),
+            "filled_from_labels": sum(1 for row in documents for finding in (row.get("label_findings") or []) if "filled_from_" in finding),
             "disagreements": sum(1 for row in documents for finding in (row.get("label_findings") or []) if finding.endswith("disagrees")),
             "documents_with_findings": sum(1 for row in documents if row.get("label_findings")),
         },
@@ -352,7 +474,7 @@ def main() -> None:
     manifest_path = args.out / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps({"parsed": len(documents), "failed": len(failures),
-                      "duplicate_stems": len(collisions), "manifest": str(manifest_path)}, ensure_ascii=False))
+                      "renamed_for_uniqueness": len(renamed), "manifest": str(manifest_path)}, ensure_ascii=False))
 
 
 if __name__ == "__main__":

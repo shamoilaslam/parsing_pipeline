@@ -2,6 +2,7 @@ import unittest
 
 from specter.benchmark import (
     classify,
+    summarise_labels,
     error_rates,
     gold_tables,
     gold_text,
@@ -74,6 +75,30 @@ class SliceTests(unittest.TestCase):
 
     def test_edited_gold_is_text_edit(self):
         self.assertEqual(classify({"text": "abc"}, "abc def", "abc"), "text_edit")
+
+
+class LabelSummaryTests(unittest.TestCase):
+    """A wrong value and a missing one are different failures."""
+
+    def rows(self, *dates):
+        return [{"has_decision_date_label": True, "decision_date_stated": bool(got),
+                 "decision_date_ok": ok, "case_number_ok": True, "judge_ok": True,
+                 "petitioner_ok": False, "respondent_ok": False, "has_party_label": False,
+                 "court_found": True, "counsel_found": False, "cover_fields": 1}
+                for got, ok in dates]
+
+    def test_precision_and_recall_are_reported_apart(self):
+        # Two right, one wrong, one never extracted.  Recall is 50%, but of the
+        # three the parser committed to, two were right.
+        summary = summarise_labels(self.rows((True, True), (True, True), (True, False), (False, False)))
+        self.assertEqual(summary["decision_date"], 0.5)
+        self.assertEqual(summary["decision_date_when_stated"], round(2 / 3, 4))
+        self.assertEqual(summary["decision_date_stated"], 0.75)
+
+    def test_a_field_no_label_states_is_not_scored(self):
+        # Scoring an absent label as a miss would report the corpus's silence
+        # as the parser's failure.
+        self.assertIsNone(summarise_labels(self.rows((True, True)))["petitioner"])
 
 
 if __name__ == "__main__":

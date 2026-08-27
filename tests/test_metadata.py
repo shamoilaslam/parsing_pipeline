@@ -16,6 +16,8 @@ from specter.specter_parser import (
     _metadata_provenance,
     _narrow_to_spans,
     _party_side,
+    _signed_judges,
+    CASE_RE,
 )
 
 
@@ -299,3 +301,60 @@ class CanonicalFieldTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class SignedJudgeTests(unittest.TestCase):
+    """The name signed above "JUDGE" at the foot of the document."""
+
+    def test_the_signature_names_the_judge(self):
+        # On an IHC order sheet this is the only statement of who decided:
+        # there is no cover, no "Present:" list and no "NAME, J.-" attribution.
+        self.assertEqual(_signed_judges(["Disposed of in the above terms.",
+                                         "(MIANGUL HASSAN AURANGZEB)", "JUDGE"]),
+                         ["MIANGUL HASSAN AURANGZEB"])
+
+    def test_a_two_judge_bench_signs_twice(self):
+        lines = ["(MUHAMMAD AZAM KHAN)", "(INAAM AMEEN MINHAS)", "JUDGE", "JUDGE"]
+        self.assertEqual(_signed_judges(lines), ["MUHAMMAD AZAM KHAN", "INAAM AMEEN MINHAS"])
+
+    def test_a_bracketed_name_with_no_office_under_it_is_not_a_judge(self):
+        # The typist's initials and the uploader's name sit in the same place.
+        self.assertEqual(_signed_judges(["(SOME PARTY LIMITED)", "Ahtesham*"]), [])
+
+    def test_ordinary_bracketed_prose_is_not_a_signature(self):
+        self.assertEqual(_signed_judges(["(the petitioner herein)", "JUDGE"]), [])
+
+
+class AuthorAttributionTests(unittest.TestCase):
+    def test_the_author_is_read_whether_the_court_writes_a_period_or_a_colon(self):
+        # LHC and SC write "NAME, J.-"; IHC writes "NAME, J:-".  Requiring the
+        # period lost the author on every IHC judgment.
+        for written in ("MOHSIN AKHTAR KAYANI, J.- Through this appeal",
+                        "MOHSIN AKHTAR KAYANI, J:- Through this appeal"):
+            got = _extract_metadata(written, {})["judges"]
+            self.assertEqual(got, ["MOHSIN AKHTAR KAYANI"], written)
+
+
+class CaseNumberFormTests(unittest.TestCase):
+    """Every court abbreviates its own case types."""
+
+    def test_a_dotted_initialism_is_a_case_designator(self):
+        for written in ("R.F.A No.81-2018", "C.R.No.338 /2017", "I.C.A. No. 12/2020",
+                        "F.A.O. No.5 of 2019", "W.P. No.507 /2021", "C.P.L.A. No.1 of 2019"):
+            self.assertEqual(CASE_RE.search(written).group(1), written, written)
+
+    def test_the_forms_the_supreme_court_uses_are_untouched(self):
+        # These were named literally before the initialism shape was added and
+        # are named literally still: "C.P" and "W.P" carry one dot, not two.
+        for written in ("C.P No.512 of 2020", "W.P No.99/2020", "WP No.12/2021"):
+            self.assertEqual(CASE_RE.search(written).group(1), written, written)
+
+    def test_the_year_survives_the_spaces_the_court_leaves_around_its_slash(self):
+        # "No.2475 / 2018" stopped at the first space, dropping the year -- and
+        # a case number without its year is ambiguous across years.
+        for written in ("Writ Petition No.2475 / 2018", "Crl. Misc. No.1565 -B/ 2023"):
+            self.assertEqual(CASE_RE.search(written).group(1), written, written)
+
+    def test_a_consolidated_run_still_keeps_every_number(self):
+        written = "Civil Appeals No.101 & 102-P of 2011"
+        self.assertEqual(CASE_RE.search(written).group(1), written)

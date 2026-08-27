@@ -1,0 +1,3932 @@
+{
+  "manifest_version": 2,
+  "annotation_schema": {
+    "page": {
+      "page_number": "int",
+      "width": "float",
+      "height": "float",
+      "blocks": "ordered list"
+    },
+    "block": {
+      "type": "header|footer|heading|text|list|table",
+      "text": "verified transcription",
+      "bbox": "[x0,y0,x1,y1]",
+      "reading_order": "int",
+      "cells": "optional ordered table cells"
+    },
+    "cell": {
+      "text": "verified transcription",
+      "bbox": "[x0,y0,x1,y1]",
+      "row": "int",
+      "column": "int",
+      "row_span": "int",
+      "column_span": "int"
+    }
+  },
+  "sampling": {
+    "root": "D:\\Shamoil Data\\specter_data\\LHC",
+    "seed": 20260801,
+    "target_documents": 50,
+    "selected_documents": 50,
+    "pages_per_document": 5,
+    "full_documents": 10,
+    "workers": 3,
+    "policy": "stratified court/mode/script(rtl,pua)/table/length/template sample plus high-hardness pages; year tracked but not stratified, see corpus_summary; no model training labels are inferred as gold"
+  },
+  "corpus_summary": {
+    "pdfs": 50,
+    "profiled_ok": 50,
+    "profile_errors": 0,
+    "courts": {
+      "unknown": 18,
+      "lahore_high_court": 32
+    },
+    "modes": {
+      "digital": 45,
+      "scanned": 5
+    },
+    "route_modes": {
+      "digital": 45,
+      "scanned": 4,
+      "mixed_scanned_first": 1
+    },
+    "length_buckets": {
+      "short": 48,
+      "medium": 1,
+      "long": 1
+    },
+    "years": {
+      "2013": 5,
+      "2014": 8,
+      "2015": 3,
+      "2016": 7,
+      "2017": 5,
+      "2018": 5,
+      "2019": 5,
+      "2020": 4,
+      "2021": 4,
+      "2023": 1,
+      "2024": 1,
+      "2025": 2
+    },
+    "has_native_pua": 2,
+    "strata": 16,
+    "combo_coverage": {
+      "digital|no_urdu|no_table": {
+        "in_corpus": 3,
+        "in_sample": 3
+      },
+      "digital|no_urdu|table": {
+        "in_corpus": 39,
+        "in_sample": 39
+      },
+      "digital|urdu|table": {
+        "in_corpus": 3,
+        "in_sample": 3
+      },
+      "scanned|no_urdu|no_table": {
+        "in_corpus": 3,
+        "in_sample": 3
+      },
+      "scanned|no_urdu|table": {
+        "in_corpus": 1,
+        "in_sample": 1
+      },
+      "scanned|urdu|table": {
+        "in_corpus": 1,
+        "in_sample": 1
+      }
+    }
+  },
+  "profile_errors": [],
+  "documents": [
+    {
+      "doc_id": "016fcaac5b55",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2015LHC9171.pdf",
+      "source_name": "2015LHC9171.pdf",
+      "court": "unknown",
+      "year": "2015",
+      "stratum": "unknown|digital|latin|tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 1874,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.003866,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 490,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001011,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "028d2b687d97",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2016LHC2368.pdf",
+      "source_name": "2016LHC2368.pdf",
+      "court": "lahore_high_court",
+      "year": "2016",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1090,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001767,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1349,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002187,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "0750dcb303bd",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2018LHC1797 (1).pdf",
+      "source_name": "2018LHC1797 (1).pdf",
+      "court": "lahore_high_court",
+      "year": "2018",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1392,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002256,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 963,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001561,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "099fd20aa968",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2013LHC5221.pdf",
+      "source_name": "2013LHC5221.pdf",
+      "court": "unknown",
+      "year": "2013",
+      "stratum": "unknown|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1482,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002402,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 872,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001414,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "0dbecec043c0",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2020LHC4420.pdf",
+      "source_name": "2020LHC4420.pdf",
+      "court": "unknown",
+      "year": "2020",
+      "stratum": "unknown|digital|latin|tables|short|portrait:600x840:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:600x840:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 595.32,
+            "height": 841.92,
+            "orientation": "portrait",
+            "native_characters": 2280,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.004549,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 595.32,
+            "height": 841.92,
+            "orientation": "portrait",
+            "native_characters": 649,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001295,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "10405a3bf53c",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2016LHC4046.pdf",
+      "source_name": "2016LHC4046.pdf",
+      "court": "lahore_high_court",
+      "year": "2016",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 855,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001386,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 569,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.000922,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "10de6ce145ca",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2023LHC2048.pdf",
+      "source_name": "2023LHC2048.pdf",
+      "court": "lahore_high_court",
+      "year": "2023",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1301,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002109,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1486,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002409,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "10f9504d1f6e",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2017LHC3172.pdf",
+      "source_name": "2017LHC3172.pdf",
+      "court": "lahore_high_court",
+      "year": "2017",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1299,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002106,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1065,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001726,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "16784989a000",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2017LHC5343.pdf",
+      "source_name": "2017LHC5343.pdf",
+      "court": "unknown",
+      "year": "2017",
+      "stratum": "unknown|digital|latin|no_tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 4,
+      "hardness_score": 0.25,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.15
+          }
+        },
+        {
+          "page_number": 3,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 3,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.15
+          }
+        },
+        {
+          "page_number": 4,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 4,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "1d0fb605e957",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2013LHC5259.pdf",
+      "source_name": "2013LHC5259.pdf",
+      "court": "unknown",
+      "year": "2013",
+      "stratum": "unknown|digital|latin|tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 1,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 1991,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.004108,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "1f02743e1804",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2014LHC7840.pdf",
+      "source_name": "2014LHC7840.pdf",
+      "court": "unknown",
+      "year": "2014",
+      "stratum": "unknown|scanned|latin|no_tables|short|portrait:610x940:scanned",
+      "mode": "scanned",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x940:scanned",
+      "page_count": 2,
+      "hardness_score": 0.5,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 605.76,
+            "height": 943.68,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 605.76,
+            "height": 944.16,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "2131ab66563a",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2019LHC697.pdf",
+      "source_name": "2019LHC697.pdf",
+      "court": "lahore_high_court",
+      "year": "2019",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1321,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002141,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 508,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.000823,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "2236fd122b3a",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2019LHC5053.pdf",
+      "source_name": "2019LHC5053.pdf",
+      "court": "unknown",
+      "year": "2019",
+      "stratum": "unknown|scanned|latin|no_tables|short|portrait:600x840:scanned",
+      "mode": "scanned",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:600x840:scanned",
+      "page_count": 2,
+      "hardness_score": 0.5,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 595.0,
+            "height": 842.0,
+            "orientation": "portrait",
+            "native_characters": 21,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 4.2e-05,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 595.0,
+            "height": 842.0,
+            "orientation": "portrait",
+            "native_characters": 21,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 4.2e-05,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "4831400376e3",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2014LHC11536 (1).pdf",
+      "source_name": "2014LHC11536 (1).pdf",
+      "court": "unknown",
+      "year": "2014",
+      "stratum": "unknown|digital|latin|tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 2416,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.004984,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 932,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001923,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "48f810dc1c2e",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2014LHC5574.pdf",
+      "source_name": "2014LHC5574.pdf",
+      "court": "unknown",
+      "year": "2014",
+      "stratum": "unknown|scanned|latin|tables|medium|portrait:610x940:scanned",
+      "mode": "scanned",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "medium",
+      "template_key": "portrait:610x940:scanned",
+      "page_count": 14,
+      "hardness_score": 0.3393,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "boundary_page",
+            "scan_candidate",
+            "low_text_density"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 609.12,
+            "height": 936.48,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "scan_candidate",
+            "low_text_density"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 609.6,
+            "height": 936.24,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.3
+          }
+        },
+        {
+          "page_number": 3,
+          "reasons": [
+            "scan_candidate",
+            "low_text_density"
+          ],
+          "features": {
+            "page_number": 3,
+            "width": 609.6,
+            "height": 936.96,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.3
+          }
+        },
+        {
+          "page_number": 4,
+          "reasons": [
+            "scan_candidate",
+            "low_text_density"
+          ],
+          "features": {
+            "page_number": 4,
+            "width": 609.6,
+            "height": 936.96,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.3
+          }
+        },
+        {
+          "page_number": 14,
+          "reasons": [
+            "boundary_page",
+            "table_candidate"
+          ],
+          "features": {
+            "page_number": 14,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1179,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001911,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "4a14ee816d80",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2018LHC2775.pdf",
+      "source_name": "2018LHC2775.pdf",
+      "court": "lahore_high_court",
+      "year": "2018",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1110,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001799,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 981,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.00159,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "51e853c5e4ee",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2013LHC4366.pdf",
+      "source_name": "2013LHC4366.pdf",
+      "court": "lahore_high_court",
+      "year": "2013",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x970:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x970:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 972.0,
+            "orientation": "portrait",
+            "native_characters": 1429,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002402,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 972.0,
+            "orientation": "portrait",
+            "native_characters": 1353,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002274,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "53c90cebc198",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2015LHC6930.pdf",
+      "source_name": "2015LHC6930.pdf",
+      "court": "lahore_high_court",
+      "year": "2015",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1227,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001989,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 797,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001292,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "557c50cf13e3",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2021LHC9943.pdf",
+      "source_name": "2021LHC9943.pdf",
+      "court": "lahore_high_court",
+      "year": "2021",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1379,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002235,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1565,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002537,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "5c3d5cd89c69",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2014LHC7060.pdf",
+      "source_name": "2014LHC7060.pdf",
+      "court": "unknown",
+      "year": "2014",
+      "stratum": "unknown|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1125,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001824,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1132,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001835,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "5dfc499595c3",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2024LHC5679.pdf",
+      "source_name": "2024LHC5679.pdf",
+      "court": "lahore_high_court",
+      "year": "2024",
+      "stratum": "lahore_high_court|digital|pua|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": true,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 3,
+      "hardness_score": 0.8167,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1478,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002396,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1946,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 5,
+            "native_pua_ratio": 0.0026,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.003155,
+            "prediction_confidence": null,
+            "selection_priority": 0.8
+          }
+        },
+        {
+          "page_number": 3,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 3,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 675,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 1,
+            "native_pua_ratio": 0.0015,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001094,
+            "prediction_confidence": null,
+            "selection_priority": 1.0
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "683f5d6531ac",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2014LHC4589 (1).pdf",
+      "source_name": "2014LHC4589 (1).pdf",
+      "court": "lahore_high_court",
+      "year": "2014",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1268,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002055,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1335,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002164,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "6ad08caa7340",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2018LHC3977.pdf",
+      "source_name": "2018LHC3977.pdf",
+      "court": "lahore_high_court",
+      "year": "2018",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x970:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x970:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.12,
+            "height": 972.12,
+            "orientation": "portrait",
+            "native_characters": 1470,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.00247,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.12,
+            "height": 972.12,
+            "orientation": "portrait",
+            "native_characters": 461,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.000775,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "6b945d6ac3f0",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2021LHC9920.pdf",
+      "source_name": "2021LHC9920.pdf",
+      "court": "lahore_high_court",
+      "year": "2021",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 1939,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.004,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 2542,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.005244,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "702fb9b36442",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2016LHC2366.pdf",
+      "source_name": "2016LHC2366.pdf",
+      "court": "lahore_high_court",
+      "year": "2016",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1152,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001867,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1248,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002023,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "73a0d5d62414",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2020LHC3741.pdf",
+      "source_name": "2020LHC3741.pdf",
+      "court": "lahore_high_court",
+      "year": "2020",
+      "stratum": "lahore_high_court|mixed_scanned_first|pua|tables|long|portrait:610x1010:mixed_scanned_first",
+      "mode": "scanned",
+      "has_native_rtl": false,
+      "has_native_pua": true,
+      "length_bucket": "long",
+      "template_key": "portrait:610x1010:mixed_scanned_first",
+      "page_count": 27,
+      "hardness_score": 0.1833,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "boundary_page",
+            "table_candidate",
+            "pua_candidate"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1286,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 6,
+            "native_pua_ratio": 0.0047,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002085,
+            "prediction_confidence": null,
+            "selection_priority": 1.0
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "table_candidate"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1846,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002992,
+            "prediction_confidence": null,
+            "selection_priority": 0.45
+          }
+        },
+        {
+          "page_number": 3,
+          "reasons": [
+            "table_candidate"
+          ],
+          "features": {
+            "page_number": 3,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1800,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002918,
+            "prediction_confidence": null,
+            "selection_priority": 0.45
+          }
+        },
+        {
+          "page_number": 4,
+          "reasons": [
+            "table_candidate"
+          ],
+          "features": {
+            "page_number": 4,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1858,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.003012,
+            "prediction_confidence": null,
+            "selection_priority": 0.45
+          }
+        },
+        {
+          "page_number": 27,
+          "reasons": [
+            "boundary_page",
+            "scan_candidate",
+            "low_text_density"
+          ],
+          "features": {
+            "page_number": 27,
+            "width": 431.0,
+            "height": 720.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "7766a56288ef",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2016LHC2895.pdf",
+      "source_name": "2016LHC2895.pdf",
+      "court": "lahore_high_court",
+      "year": "2016",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x970:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x970:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 972.0,
+            "orientation": "portrait",
+            "native_characters": 1336,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002246,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 972.0,
+            "orientation": "portrait",
+            "native_characters": 1163,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001955,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "7a747517e4c7",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2016LHC4105.pdf",
+      "source_name": "2016LHC4105.pdf",
+      "court": "lahore_high_court",
+      "year": "2016",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 895,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001451,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 869,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001409,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "7cc55a3c7fa7",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2019LHC4960.pdf",
+      "source_name": "2019LHC4960.pdf",
+      "court": "unknown",
+      "year": "2019",
+      "stratum": "unknown|digital|latin|tables|short|portrait:610x940:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x940:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 936.0,
+            "orientation": "portrait",
+            "native_characters": 1976,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.00345,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 936.0,
+            "orientation": "portrait",
+            "native_characters": 2469,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.00431,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "7cfda7871cfd",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2020LHC3788.pdf",
+      "source_name": "2020LHC3788.pdf",
+      "court": "unknown",
+      "year": "2020",
+      "stratum": "unknown|digital|latin|no_tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 5,
+      "hardness_score": 0.23,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.15
+          }
+        },
+        {
+          "page_number": 3,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 3,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.15
+          }
+        },
+        {
+          "page_number": 4,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 4,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.15
+          }
+        },
+        {
+          "page_number": 5,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 5,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "8631f1e0741d",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2014LHC11575.pdf",
+      "source_name": "2014LHC11575.pdf",
+      "court": "lahore_high_court",
+      "year": "2014",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 2094,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.00432,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 697,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001438,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "89f87403bc7f",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2017LHC5855.pdf",
+      "source_name": "2017LHC5855.pdf",
+      "court": "unknown",
+      "year": "2017",
+      "stratum": "unknown|digital|latin|tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 2349,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.004846,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 815,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001681,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "8c651b359117",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2025LHC6624.pdf",
+      "source_name": "2025LHC6624.pdf",
+      "court": "lahore_high_court",
+      "year": "2025",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1467,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002378,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 954,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001546,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "8d0d5e84f3a4",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2014LHC3302 (1).pdf",
+      "source_name": "2014LHC3302 (1).pdf",
+      "court": "lahore_high_court",
+      "year": "2014",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1384,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002243,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1175,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001905,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "93ba66ac75ab",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2017LHC5857.pdf",
+      "source_name": "2017LHC5857.pdf",
+      "court": "lahore_high_court",
+      "year": "2017",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 2076,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.004283,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 2055,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.00424,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "aabcb2981907",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2021LHC4943.pdf",
+      "source_name": "2021LHC4943.pdf",
+      "court": "unknown",
+      "year": "2021",
+      "stratum": "unknown|digital|latin|no_tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 5,
+      "hardness_score": 0.23,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.15
+          }
+        },
+        {
+          "page_number": 3,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 3,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.15
+          }
+        },
+        {
+          "page_number": 4,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 4,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.15
+          }
+        },
+        {
+          "page_number": 5,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 5,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "ab3b133236bb",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2025LHC5593.pdf",
+      "source_name": "2025LHC5593.pdf",
+      "court": "lahore_high_court",
+      "year": "2025",
+      "stratum": "lahore_high_court|digital|rtl|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": true,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 5,
+      "hardness_score": 0.83,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1445,
+            "native_rtl_characters": 1,
+            "native_rtl_ratio": 0.0007,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002342,
+            "prediction_confidence": null,
+            "selection_priority": 0.95
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1520,
+            "native_rtl_characters": 2,
+            "native_rtl_ratio": 0.0013,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002464,
+            "prediction_confidence": null,
+            "selection_priority": 0.75
+          }
+        },
+        {
+          "page_number": 3,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 3,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1516,
+            "native_rtl_characters": 1,
+            "native_rtl_ratio": 0.0007,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002457,
+            "prediction_confidence": null,
+            "selection_priority": 0.75
+          }
+        },
+        {
+          "page_number": 4,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 4,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1593,
+            "native_rtl_characters": 1,
+            "native_rtl_ratio": 0.0006,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002582,
+            "prediction_confidence": null,
+            "selection_priority": 0.75
+          }
+        },
+        {
+          "page_number": 5,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 5,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1397,
+            "native_rtl_characters": 2,
+            "native_rtl_ratio": 0.0014,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002265,
+            "prediction_confidence": null,
+            "selection_priority": 0.95
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "ae018b54b13a",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2017LHC5268.pdf",
+      "source_name": "2017LHC5268.pdf",
+      "court": "lahore_high_court",
+      "year": "2017",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 1763,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.003637,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 2068,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.004267,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "b04d98bb9cbf",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2018LHC1797 (2).pdf",
+      "source_name": "2018LHC1797 (2).pdf",
+      "court": "lahore_high_court",
+      "year": "2018",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1392,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002256,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 963,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001561,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "b1d7f382ed2d",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2013LHC5237.pdf",
+      "source_name": "2013LHC5237.pdf",
+      "court": "unknown",
+      "year": "2013",
+      "stratum": "unknown|digital|latin|tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 1,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 3468,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.007155,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "b9eeade9a840",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2013LHC4883.pdf",
+      "source_name": "2013LHC4883.pdf",
+      "court": "lahore_high_court",
+      "year": "2013",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1410,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002286,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 648,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.00105,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "c7fb2f2692b3",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2019LHC5242.pdf",
+      "source_name": "2019LHC5242.pdf",
+      "court": "unknown",
+      "year": "2019",
+      "stratum": "unknown|scanned|latin|no_tables|short|portrait:600x840:scanned",
+      "mode": "scanned",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:600x840:scanned",
+      "page_count": 2,
+      "hardness_score": 0.5,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 595.0,
+            "height": 842.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 595.0,
+            "height": 842.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "ca85ad88726f",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2016LHC4057.pdf",
+      "source_name": "2016LHC4057.pdf",
+      "court": "lahore_high_court",
+      "year": "2016",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 959,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001555,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 652,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001057,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "cc9e63dcc553",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2018LHC3975.pdf",
+      "source_name": "2018LHC3975.pdf",
+      "court": "lahore_high_court",
+      "year": "2018",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x970:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x970:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.12,
+            "height": 972.12,
+            "orientation": "portrait",
+            "native_characters": 786,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001321,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.12,
+            "height": 972.12,
+            "orientation": "portrait",
+            "native_characters": 876,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001472,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "da991a1140f2",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2021LHC10220.pdf",
+      "source_name": "2021LHC10220.pdf",
+      "court": "unknown",
+      "year": "2021",
+      "stratum": "unknown|digital|latin|tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 1958,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.00404,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 2043,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.004215,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "db4425a84696",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2015LHC2482.pdf",
+      "source_name": "2015LHC2482.pdf",
+      "court": "lahore_high_court",
+      "year": "2015",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1259,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002041,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1242,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002013,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "e2f8c9c7d179",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2016LHC4863.pdf",
+      "source_name": "2016LHC4863.pdf",
+      "court": "lahore_high_court",
+      "year": "2016",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 2237,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.004615,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 2906,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.005995,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "e75ed7d76cf8",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2019LHC3955.pdf",
+      "source_name": "2019LHC3955.pdf",
+      "court": "lahore_high_court",
+      "year": "2019",
+      "stratum": "lahore_high_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1941,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.003146,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1999,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.00324,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "e8bcc52b1d2f",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2020LHC1588.pdf",
+      "source_name": "2020LHC1588.pdf",
+      "court": "lahore_high_court",
+      "year": "2020",
+      "stratum": "lahore_high_court|digital|rtl|tables|short|portrait:610x940:digital",
+      "mode": "digital",
+      "has_native_rtl": true,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x940:digital",
+      "page_count": 2,
+      "hardness_score": 0.8,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 936.0,
+            "orientation": "portrait",
+            "native_characters": 2277,
+            "native_rtl_characters": 4,
+            "native_rtl_ratio": 0.0018,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.003975,
+            "prediction_confidence": null,
+            "selection_priority": 0.95
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "full_document"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 936.0,
+            "orientation": "portrait",
+            "native_characters": 2271,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.003965,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "f862aac27368",
+      "path": "D:\\Shamoil Data\\specter_data\\LHC\\2014LHC7937 (1).pdf",
+      "source_name": "2014LHC7937 (1).pdf",
+      "court": "unknown",
+      "year": "2014",
+      "stratum": "unknown|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1212,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001965,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 868,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001407,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    }
+  ]
+}

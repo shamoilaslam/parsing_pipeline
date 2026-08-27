@@ -37,17 +37,18 @@ class DecisionDateTests(unittest.TestCase):
         text = "Date of Hearing: 01.01.2021\nJudgment announced on 05.05.2021"
         self.assertEqual(_decision_date(text), "05.05.2021")
 
-    def test_a_bare_dated_is_accepted_when_nothing_marks_it_impugned(self):
-        self.assertEqual(_decision_date("This order dated 07.03.2020 disposes of the matter"), "07.03.2020")
+    def test_a_bare_dated_is_not_read_as_the_court_s_own_date(self):
+        # It was, until it was measured.  On the 152 documents where a bare
+        # "dated" was the rung that decided -- 23 at SC, 129 at IHC -- it was
+        # right once.  What it finds is the impugned order, an FIR, or an
+        # agreement recited in the facts.
+        self.assertIsNone(_decision_date("This order dated 07.03.2020 disposes of the matter"))
 
-    def test_a_cover_with_only_an_impugned_date_still_reports_it(self):
-        # Known limit, kept deliberately.  A guard that skipped dates following
-        # "against"/"passed by" was measured and made LHC worse (64.9% vs
-        # 68.4%) while changing SC not at all, so the simpler rule stands: when
-        # a document states no date of its own, the one date present is
-        # reported rather than nothing.  The filename label is what corrects
-        # these, and it records the disagreement instead of hiding it.
-        self.assertEqual(_decision_date("Against the order dated 01.01.2001"), "01.01.2001")
+    def test_a_cover_stating_only_an_impugned_date_reports_nothing(self):
+        # And nothing is the useful answer: a field left empty is what lets the
+        # corpus's own label fill it, whereas a confidently wrong date blocks
+        # the label and ships as fact.
+        self.assertIsNone(_decision_date("Against the order dated 01.01.2001"))
 
     def test_no_date_yields_nothing_rather_than_a_guess(self):
         self.assertIsNone(_decision_date("There is no date in this judgment."))

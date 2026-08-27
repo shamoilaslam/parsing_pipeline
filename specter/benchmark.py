@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import random
 import re
 import statistics
 import tempfile
@@ -322,26 +323,38 @@ def render(report: dict[str, Any]) -> str:
 
 
 SC_ROOT = Path(r"D:\Shamoil Data\specter_data\SC")
+IHC_ROOT = Path(r"D:\Shamoil Data\specter_data\IHC")
 
 
-def evaluate_sc_metadata(root: Path, limit: int | None = None, include_scanned: bool = False) -> dict[str, Any]:
-    """Score SC metadata against the labels the corpus states in its own paths.
+def evaluate_label_metadata(root: Path, limit: int | None = None, include_scanned: bool = False,
+                            shuffle: bool = False) -> dict[str, Any]:
+    """Score extracted metadata against the labels the corpus states about itself.
 
-    There is no annotated SC gold yet, but the filename names the case and its
-    decision date, and the folder names the judge.  That is a free label for
-    three fields across all 790 documents, which is enough to measure the
-    metadata defects without waiting on annotation.
+    Some corpora need no annotation to be measured.  SC names the case and its
+    decision date in the filename and the judge in the folder; IHC publishes a
+    ``meta.json`` beside every judgment naming the parties, the bench and the
+    date.  Either way the labels are free, cover the whole corpus, and are
+    enough to find the metadata defects without waiting on a gold set.
 
-    Only the fields the path actually states are scored.  ``court``, ``parties``
-    and ``counsel`` are reported as coverage (how often anything was found), not
-    as accuracy, because nothing here can say whether they are right.
+    Only the fields the labels actually state are scored -- ``court_coverage``
+    and ``counsel_coverage`` report how often anything was found, not whether
+    it was right, because nothing here can say.
     """
-    from specter.courts import matches_case_number, matches_judge, path_labels, same_date
+    from specter.courts import (IHC_ORDER, matches_case_number, matches_judge,
+                                matches_name, path_labels, same_date)
 
     engine = SpecterParser(rtl_mode="raw")
     scratch = tempfile.TemporaryDirectory()
     rows: list[dict[str, Any]] = []
-    for pdf in sorted(Path(root).rglob("*.pdf")):
+    # Path order by default, so a report stays comparable with every earlier
+    # one: changing which documents a metric reads is a silent way to move it.
+    # ``shuffle`` is for a corpus where path order is not representative -- IHC
+    # is filed by year and judge, so its first 250 are all 2014 and one judge --
+    # and the seed is fixed so that draw is reproducible too.
+    candidates = sorted(Path(root).rglob("*.pdf"))
+    if shuffle:
+        random.Random(0).shuffle(candidates)
+    for pdf in candidates:
         labels = path_labels(pdf)
         if not labels:
             continue
@@ -363,10 +376,20 @@ def evaluate_sc_metadata(root: Path, limit: int | None = None, include_scanned: 
             "pdf": pdf.name,
             "judge_folder": pdf.parent.name,
             "mode": mode,
+            # A corpus that files interim orders beside judgments has to report
+            # them apart: an order is a page deciding a step in the case and
+            # names neither the bench nor a disposition, so blending the two
+            # reads as a parser defect where there is none.
+            "kind": (result["document"].get("document_kind")
+                     or ("order" if IHC_ORDER.match(pdf.name) else "judgment")),
             "case_number_ok": matches_case_number(labels, metadata.get("case_number")),
             "decision_date_ok": same_date(labels["decision_date"], metadata.get("decision_date")),
             "judge_ok": matches_judge(labels, metadata.get("judges")),
+            "petitioner_ok": matches_name(labels.get("petitioner"), metadata.get("petitioner")),
+            "respondent_ok": matches_name(labels.get("respondent"), metadata.get("respondent")),
             "has_decision_date_label": bool(labels["decision_date"]),
+            "decision_date_stated": bool(metadata.get("decision_date")),
+            "has_party_label": bool(labels.get("petitioner")),
             "court_found": bool(metadata.get("court")),
             "counsel_found": bool(metadata.get("counsel")),
             "cover_fields": len(result["document"].get("cover_fields") or []),
@@ -374,16 +397,22 @@ def evaluate_sc_metadata(root: Path, limit: int | None = None, include_scanned: 
             "got_case_number": metadata.get("case_number"),
             "got_decision_date": metadata.get("decision_date"),
             "got_judges": metadata.get("judges"),
+            "got_petitioner": metadata.get("petitioner"),
+            "got_respondent": metadata.get("respondent"),
         })
         if limit and len(rows) >= limit:
             break
     scratch.cleanup()
-    return {"documents": len(rows), "summary": summarise_sc(rows), "rows": rows}
+    kinds = sorted({row.get("kind") for row in rows if row.get("kind")})
+    return {"documents": len(rows), "summary": summarise_labels(rows), "rows": rows,
+            "by_kind": {kind: summarise_labels([r for r in rows if r.get("kind") == kind])
+                        for kind in kinds} if len(kinds) > 1 else {}}
 
 
-def summarise_sc(rows: list[dict[str, Any]]) -> dict[str, Any]:
+def summarise_labels(rows: list[dict[str, Any]]) -> dict[str, Any]:
     scored = [row for row in rows if "error" not in row]
     dated = [row for row in scored if row["has_decision_date_label"]]
+    named = [row for row in scored if row.get("has_party_label")]
     def rate(subset, key):
         return round(sum(row[key] for row in subset) / len(subset), 4) if subset else None
     return {
@@ -392,24 +421,38 @@ def summarise_sc(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "case_number": rate(scored, "case_number_ok"),
         "decision_date": rate(dated, "decision_date_ok"),
         "judge": rate(scored, "judge_ok"),
+        "petitioner": rate(named, "petitioner_ok"),
+        "respondent": rate(named, "respondent_ok"),
+        # A date that was extracted and is wrong is a different failure from one
+        # that was never extracted: the first ships as fact and blocks the
+        # corpus's own label from filling the gap, the second does neither.
+        "decision_date_when_stated": rate([row for row in dated if row.get("decision_date_stated")],
+                                          "decision_date_ok"),
+        "decision_date_stated": rate(dated, "decision_date_stated"),
         "court_coverage": rate(scored, "court_found"),
         "counsel_coverage": rate(scored, "counsel_found"),
         "zero_cover_fields": sum(1 for row in scored if not row["cover_fields"]),
     }
 
 
-def render_sc(report: dict[str, Any]) -> str:
+def render_labels(report: dict[str, Any]) -> str:
     values = report["summary"]
-    lines = [f"SC documents scored: {values['scored']} (errors: {values['errors']})", ""]
-    lines.append(f"{'field':<16}{'agreement':>11}   (against the label in the file path)")
-    for key in ("case_number", "decision_date", "judge"):
-        got = values[key]
-        lines.append(f"{key:<16}{'n/a' if got is None else format(got, '.1%'):>11}")
-    lines += ["", f"{'field':<16}{'coverage':>11}   (found something; correctness unknown)"]
+    lines = [f"documents scored: {values['scored']} (errors: {values['errors']})", ""]
+    lines.append(f"{'field':<26}{'agreement':>11}   (against the labels the corpus states)")
+    for key in ("case_number", "decision_date", "decision_date_when_stated",
+                "decision_date_stated", "judge", "petitioner", "respondent"):
+        got = values.get(key)
+        lines.append(f"{key:<26}{'n/a' if got is None else format(got, '.1%'):>11}")
+    lines += ["", f"{'field':<26}{'coverage':>11}   (found something; correctness unknown)"]
     for key in ("court_coverage", "counsel_coverage"):
         got = values[key]
-        lines.append(f"{key:<16}{'n/a' if got is None else format(got, '.1%'):>11}")
-    lines.append(f"{'zero cover_fields':<16}{values['zero_cover_fields']:>11} of {values['scored']} documents")
+        lines.append(f"{key:<26}{'n/a' if got is None else format(got, '.1%'):>11}")
+    lines.append(f"{'zero cover_fields':<26}{values['zero_cover_fields']:>11} of {values['scored']} documents")
+    for kind, group in (report.get("by_kind") or {}).items():
+        lines += ["", f"{kind} only ({group['scored']} documents)"]
+        for key in ("case_number", "decision_date", "judge", "petitioner"):
+            got = group[key]
+            lines.append(f"  {key:<14}{'n/a' if got is None else format(got, '.1%'):>11}")
     return "\n".join(lines)
 
 
@@ -422,7 +465,10 @@ def main() -> None:
     parser.add_argument("--sc-gold", action="store_true", help="score the reviewed SC gold pages instead of the LHC ones")
     parser.add_argument("--sc-metadata", action="store_true", help="score SC metadata against the labels in the corpus file paths instead of the LHC gold pages")
     parser.add_argument("--sc-root", type=Path, default=SC_ROOT)
-    parser.add_argument("--include-scanned", action="store_true", help="--sc-metadata only: also score scanned SC documents (slow)")
+    parser.add_argument("--ihc-metadata", action="store_true", help="score IHC metadata against the meta.json record beside each judgment")
+    parser.add_argument("--ihc-root", type=Path, default=IHC_ROOT)
+    parser.add_argument("--include-scanned", action="store_true", help="--sc-metadata/--ihc-metadata only: also score scanned documents (slow)")
+    parser.add_argument("--shuffle", action="store_true", help="draw the --limit sample from across the corpus (fixed seed) instead of in path order; needed where path order is not representative")
     args = parser.parse_args()
 
     if args.sc_gold:
@@ -440,9 +486,11 @@ def main() -> None:
                     print(f"  {name:<12} CER {before['cer_mean']:.4f} -> {values['cer_mean']:.4f} ({values['cer_mean'] - before['cer_mean']:+.4f})")
         return
 
-    if args.sc_metadata:
-        report = evaluate_sc_metadata(args.sc_root, args.limit, include_scanned=args.include_scanned)
-        print(render_sc(report))
+    if args.sc_metadata or args.ihc_metadata:
+        root = args.ihc_root if args.ihc_metadata else args.sc_root
+        report = evaluate_label_metadata(root, args.limit, include_scanned=args.include_scanned,
+                                         shuffle=args.shuffle)
+        print(render_labels(report))
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"\nwrote {args.output}")

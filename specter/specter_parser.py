@@ -46,9 +46,18 @@ LIST_RE = re.compile(r"^\s*(?:(?:\d+\s*[.)]\s+(?=[A-Z\"“‘(]))|(?:[A-Za-z]\s*
 # connector clause the match stopped at the first number and the year was
 # dropped, which is what made a case number ambiguous across years: agreement
 # with the SC labels was 52.3% and is 72.9% with it.
+# The designator is written out ("Writ Petition") or as an initialism
+# ("W.P.", "C.R.", "I.C.A.", "F.A.O.", "I.T.R."), and every court has its own
+# set.  Matching the *shape* of a dotted initialism covers all of them at once
+# rather than growing a list of what each abbreviation happens to mean.
 CASE_RE = re.compile(
-    r"(?i)\b((?:civil|criminal|constitutional|constitution|writ|appeal|revision|petition|Crl\.?|C\.P\.?|COS|RFA|W\.?P\.?)"
-    r"[^\n]{0,100}?\bNos?\.?\s*[\w/()\-.]+"
+    r"(?i)\b((?:civil|criminal|constitutional|constitution|writ|appeal|revision|petition"
+    r"|Crl\.?|C\.P\.?|W\.?P\.?|COS|RFA|ICA|FAO|ITR|(?:[A-Z]\.){2,4})"
+    # The number runs on past spaces the court leaves around its own
+    # punctuation -- "No.2475 / 2018", "No.1565 -B/ 2023" -- and stopping at
+    # the first space dropped the year, which is what makes a case number
+    # ambiguous across years.
+    r"[^\n]{0,100}?\bNos?\.?\s*[\w()\-.]+(?:\s*[/\-]\s*[\w()\-.]+)*"
     r"(?:\s*(?:&|and|to|,)\s*[\w/()\-.]+)*"
     r"(?:\s*of\s*\d{4})?)"
 )
@@ -70,16 +79,24 @@ CITATION_RE = re.compile(r"\b(?:PLD|SCMR|CLC|YLR|MLD|PCRLJ|PCrLJ)\s+\d{4}\s+[A-Z
 # tried and measured: identical on SC, worse on LHC (64.9% vs 68.4%), because
 # the patterns below already resolve those covers.  It was removed rather than
 # kept as inert complexity.
+#
+# A bare "dated <date>" was the last rung, on the reasoning that a document
+# stating one date states its own.  It does not.  Measured on the 152 documents
+# where it was the rung that decided -- 23 at SC, 129 at IHC -- it was right
+# once.  What it actually finds is the impugned order, an FIR, or an agreement
+# recited in the facts.  Worse than being wrong: a confidently wrong date also
+# blocked the corpus's own correct label from filling the field, because a
+# label may only fill what extraction left empty.  A document that does not
+# state its date now says so.
 _DATE = r"\d{1,2}[./-]\d{1,2}[./-]\d{2,4}"
 DATE_OF_JUDGMENT_RE = re.compile(rf"(?i)date\s+of\s+(?:judgment|decision|order|announcement)\s*[:\-]?\s*({_DATE})")
 PRONOUNCED_RE = re.compile(rf"(?i)\b(?:decided|announced|pronounced)\b[^0-9\n]{{0,24}}({_DATE})")
 HEARING_DATE_RE = re.compile(rf"(?i)dates?\s+of\s+hearing\s*[:\-]?\s*({_DATE})")
-DATED_RE = re.compile(rf"(?i)\bdated\s*[:\-]?\s*({_DATE})")
 
 
 def _decision_date(text: str) -> str | None:
     """The court's own date, in order of how firmly the text states it."""
-    for pattern in (DATE_OF_JUDGMENT_RE, PRONOUNCED_RE, HEARING_DATE_RE, DATED_RE):
+    for pattern in (DATE_OF_JUDGMENT_RE, PRONOUNCED_RE, HEARING_DATE_RE):
         match = pattern.search(text)
         if match:
             return match.group(1)
@@ -792,6 +809,34 @@ JUSTICE_LINE_RE = re.compile(
 )
 
 
+# A judgment is signed at the foot: the author's name in capitals inside
+# brackets, and the office on the next line.  IHC uses this on nearly every
+# document, including the single-page order sheets that carry no cover at all
+# and state the judge nowhere else.
+SIGNATURE_NAME_RE = re.compile(r"^\s*\(\s*(?P<name>[A-Z][A-Z .'’\-]{3,60}?)\s*\)[.,]?\s*$")
+SIGNATURE_OFFICE_RE = re.compile(r"(?i)^\s*(?:chief\s+)?(?:justice|judge)\s*\.?\s*$")
+SIGNATURE_GAP = 2
+
+
+def _signed_judges(lines: list[str]) -> list[str]:
+    """Read the names signed above "JUDGE" at the foot of the document.
+
+    Worth reading separately because it is often the only statement of who
+    decided: an order sheet has no cover, no "Present:" list and no "NAME, J.-"
+    attribution, so without the signature the judge is simply unknown -- which
+    it was on every IHC order measured.
+    """
+    names: list[str] = []
+    for index, line in enumerate(lines):
+        match = SIGNATURE_NAME_RE.match(line)
+        if not match:
+            continue
+        if any(SIGNATURE_OFFICE_RE.match(following)
+               for following in lines[index + 1: index + 1 + SIGNATURE_GAP]):
+            names.append(_clean(match.group("name")))
+    return names
+
+
 def _bench_judges(head_lines: list[str]) -> list[str]:
     """Read the bench listed under "Present:" / "Coram:" / "Before:".
 
@@ -845,6 +890,12 @@ def _iso_date(value: str | None) -> str | None:
 def _extract_metadata(text: str, pdf_metadata: dict[str, Any]) -> dict[str, Any]:
     head = text[:12000]
     dates = DATE_RE.findall(head)
+    # Preferring a match from the first 25 lines -- the caption, where a
+    # document names itself -- over one from the head was tried and changed
+    # nothing on 250 IHC documents, so it was not kept.  Of the case numbers
+    # that disagree with the corpus label, 48 of 60 are the document's own
+    # caption naming a different case from the folder it was filed in; that is
+    # the corpus disagreeing with itself, and ``label_check`` reports it.
     case_match = CASE_RE.search(head)
     citations = sorted(set(CITATION_RE.findall(text)))
     section_numbers: set[str] = set()
@@ -869,7 +920,9 @@ def _extract_metadata(text: str, pdf_metadata: dict[str, Any]) -> dict[str, Any]
         and re.match(r"^\s*(?:IN\s*THE\s*)?(?:[A-Z][A-Z &.\-]{2,60}?\s*)?(?:HIGH|SUPREME)\s*COURT", line, re.I)
     ), None)
     bench = next((line.strip() for line in head.splitlines() if "BENCH" in line.upper()), None)
-    judge_matches = re.findall(r"(?i)([A-Z][A-Za-z .'-]{3,60}),\s*J\.", text)
+    # "NAME, J.-" at LHC and SC; "NAME, J:-" at IHC.  Requiring the period lost
+    # the author on every IHC judgment that writes the colon.
+    judge_matches = re.findall(r"(?i)([A-Z][A-Za-z .'-]{3,60}),\s*J\s*[.:]", text)
     hearing_match = HEARING_DATE_RE.search(text)
     decision_value = _decision_date(text)
     head_lines = [re.sub(r"\s+", " ", line).strip() for line in head.splitlines() if line.strip()]
@@ -877,9 +930,12 @@ def _extract_metadata(text: str, pdf_metadata: dict[str, Any]) -> dict[str, Any]
     # bench is the fuller answer and its order is the court's own.
     bench_names = _bench_judges(head_lines)
     authored = [_clean(name) for name in judge_matches]
+    # The signature is read last: it is the surest single name, but the cover's
+    # list is the fuller one and its order is the court's own.
+    signed = _signed_judges([re.sub(r"\s+", " ", line).strip() for line in text.splitlines()])
     seen: set[str] = set()
     judges = []
-    for name in bench_names + authored:
+    for name in bench_names + authored + signed:
         key = re.sub(r"[^a-z]", "", name.casefold())
         if key and key not in seen:
             seen.add(key)
@@ -1243,8 +1299,15 @@ class SpecterParser:
         self.image_scale = image_scale
         self.urdu_ocr = urdu_ocr
 
-    def parse(self, pdf_path: str | Path, output_dir: str | Path | None = None) -> dict[str, Any]:
+    def parse(self, pdf_path: str | Path, output_dir: str | Path | None = None,
+              stem: str | None = None) -> dict[str, Any]:
+        """``stem`` names this document's output where its filename cannot.
+
+        A corpus that calls every file ``judgment.pdf`` needs a name assigned
+        from outside, or 21,712 documents share one set of asset files.
+        """
         pdf_path = Path(pdf_path)
+        stem = stem or pdf_path.stem
         doc = fitz.open(pdf_path)
         try:
             page_widths = [float(page.rect.width) for page in doc]
@@ -1294,7 +1357,7 @@ class SpecterParser:
             all_sizes = [size for blocks in raw_pages for block in blocks for size in block["font_sizes"] if size]
             median_size = statistics.median(all_sizes) if all_sizes else 10.0
             output_dir = Path(output_dir) if output_dir else None
-            asset_dir = output_dir / "assets" / pdf_path.stem if output_dir else None
+            asset_dir = output_dir / "assets" / stem if output_dir else None
             if asset_dir:
                 asset_dir.mkdir(parents=True, exist_ok=True)
 
@@ -1541,7 +1604,7 @@ def write_result(result: dict[str, Any], output_dir: str | Path) -> tuple[Path, 
     _attach_diagnostics(result)
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    stem = Path(result["document"]["source_name"]).stem
+    stem = result["document"].get("output_stem") or Path(result["document"]["source_name"]).stem
     json_path = output_dir / f"{stem}.json"
     md_path = output_dir / f"{stem}.md"
     json_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")

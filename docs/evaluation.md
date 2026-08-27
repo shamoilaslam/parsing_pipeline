@@ -175,6 +175,150 @@ the caption (a cited case, not this case's parties); a list field's box could
 belong to a different element than the one reported; and substring matching
 located section `13` inside the year `2013`.
 
+## Statutes, scored by their own numbering
+
+A statute needs no annotation either, and for a stronger reason than the
+label corpora: an Act numbers its sections 1..N with no gaps, so a hole in the
+run is a detection miss and nothing else can produce one. The check cannot be
+satisfied by a plausible-looking wrong answer.
+
+Over 60 statutes sampled from `pakistancode`, 0 parse errors:
+
+| field | rate |
+| --- | --- |
+| title | 93% |
+| statute_kind | 97% |
+| act_number | 93% |
+| commencement_date | 90% |
+| long_title | 95% |
+| has_preamble | 85% |
+| **complete 1..N section run** | **57 of 58 = 98%** |
+
+The one remaining hole is section 1 of the Works of Defence Act 1903, which the
+published text does not contain.
+
+Complete runs went 72% -> 83% -> 90% -> 93% -> 98%. The last two steps were
+classification rather than detection, and both were found by this metric:
+schedule entries were being counted as sections (the Provident Funds Act
+reported 11 missing sections that were listed banks), and a section heading can
+begin part-way through a block or share a line with the previous one.
+
+`act_number` went 60% -> 93% on one character: the line is routinely printed as
+`1ACT No. LXIV OF 1975` -- the `1` is a footnote marker -- and `` does not
+match between two word characters, so every statute setting it that way was
+skipped silently.
+
+## Corpora with no gold: scoring against the labels the corpus states
+
+There is no annotated gold for SC or IHC, and there does not have to be for
+metadata. Both corpora state the answer about themselves somewhere outside the
+page: SC names the case, its decision date and the judge in the file path; IHC
+publishes a `meta.json` beside every judgment naming the parties, the bench,
+the author, the filing category and the date of the order.
+
+```powershell
+python -m specter benchmark --sc-metadata  --limit 150 --output artifacts/benchmark/sc.json
+python -m specter benchmark --ihc-metadata --limit 250 --shuffle --output artifacts/benchmark/ihc.json
+```
+
+`--limit` reads the corpus in path order, so a report stays comparable with
+every earlier one -- changing which documents a metric reads is a silent way to
+move it. `--shuffle` draws from across the corpus with a fixed seed, and IHC
+needs it: filed by year and judge, its first 250 documents are all 2014 and one
+judge.
+
+Both score extraction **before** labels are applied. `apply_path_labels` runs in
+the CLI and deliberately not in `parse_pdf`, because folding it in earlier would
+score the corpus against itself.
+
+Two things the report separates, because they are different failures:
+
+* `decision_date` -- correct, out of every document the labels date.
+* `decision_date_when_stated` -- correct, out of the documents where extraction
+  produced anything. A wrong value ships as fact **and** blocks the label from
+  filling the gap; an empty one does neither.
+
+Interim orders are reported apart from judgments. Two thirds of IHC's PDFs are
+orders, and an order names neither a bench nor a disposition, so blending them
+reads as a parser defect where there is none.
+
+### IHC, 250 digital documents
+
+| field | before | after |
+| --- | --- | --- |
+| judge | 4.8% | 66.4% |
+| decision_date | 49.6% | 74.4% |
+| decision_date, among those stated | — | 93.5% |
+| case_number | 61.6% | 73.2% |
+
+Judgments alone: case_number 94.2%, judge 82.6%, decision_date 78.3%.
+
+Three measured changes produced that, each of which also had to leave LHC's
+five gold slices bit-identical:
+
+1. **The signature is read.** `(NAME)` over `JUDGE` at the foot is the only
+   statement of who decided on an order sheet, which has no cover and no
+   `NAME, J.-` attribution. Judges were unknown on 95% of IHC documents.
+2. **`NAME, J:-` is an attribution too.** IHC writes a colon where LHC and SC
+   write a period.
+3. **A bare `dated` is no longer read as the court's own date.** Right once in
+   152 documents where it decided; see `docs/architecture.md`.
+
+### The same changes on SC
+
+Every metadata rule here is shared between courts, so each change had to be
+shown not to cost SC or LHC anything. On the same 40 SC documents as the
+previous report:
+
+| field | before | after |
+| --- | --- | --- |
+| case_number | 75.0% | **82.5%** |
+| decision_date | 62.5% | 62.5% |
+| judge | 95.0% | 95.0% |
+| court coverage | 100% | 100% |
+| counsel coverage | 42.5% | 42.5% |
+
+Nothing moved down. Over a wider 150-document draw the same code reads
+case_number 87.3%, judge 98.7%, court 99.3% and counsel 74% -- higher because
+the first 40 in path order are one judge's files, which is the reason
+`--shuffle` exists.
+
+The LHC gold set stayed bit-identical across all five slices (regression
+0.0011, table 0.0093, scanned 0.0901, urdu 0.1162, text_edit 0.1652), as it
+must: none of this touches page text.
+
+### What the labels cannot score
+
+`petitioner` sits at 75% on judgments and `respondent` at 22%, and both
+understate the parser. The corpus writes a display title -- `FOP etc`,
+`MD, OGDCL etc`, `ECP, etc.` -- where the cause title prints
+`Federation of Pakistan and others`. The extraction is usually the better of
+the two. For the same reason party names are filled from the record but never
+checked against it: comparing them reported a disagreement on 176 of 281
+documents and not one was actionable.
+
+`counsel` reaches 29% on IHC judgments against 62% on LHC, and that is a real
+gap with a known cause: an IHC order-sheet judgment has no counsel row at all,
+because it has no cover table -- counsel appear as prose inside the first
+proceedings entry. Extracting them there is a new capability, and there is no
+label to measure it against, so it has not been built.
+
+### As delivered
+
+Extraction plus labels, over 281 IHC documents parsed end to end:
+
+| field | present | agrees with the record |
+| --- | --- | --- |
+| case_number | 100% | 73% |
+| decision_date | 100% | 95% |
+| judges | 100% | 91% |
+| court_id / petitioner | 100% | not checked (above) |
+
+Of the case numbers that disagree, 48 of 60 sampled are the document's own
+caption naming a different case from the folder it was filed under -- the
+corpus disagreeing with itself. `label_check` reports those rather than
+resolving them.
+
 ## The scanned route, measured for the first time
 
 The benchmark previously ran the *digital* parser over every gold page,

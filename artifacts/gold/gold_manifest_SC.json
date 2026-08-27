@@ -1,0 +1,1553 @@
+{
+  "manifest_version": 2,
+  "annotation_schema": {
+    "page": {
+      "page_number": "int",
+      "width": "float",
+      "height": "float",
+      "blocks": "ordered list"
+    },
+    "block": {
+      "type": "header|footer|heading|text|list|table",
+      "text": "verified transcription",
+      "bbox": "[x0,y0,x1,y1]",
+      "reading_order": "int",
+      "cells": "optional ordered table cells"
+    },
+    "cell": {
+      "text": "verified transcription",
+      "bbox": "[x0,y0,x1,y1]",
+      "row": "int",
+      "column": "int",
+      "row_span": "int",
+      "column_span": "int"
+    }
+  },
+  "sampling": {
+    "root": "D:\\Shamoil Data\\specter_data\\SC",
+    "seed": 20260801,
+    "target_documents": 14,
+    "selected_documents": 17,
+    "pages_per_document": 3,
+    "full_documents": 0,
+    "workers": 3,
+    "policy": "stratified court/mode/script(rtl,pua)/table/length/template sample plus high-hardness pages; year tracked but not stratified, see corpus_summary; no model training labels are inferred as gold"
+  },
+  "corpus_summary": {
+    "pdfs": 790,
+    "profiled_ok": 789,
+    "profile_errors": 1,
+    "courts": {
+      "supreme_court": 638,
+      "unknown": 136,
+      "lahore_high_court": 8,
+      "peshawar_high_court": 4,
+      "sindh_high_court": 1,
+      "islamabad_high_court": 2
+    },
+    "modes": {
+      "digital": 598,
+      "scanned": 191
+    },
+    "route_modes": {
+      "digital": 598,
+      "scanned": 187,
+      "mixed_scanned_first": 4
+    },
+    "length_buckets": {
+      "medium": 347,
+      "short": 281,
+      "long": 161
+    },
+    "years": {
+      "1925": 1,
+      "1965": 1,
+      "1982": 1,
+      "1990": 1,
+      "2000": 2,
+      "2002": 3,
+      "2003": 3,
+      "2004": 3,
+      "2005": 14,
+      "2006": 13,
+      "2007": 7,
+      "2008": 4,
+      "2009": 10,
+      "2010": 18,
+      "2011": 20,
+      "2012": 31,
+      "2013": 41,
+      "2014": 38,
+      "2015": 50,
+      "2016": 42,
+      "2017": 37,
+      "2018": 49,
+      "2019": 51,
+      "2020": 47,
+      "2021": 51,
+      "2022": 59,
+      "2023": 68,
+      "2024": 58,
+      "2025": 61,
+      "2026": 3,
+      "2084": 1,
+      "2093": 1
+    },
+    "has_native_pua": 42,
+    "strata": 129,
+    "combo_coverage": {
+      "digital|no_urdu|no_table": {
+        "in_corpus": 6,
+        "in_sample": 3
+      },
+      "digital|no_urdu|table": {
+        "in_corpus": 531,
+        "in_sample": 3
+      },
+      "digital|urdu|no_table": {
+        "in_corpus": 2,
+        "in_sample": 2
+      },
+      "digital|urdu|table": {
+        "in_corpus": 59,
+        "in_sample": 3
+      },
+      "scanned|no_urdu|no_table": {
+        "in_corpus": 185,
+        "in_sample": 3
+      },
+      "scanned|no_urdu|table": {
+        "in_corpus": 6,
+        "in_sample": 3
+      }
+    }
+  },
+  "profile_errors": [
+    {
+      "doc_id": null,
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Iftikhar Muhammad Chaudhry\\SCP_C.P.9_2009_.pdf",
+      "error": "FzErrorFormat: code=7: cannot find page 267 in page tree"
+    }
+  ],
+  "documents": [
+    {
+      "doc_id": "13f49cba12fa",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\MR. Justice Jawwad S. Khawaja\\SCP_C.P.40_2012_03-07-2012.pdf",
+      "source_name": "SCP_C.P.40_2012_03-07-2012.pdf",
+      "court": "unknown",
+      "year": "2012",
+      "stratum": "unknown|digital|pua|no_tables|medium|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": true,
+      "length_bucket": "medium",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 10,
+      "hardness_score": 0.31,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "boundary_page",
+            "pua_candidate"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1087,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 1058,
+            "native_pua_ratio": 0.9733,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.001762,
+            "prediction_confidence": null,
+            "selection_priority": 0.55
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "pua_candidate"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1146,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 1109,
+            "native_pua_ratio": 0.9677,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.001858,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        },
+        {
+          "page_number": 3,
+          "reasons": [
+            "pua_candidate"
+          ],
+          "features": {
+            "page_number": 3,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1224,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 1190,
+            "native_pua_ratio": 0.9722,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.001984,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "234a406645a3",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Anwar Zaheer Jamali\\SCP_C.A.1125_2014_29-10-2015.pdf",
+      "source_name": "SCP_C.A.1125_2014_29-10-2015.pdf",
+      "court": "supreme_court",
+      "year": "2014",
+      "stratum": "supreme_court|digital|rtl+pua|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": true,
+      "has_native_pua": true,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.975,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1056,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001712,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 858,
+            "native_rtl_characters": 5,
+            "native_rtl_ratio": 0.0058,
+            "native_pua_characters": 2,
+            "native_pua_ratio": 0.0023,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001391,
+            "prediction_confidence": null,
+            "selection_priority": 1.2999999999999998
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "39afa74f43df",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Iftikhar Muhammad Chaudhry\\SCP_Crl.P.L.A.55_2005_12-10-2005.pdf",
+      "source_name": "SCP_Crl.P.L.A.55_2005_12-10-2005.pdf",
+      "court": "unknown",
+      "year": "2005",
+      "stratum": "unknown|digital|latin|no_tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 5,
+      "hardness_score": 0.23,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "boundary_page",
+            "low_text_density"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "low_text_density"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.15
+          }
+        },
+        {
+          "page_number": 5,
+          "reasons": [
+            "boundary_page",
+            "low_text_density"
+          ],
+          "features": {
+            "page_number": 5,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "529e709f2ae3",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Faisal Arab\\SCP_C.A.1286_2018_20-12-2019.pdf",
+      "source_name": "SCP_C.A.1286_2018_20-12-2019.pdf",
+      "court": "unknown",
+      "year": "2018",
+      "stratum": "unknown|scanned|latin|no_tables|short|portrait:610x940:scanned",
+      "mode": "scanned",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x940:scanned",
+      "page_count": 3,
+      "hardness_score": 0.4333,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 607.0,
+            "height": 945.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 597.0,
+            "height": 944.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.3
+          }
+        },
+        {
+          "page_number": 3,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 3,
+            "width": 596.0,
+            "height": 943.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "63a8bbc87030",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Qazi Faez Isa\\SCP_Crl.P.L.A.183-P_2022_07-03-2023.pdf",
+      "source_name": "SCP_Crl.P.L.A.183-P_2022_07-03-2023.pdf",
+      "court": "unknown",
+      "year": "2022",
+      "stratum": "unknown|scanned|latin|tables|medium|portrait:610x1010:scanned",
+      "mode": "scanned",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "medium",
+      "template_key": "portrait:610x1010:scanned",
+      "page_count": 6,
+      "hardness_score": 0.4417,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "boundary_page",
+            "scan_candidate",
+            "low_text_density"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        },
+        {
+          "page_number": 4,
+          "reasons": [
+            "table_candidate"
+          ],
+          "features": {
+            "page_number": 4,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1733,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002809,
+            "prediction_confidence": null,
+            "selection_priority": 0.45
+          }
+        },
+        {
+          "page_number": 6,
+          "reasons": [
+            "boundary_page",
+            "table_candidate"
+          ],
+          "features": {
+            "page_number": 6,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 320,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.000519,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "aac66cc46d7a",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Muhammad Hashim Khan Kakar\\SCP_Crl.P.L.A.239_2025_15-04-2025.pdf",
+      "source_name": "SCP_Crl.P.L.A.239_2025_15-04-2025.pdf",
+      "court": "unknown",
+      "year": "2025",
+      "stratum": "unknown|scanned|latin|no_tables|short|portrait:600x840:scanned",
+      "mode": "scanned",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:600x840:scanned",
+      "page_count": 2,
+      "hardness_score": 0.5,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 595.0,
+            "height": 842.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 595.0,
+            "height": 842.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "b0d6572b0837",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Anwar Zaheer Jamali\\SCP_Crl.P.L.A.604_2015_08-09-2015.pdf",
+      "source_name": "SCP_Crl.P.L.A.604_2015_08-09-2015.pdf",
+      "court": "supreme_court",
+      "year": "2015",
+      "stratum": "supreme_court|digital|rtl+pua|tables|short|portrait:610x990:digital",
+      "mode": "digital",
+      "has_native_rtl": true,
+      "has_native_pua": true,
+      "length_bucket": "short",
+      "template_key": "portrait:610x990:digital",
+      "page_count": 3,
+      "hardness_score": 0.8,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 986.0,
+            "orientation": "portrait",
+            "native_characters": 1014,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.00168,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 986.0,
+            "orientation": "portrait",
+            "native_characters": 1269,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002103,
+            "prediction_confidence": null,
+            "selection_priority": 0.45
+          }
+        },
+        {
+          "page_number": 3,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 3,
+            "width": 612.0,
+            "height": 986.0,
+            "orientation": "portrait",
+            "native_characters": 248,
+            "native_rtl_characters": 5,
+            "native_rtl_ratio": 0.0202,
+            "native_pua_characters": 2,
+            "native_pua_ratio": 0.0081,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.000411,
+            "prediction_confidence": null,
+            "selection_priority": 1.2999999999999998
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "b9ea37bc792d",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\MR. Justice Jawwad S. Khawaja\\SCP_R.P.46_2011_20-04-2011.pdf",
+      "source_name": "SCP_R.P.46_2011_20-04-2011.pdf",
+      "court": "supreme_court",
+      "year": "2011",
+      "stratum": "supreme_court|mixed_scanned_first|latin|tables|long|portrait:610x1010:mixed_scanned_first",
+      "mode": "scanned",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "long",
+      "template_key": "portrait:610x1010:mixed_scanned_first",
+      "page_count": 24,
+      "hardness_score": 0.2417,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "boundary_page",
+            "table_candidate"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1234,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "table_candidate"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1761,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002855,
+            "prediction_confidence": null,
+            "selection_priority": 0.45
+          }
+        },
+        {
+          "page_number": 24,
+          "reasons": [
+            "boundary_page",
+            "scan_candidate",
+            "low_text_density"
+          ],
+          "features": {
+            "page_number": 24,
+            "width": 816.0,
+            "height": 1248.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "c598ca6aa354",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Shahid Bilal Hassan\\SCP_C.P.22_2025_19-06-2025.pdf",
+      "source_name": "SCP_C.P.22_2025_19-06-2025.pdf",
+      "court": "supreme_court",
+      "year": "2025",
+      "stratum": "supreme_court|mixed_scanned_first|latin|tables|short|portrait:610x1010:mixed_scanned_first",
+      "mode": "scanned",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:mixed_scanned_first",
+      "page_count": 5,
+      "hardness_score": 0.5,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "boundary_page",
+            "table_candidate"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1623,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002631,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "table_candidate"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1972,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.003197,
+            "prediction_confidence": null,
+            "selection_priority": 0.45
+          }
+        },
+        {
+          "page_number": 5,
+          "reasons": [
+            "boundary_page",
+            "scan_candidate",
+            "low_text_density"
+          ],
+          "features": {
+            "page_number": 5,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "c65946e04984",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Qazi Muhammad Amin Ahmed\\SCP_Crl.P.L.A.1268-L_2021_27-01-2022.pdf",
+      "source_name": "SCP_Crl.P.L.A.1268-L_2021_27-01-2022.pdf",
+      "court": "supreme_court",
+      "year": "2021",
+      "stratum": "supreme_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1262,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002046,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1301,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002109,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "ce68ce8bf5ec",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Athar Minallah\\SCP_Crl.P.L.A.960_2025_12-08-2025.pdf",
+      "source_name": "SCP_Crl.P.L.A.960_2025_12-08-2025.pdf",
+      "court": "unknown",
+      "year": "2025",
+      "stratum": "unknown|scanned|latin|no_tables|short|portrait:470x870:scanned",
+      "mode": "scanned",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:470x870:scanned",
+      "page_count": 3,
+      "hardness_score": 0.4667,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 474.0,
+            "height": 868.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.5
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 513.0,
+            "height": 885.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.3
+          }
+        },
+        {
+          "page_number": 3,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 3,
+            "width": 427.0,
+            "height": 398.0,
+            "orientation": "landscape",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": true,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.6
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "cf42f3820df1",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Iftikhar Muhammad Chaudhry\\SCP_C.P.L.A.1532-L_2005_12-10-2005.pdf",
+      "source_name": "SCP_C.P.L.A.1532-L_2005_12-10-2005.pdf",
+      "court": "unknown",
+      "year": "2005",
+      "stratum": "unknown|digital|latin|no_tables|short|portrait:610x790:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x790:digital",
+      "page_count": 4,
+      "hardness_score": 0.25,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "boundary_page",
+            "low_text_density"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "low_text_density"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.15
+          }
+        },
+        {
+          "page_number": 4,
+          "reasons": [
+            "boundary_page",
+            "low_text_density"
+          ],
+          "features": {
+            "page_number": 4,
+            "width": 612.0,
+            "height": 792.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "de3c147a869b",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Anwar Zaheer Jamali\\SCP_C.P.L.A.853_2014_21-07-2014.pdf",
+      "source_name": "SCP_C.P.L.A.853_2014_21-07-2014.pdf",
+      "court": "supreme_court",
+      "year": "2014",
+      "stratum": "supreme_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1590,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002577,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1236,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.002004,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "eb616fb4df28",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Shahid Bilal Hassan\\SCP_C.P.L.A.3939_2025_06-01-2026.pdf",
+      "source_name": "SCP_C.P.L.A.3939_2025_06-01-2026.pdf",
+      "court": "supreme_court",
+      "year": "2025",
+      "stratum": "supreme_court|digital|latin|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.65,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1715,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.00278,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 2192,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.003553,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "f65d2835e9f9",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Qazi Faez Isa\\SCP_C.R.P.197_2022_03-10-2024.pdf",
+      "source_name": "SCP_C.R.P.197_2022_03-10-2024.pdf",
+      "court": "supreme_court",
+      "year": "2022",
+      "stratum": "supreme_court|digital|pua|tables|short|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": true,
+      "length_bucket": "short",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 2,
+      "hardness_score": 0.825,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1163,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.001885,
+            "prediction_confidence": null,
+            "selection_priority": 0.65
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 478,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 1,
+            "native_pua_ratio": 0.0021,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 1,
+            "text_density": 0.000775,
+            "prediction_confidence": null,
+            "selection_priority": 1.0
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "fc1b10aa8112",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Ijaz ul Ahsan\\SCP_C.P.21_2022_16-05-2023.pdf",
+      "source_name": "SCP_C.P.21_2022_16-05-2023.pdf",
+      "court": "unknown",
+      "year": "2022",
+      "stratum": "unknown|digital|latin|no_tables|short|portrait:600x840:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": false,
+      "length_bucket": "short",
+      "template_key": "portrait:600x840:digital",
+      "page_count": 2,
+      "hardness_score": 0.35,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 595.0,
+            "height": 842.0,
+            "orientation": "portrait",
+            "native_characters": 0,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.0,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "document_short"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 595.0,
+            "height": 842.0,
+            "orientation": "portrait",
+            "native_characters": 12,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 0,
+            "native_pua_ratio": 0.0,
+            "image_count": 1,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 2.4e-05,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    },
+    {
+      "doc_id": "ffc2c0480019",
+      "path": "D:\\Shamoil Data\\specter_data\\SC\\Mr. Justice Dost Muhammad Khan\\SCP_C.P.L.A.380_2014_26-04-2016.pdf",
+      "source_name": "SCP_C.P.L.A.380_2014_26-04-2016.pdf",
+      "court": "unknown",
+      "year": "2014",
+      "stratum": "unknown|digital|pua|no_tables|medium|portrait:610x1010:digital",
+      "mode": "digital",
+      "has_native_rtl": false,
+      "has_native_pua": true,
+      "length_bucket": "medium",
+      "template_key": "portrait:610x1010:digital",
+      "page_count": 6,
+      "hardness_score": 0.4167,
+      "selected_pages": [
+        {
+          "page_number": 1,
+          "reasons": [
+            "boundary_page",
+            "pua_candidate"
+          ],
+          "features": {
+            "page_number": 1,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 437,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 437,
+            "native_pua_ratio": 1.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.000708,
+            "prediction_confidence": null,
+            "selection_priority": 0.55
+          }
+        },
+        {
+          "page_number": 2,
+          "reasons": [
+            "pua_candidate"
+          ],
+          "features": {
+            "page_number": 2,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 1099,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 1099,
+            "native_pua_ratio": 1.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.001781,
+            "prediction_confidence": null,
+            "selection_priority": 0.35
+          }
+        },
+        {
+          "page_number": 6,
+          "reasons": [
+            "boundary_page",
+            "pua_candidate"
+          ],
+          "features": {
+            "page_number": 6,
+            "width": 612.0,
+            "height": 1008.0,
+            "orientation": "portrait",
+            "native_characters": 503,
+            "native_rtl_characters": 0,
+            "native_rtl_ratio": 0.0,
+            "native_pua_characters": 503,
+            "native_pua_ratio": 1.0,
+            "image_count": 0,
+            "dominant_image": false,
+            "tables": 0,
+            "text_density": 0.000815,
+            "prediction_confidence": null,
+            "selection_priority": 0.55
+          }
+        }
+      ],
+      "annotation": {
+        "status": "pending",
+        "annotators": [],
+        "adjudicated": false,
+        "gold_json": null
+      }
+    }
+  ]
+}

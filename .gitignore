@@ -5,18 +5,25 @@ venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+*.egg-info/
 
-# Local model/cache material
+# Retired code and reports, kept out of the tree until deleted
+_quarantine/
+
+# Local model weights: 11 MB of ONNX that pip cannot install for you.
+# `models/README.md` and the character dictionary are tracked; the weights are not.
 models/**/.cache/
 models/**/*.onnx
 
-# Generated artifacts; keep the folder README and intentionally committed reports only.
-artifacts/**
+# Every parse run writes here.  The gold sets are the exception: they are the
+# ground truth the benchmark scores against, so a clone can reproduce it.
+artifacts/*
 !artifacts/README.md
-!artifacts/digital/
 !artifacts/gold/
-!artifacts/scanned/
+artifacts/gold/*
+!artifacts/gold/*.json
+!artifacts/gold/*.py
+artifacts/gold/gold_manifest_SC_profile_cache.json
 
 # Notebook runtime noise
 .ipynb_checkpoints/
-

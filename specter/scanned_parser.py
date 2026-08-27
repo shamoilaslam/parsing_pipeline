@@ -293,11 +293,17 @@ class ScannedParser:
         urdu_model_dir: str | Path = "models/rapidocr_arabic",
         preprocess_variant: str = "grayscale",
         retry_threshold: float = 0.45,
+        save_page_images: bool = False,
     ):
         from rapidocr_onnxruntime import RapidOCR
 
         self.render_scale = render_scale
         self.use_urdu_router = use_urdu_router
+        # The rendered page is OCR input, not output.  Saved, it was 63% of a
+        # corpus run's bytes and nothing read it back -- ``specter inspect``
+        # re-renders from the source PDF, which is the same picture.  Off by
+        # default; turn it on for a sample you want to keep beside the parse.
+        self.save_page_images = save_page_images
         if preprocess_variant not in {"clahe", "grayscale", "otsu", "adaptive", "sauvola", "deskew_clahe"}:
             raise ValueError("Unknown preprocess_variant")
         self.preprocess_variant = preprocess_variant
@@ -515,7 +521,7 @@ class ScannedParser:
         return "text", ["ocr_semantic_paragraph"]
 
     def parse(self, pdf_path: str | Path, output_dir: str | Path = "outputs/specter_scanned",
-              ocr_pages: list[int] | None = None) -> dict[str, Any]:
+              ocr_pages: list[int] | None = None, stem: str | None = None) -> dict[str, Any]:
         """Parse a scanned document.
 
         ``ocr_pages`` restricts OCR to the pages that actually need it.  In a
@@ -527,8 +533,9 @@ class ScannedParser:
         """
         pdf_path = Path(pdf_path)
         output_dir = Path(output_dir)
-        asset_dir = output_dir / "assets" / pdf_path.stem / "scanned"
-        asset_dir.mkdir(parents=True, exist_ok=True)
+        asset_dir = output_dir / "assets" / (stem or pdf_path.stem) / "scanned"
+        if self.save_page_images:
+            asset_dir.mkdir(parents=True, exist_ok=True)
         doc = fitz.open(pdf_path)
         raw_pages: list[list[dict[str, Any]]] = []
         page_infos: list[dict[str, Any]] = []
@@ -545,7 +552,8 @@ class ScannedParser:
                 else:
                     clean, gray, prep = preprocess_variants(image)[self.preprocess_variant]
                 page_path = asset_dir / f"page_{page_no:03d}.png"
-                cv2.imwrite(str(page_path), image)
+                if self.save_page_images:
+                    cv2.imwrite(str(page_path), image)
                 native_text = page.get_text("text") or ""
                 lines, ocr_stats = self._ocr_page(image, clean)
                 combined_text = " ".join(line["text"] for line in lines)
@@ -564,7 +572,10 @@ class ScannedParser:
                     "blue_slip": blue_slip,
                     "blank": blank,
                     "dominant_image": _dominant_page_image(page),
-                    "asset": str(page_path.relative_to(output_dir)).replace("\\", "/"),
+                    # Only claimed where the file is actually there: a path to
+                    # something that does not exist is worse than no path.
+                    "asset": (str(page_path.relative_to(output_dir)).replace("\\", "/")
+                              if self.save_page_images else None),
                 })
 
             # Merge before header/footer inference so repeated running regions

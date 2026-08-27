@@ -11,9 +11,11 @@ documents:
 
 * **A failed document does not end the run.** The exception is captured into
   `manifest.json` under `failures` and the loop continues.
-* **Outputs are keyed by filename stem, so collisions are reported.** Two PDFs
-  sharing a stem in different sub-folders would overwrite each other; the
-  second is skipped and listed under `duplicate_stems`.
+* **Output names are assigned before any work is handed out.** A filename that
+  is distinct across the run is kept; any other is replaced by one built from
+  its folder and a digest of its path, and listed under
+  `renamed_for_uniqueness`. Nothing is skipped for sharing a name -- 21,712 of
+  IHC's 60,529 PDFs are called `judgment.pdf`.
 * **`--skip-existing` resumes** without re-parsing, and rebuilds the manifest
   rows for already-finished documents from their metadata files, so a resumed
   run still describes the whole corpus rather than only the remainder.
@@ -63,19 +65,22 @@ what differs between them:
 
 * `court_id` -- the canonical, filterable identifier
 * `name` / `spellings` -- the canonical name and the variants seen on the page
-* `path_pattern` -- where a corpus states the case in its filename
+* `path_pattern` / `path_from` -- where a corpus states the case in its path,
+  and whether that is the filename or the folder above it
 * `judge_from_folder` -- where it files by judge
+* `sidecar` -- where it publishes a metadata record beside each document
+* `case_number_format` -- how this court writes a case number
 
 `canonical_name`, `court_id` and `path_labels` all dispatch through it, so
 adding a court is an entry in `COURTS` rather than an edit in the parser, the
-router and the benchmark. LHC and SC both go through it today; IHC and the
-statute corpora are expected to be entries, not code.
+router and the benchmark. LHC, SC and IHC all go through it today; the statute
+corpus is a document *kind* rather than a court.
 
 ## Supreme Court generalisation
 
 The SC corpus lives at `<root>/<judge>/SCP_<type>.<number>_<year>_<date>.pdf`,
 so the path itself states the case, its decision date and the judge for 789 of
-790 files. `specter/sc_labels.py` reads that.
+790 files. The registry entry's `path_pattern` reads that.
 
 Those labels are used two ways, and the split matters:
 
@@ -93,17 +98,128 @@ too, and a disagreement is more useful reported than silently resolved.
 ### Dates
 
 `_decision_date` asks in order of how firmly the text states a date: an explicit
-date of judgment, then pronouncement wording, then the hearing date, then a bare
-`dated`. The hearing date ranks that high on evidence -- in 30 of the 34 SC
-documents whose true decision date appears in the text at all, it appears as the
-Date of Hearing. This also corrected LHC, where the old rule picked the right
-year on only 33.7% of documents.
+date of judgment, then pronouncement wording, then the hearing date. The hearing
+date ranks that high on evidence -- in 30 of the 34 SC documents whose true
+decision date appears in the text at all, it appears as the Date of Hearing.
+This also corrected LHC, where the old rule picked the right year on only 33.7%
+of documents.
+
+A bare `dated <date>` was the last rung, on the reasoning that a document
+stating one date states its own. It does not. On the 152 documents where it was
+the rung that decided -- 23 at SC, 129 at IHC -- it was right once; what it
+finds is the impugned order, an FIR, or an agreement recited in the facts. It
+also pre-empted the ORDER SHEET's own structural date, which the page states
+correctly in its form body. Removing it took IHC decision dates from 49.6% to
+74.4%, and to 93.5% among the documents that state one at all.
+
+A field left empty is what lets the corpus's own label fill it; a confidently
+wrong value blocks the label and ships as fact.
 
 ### Consolidated case numbers
 
 `CASE_RE` follows connector runs (`No.101 & 102-P of 2011`, `No.43 to 46/2023`)
 so the year stays attached to the number. Without it a case number was ambiguous
 across years.
+
+## Islamabad High Court generalisation
+
+The IHC corpus is `<root>/<year>_OfficialSite/<judge>/<case>/` holding
+`judgment.pdf`, any interim `order_<ddmmyyyy>_<n>.pdf`, and a `meta.json`. The
+record is far richer than a filename -- parties, bench, author, filing
+category, and every hearing with its short order -- and it is treated as
+exactly the same thing: a label. It fills a gap, tagged `source="sidecar"` with
+no bbox; it never overwrites the page; disagreements go to `label_check`.
+
+The whole record is preserved under `document.source_metadata`, verbatim, so
+what the pipeline does not model yet is not lost.
+
+Three IHC-specific decisions:
+
+* **`document_kind` separates orders from judgments.** Two thirds of the PDFs
+  are interim orders.
+* **Party names are filled but never checked.** The corpus writes a display
+  title -- "FOP etc", "MD, OGDCL etc" -- where the cause title prints the name
+  in full. Comparing them reported a disagreement on 176 of 281 documents, none
+  of them actionable. A check that fires on half a corpus is not a check.
+* **Output names are assigned before anything is written.** 21,712 of 60,529
+  IHC PDFs are called `judgment.pdf`. The router used to skip repeats and
+  report them, which is honest but would have parsed an eighth of the corpus.
+  `output_stems` keeps a filename that is already distinct -- so no LHC or SC
+  path moves -- and otherwise builds one from the case folder plus a digest of
+  the path, because the same case number recurs under different judges 7,544
+  times.
+
+Judges come from three places now, in order: the cover's `Present:` list, the
+`NAME, J.-` (LHC, SC) or `NAME, J:-` (IHC) attribution that opens the opinion,
+and the `(NAME)` / `JUDGE` signature at the foot. The signature was added
+because on an order sheet it is the only statement of who decided -- there is
+no cover and no attribution -- and without it the judge was unknown on 95% of
+IHC documents.
+
+## Statutes
+
+A statute is a different kind of document, not another court. An Act has no
+parties, no bench and no decision date; it has a title, an enactment number in
+Roman numerals, a commencement date, a preamble, and a numbered run of
+sections. `specter/statutes.py` reads those, and the router (`ingest_pdfs`)
+decides the kind and drops the judgment-only fields rather than reporting them
+empty -- a consumer should not have to know which fields are meaningless for
+which kind of document.
+
+Sections are the unit that matters: a lawyer cites section 302 of the Penal
+Code, not page 14 of it. Each detected section, chapter, part and schedule
+carries its page and bbox, so a citation resolves to a region of the page.
+
+### Measuring it without annotation
+
+A statute numbers its sections 1..N with no gaps, so a hole in the run is a
+miss. That gives a corpus-wide correctness signal for free, the same way the
+corpus file paths give free metadata labels. Over 60 statutes, complete runs
+went 72% -> 83% -> 90% -> 93% -> **98%** as the causes below were fixed, and
+the single remaining hole is a section the printed Act omits.
+
+Three of those causes were not detection failures at all but classification
+ones, and each was found by the metric rather than by reading code:
+
+* **A schedule's own entries were counted as sections.** They restart at 1 and
+  run past the last section, so the Provident Funds Act reported 11 missing
+  sections that were listed banks. Numbered lines after a schedule heading are
+  now `schedule_item` -- unless the heading precedes section 1 of the body, in
+  which case it is the contents page announcing the schedule, and acting on it
+  swallowed whole statutes.
+* **A heading can start part-way through a block.** Section 28 of the
+  Co-operative Societies Act follows section 27's closing words in the same
+  text flow. Missed, its text is folded into section 27 and a reader asking for
+  section 28 gets the wrong law. The page still marks it: the heading opens an
+  emphasised run where what precedes it is plain, and the box recorded covers
+  that run alone.
+* **Two headings can share one line**, where a section is omitted in print and
+  the next begins immediately (`9. 4[10. Power to make rules`).
+
+The enactment number went from 60% to 93% on one character: the line is
+routinely set as `1ACT No. LXIV OF 1975`, the `1` being a footnote marker, and
+`` does not match between two word characters.
+
+### Why detection reads the spans, not the text
+
+An amended section is printed with its footnote marker hard against the number,
+and every form of it was a real corpus failure:
+
+| printed | read as | what separates them |
+|---|---|---|
+| `²11.` | section 211 | marker plain, number bold |
+| `⁷19.` | section 719 | marker 8pt, number 12pt |
+| `1[2.` | section lost | marker closes a bracket |
+| `*11.` | section lost | symbol set in the same run |
+
+On a flat string the marker and the number are indistinguishable. The spans
+carry weight and size, so the rule is exact -- and it refuses to strip where
+nothing distinguishes the digits, because a number merely split across spans is
+not a footnote and section 12 must not become section 2.
+
+The same styling requirement is what stops ordinary numbered prose ("3. is the
+number of copies required") and the table of contents from being read as
+sections.
 
 ## Canonical data flow
 

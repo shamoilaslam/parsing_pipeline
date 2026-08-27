@@ -51,7 +51,9 @@ class NeverOverwriteTests(unittest.TestCase):
         self.assertEqual([f["state"] for f in findings if f["field"] == "decision_date"], ["disagrees"])
 
     def test_agreement_produces_no_finding(self):
-        metadata = {"decision_date": "11.09.2025", "case_number": "C.A. 634 of 2018", "judges": ["MAQBOOL BAQAR"]}
+        metadata = {"decision_date": "11.09.2025", "case_number": "C.A. 634 of 2018",
+                    "judges": ["MAQBOOL BAQAR"], "court": "SUPREME COURT OF PAKISTAN",
+                    "court_id": "supreme_court_pakistan"}
         out = apply_path_labels(result(metadata), PDF)
         self.assertEqual(out["document"]["label_check"]["findings"], [])
 

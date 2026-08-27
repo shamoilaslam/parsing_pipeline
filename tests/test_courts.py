@@ -111,5 +111,16 @@ class JudgeMatchTests(unittest.TestCase):
         self.assertFalse(matches_judge({"judge": None}, ["Maqbool Baqar"]))
 
 
+class CaseNumberComparisonTests(unittest.TestCase):
+    def test_a_leading_zero_is_not_a_different_case(self):
+        # The court writes "No.08-B of 2026"; the corpus filed it as 8.
+        labels = {"case_number": "8", "year": "2026"}
+        self.assertTrue(matches_case_number(labels, "Criminal Miscellaneous No.08-B of 2026"))
+
+    def test_the_year_must_still_be_there(self):
+        labels = {"case_number": "8", "year": "2026"}
+        self.assertFalse(matches_case_number(labels, "Criminal Miscellaneous No.08-B"))
+
+
 if __name__ == "__main__":
     unittest.main()
