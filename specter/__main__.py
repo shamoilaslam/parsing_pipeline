@@ -10,6 +10,7 @@ COMMANDS = {
     "parse": ("specter.ingest_pdfs", "Parse a folder (or files) into JSON, Markdown, and metadata"),
     "report": ("specter.report", "Summarise what a corpus run produced: routes, failures, disagreements, worst documents"),
     "inspect": ("specter.inspect_html", "Render parsed output beside the source pages, with bounding boxes"),
+    "graph": ("specter.citations", "Build the citation graph over a parsed corpus"),
     "benchmark": ("specter.benchmark", "Score the parser against the gold pages and the corpus's own labels"),
     "validate": ("specter.validate_document", "Validate a canonical Specter JSON document"),
     "urdu": ("specter.urdu_vision", "Transcribe Urdu crops through a vision model, budgeted and resumable"),

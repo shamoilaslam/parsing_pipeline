@@ -21,6 +21,7 @@ import re
 import statistics
 from datetime import date
 
+from specter.citations import find_citations
 from specter.courts import canonical_name, court_id
 from urllib.parse import quote
 from collections import Counter, defaultdict
@@ -62,7 +63,10 @@ CASE_RE = re.compile(
     r"(?:\s*of\s*\d{4})?)"
 )
 DATE_RE = re.compile(r"\b(?:\d{1,2}[./-]\d{1,2}[./-]\d{2,4}|\d{1,2}\s+[A-Za-z]+\s+\d{4})\b")
-CITATION_RE = re.compile(r"\b(?:PLD|SCMR|CLC|YLR|MLD|PCRLJ|PCrLJ)\s+\d{4}\s+[A-Z]{2,8}\s+\d+\b", re.I)
+# Citations live in ``specter/citations.py``.  The pattern that used to be
+# here required the reporter *before* the year -- "PLD 2015 SC 123" -- and
+# Pakistan writes the year first, so it found none of the 17 authorities in
+# the judgment it was first tested against.
 
 # Judgments state several dates and only one of them is the court's own.  The
 # old rule took the first "decided|announced|judgment dated|dated", which on an
@@ -897,7 +901,7 @@ def _extract_metadata(text: str, pdf_metadata: dict[str, Any]) -> dict[str, Any]
     # caption naming a different case from the folder it was filed in; that is
     # the corpus disagreeing with itself, and ``label_check`` reports it.
     case_match = CASE_RE.search(head)
-    citations = sorted(set(CITATION_RE.findall(text)))
+    citations = sorted({citation["id"] for citation in find_citations(text)})
     section_numbers: set[str] = set()
     for match in re.finditer(r"(?i)\b(?:sections?|s\.)\s+([^.;\n]{1,100})", text):
         section_numbers.update(re.findall(r"\b\d{1,4}(?:-[A-Za-z])?(?:\([^)]+\))?", match.group(1)))

@@ -14,9 +14,6 @@ python -m pip install -e ".[ocr]"
 # Add the benchmark scorer, and the local Urdu experiments, only if you need them
 python -m pip install -e ".[ocr,bench]" 
 
-# Parse all fully digital PDFs in data/pdfs/
-python -m specter digital
-
 # Parse a whole folder with automatic digital/scanned routing
 python -m specter parse "D:\corpus\LHC" --out artifacts/run --recursive
 
@@ -24,7 +21,7 @@ python -m specter parse "D:\corpus\LHC" --out artifacts/run --recursive
 python -m specter parse data/pdfs/2024LHC6559.pdf --out artifacts/run
 
 # Run tests
-python -m unittest discover -s tests -v
+python -m pytest tests -q
 ```
 
 ## Parsing a corpus
@@ -76,6 +73,40 @@ output names are assigned before anything is written: a filename that is
 already distinct across the run is kept, and any other is replaced by one built
 from its folder and a digest of its path, listed under
 `renamed_for_uniqueness`. Nothing is skipped for sharing a name.
+
+## Citation graph
+
+```powershell
+python -m specter graph artifacts/run
+```
+
+Every authority a judgment relies on, read from the blocks so each one carries
+the page and box it was printed in, and inverted across the corpus into a
+graph: one node per authority, one edge per reliance.
+
+Pakistan writes citations two ways -- `2008 SCMR 598` and `PLD 2015 SC 123` --
+and both are matched against a whitelist of law reports rather than a general
+shape, because `<year> <word> <number>` also matches "2018 AND 3" and "Crl.
+Appeal No. 2014 ... 9". A wrong edge asserts an authority the judge never
+relied on, which is worse than a missing one.
+
+Case-to-case resolution is **0%**, and measurement says why rather than
+guessing: of 231 parsed LHC judgments, all 231 state a citation for themselves
+and not one cites another by it. Courts cite the *reported* citation
+(`2008 SCMR 598`); a judgment downloaded from a court website only knows its
+*neutral* one (`2013 LHC 1314`). Two namespaces for the same cases, and closing
+the gap needs a concordance only a law publisher has.
+
+What the graph gives without it is co-citation -- and that is the query a
+lawyer actually runs. "Which of our judgments rely on 2008 SCMR 598" is
+answerable from the citing side alone, with the page and box of every
+reliance.
+
+It also checks itself. A judgment cannot rely on a case decided after it, so
+`cited_year > citing_year` is a free correctness signal. Over 400 LHC
+judgments it fired 36 times -- and the citations were right every time. What
+was wrong was the *decision date*: `2014 LHC 3328` had been extracted as
+`17.9.2004`. Both possibilities are reported, neither is corrected.
 
 ## Watching a run
 
@@ -228,7 +259,8 @@ specter/
   benchmark.py           Scoring against the gold pages and the corpus's labels
   urdu_ocr.py            Local Urdu recogniser adapter
   urdu_vision.py         Urdu crops through a vision model (`specter urdu`)
-tests/                   321 tests: contract, regression and unit
+  citations.py           Case citations and the graph over them (`specter graph`)
+tests/                   351 tests: contract, regression and unit
 docs/                    Architecture, evaluation, and how the gold set was built
 data/pdfs/               The sample PDFs the gold set and tests refer to
 artifacts/gold/          The gold sets and the scripts that built them

@@ -297,3 +297,281 @@ This split is why the emphasis work costs zero CER: the benchmark reads `text`. 
 - No heuristic may delete a region without provenance.
 - A reference output is not ground truth.
 - Chunking must consume only a validated canonical document.
+
+## Citations
+
+A citation is the only part of a judgment that points outside it, and across a
+corpus it is the only structure connecting judgments to each other. Pakistan
+writes them in two grammars, both present in the corpus:
+
+* **Year first** -- `2008 SCMR 598`. The reporter implies the court, so none is
+  printed. This is the common form.
+* **Reporter first** -- `PLD 2015 SC 123`. PLD, PLJ, NLR and KLR span every
+  court, so the court is named between the year and the page.
+
+`specter/citations.py` matches both against a **whitelist of reporters** rather
+than against a general shape, and reads them from blocks rather than from the
+flat text, so every citation carries the page and box it was printed in.
+
+```powershell
+python -m specter graph artifacts/run
+```
+
+The graph has one node per authority -- whether or not the corpus holds it --
+and one edge per "this judgment relied on that one". Most cited authorities are
+**not** in the corpus, and that is the honest state rather than a defect: a
+judgment downloaded from a court website carries no reported citation of its
+own, because the reporter assigns one only on publication. Only LHC, which
+names its files by neutral citation, is addressable that way today.
+
+The edges are worth having regardless. "Which of our judgments rely on 2008
+SCMR 598" is answerable from the citing side alone, and it is the question a
+lawyer actually asks.
+
+---
+
+# Decision log
+
+Every entry is a decision that changed behaviour, the measurement that drove
+it, and what it cost. Entries are kept after the fact is superseded, because
+the reason a thing was tried is worth as much as the outcome -- several of
+these record a change that was made, measured, and then reverted.
+
+The rule this log enforces: **no decision without a number, and no number
+without the sample it came from.**
+
+### Preprocessing variant: grayscale, not CLAHE
+
+Swept six variants over the scanned gold pages. `grayscale` CER **0.0901**,
+`clahe` **0.1337**, and grayscale was also faster. CLAHE was amplifying scan
+noise. Default changed. *Open:* none.
+
+### Urdu: neither local route is usable
+
+Native text extracts as transposed Nastaleeq ligature clusters (99.87%
+character overlap with the truth, words are anagrams). The local
+RapidOCR-Arabic recogniser scores **1 of 576** Urdu words; the scrambled
+native text scores **40 of 576**. Both unusable, so Urdu paragraphs are
+rendered as crops and routed to a vision model (`specter urdu`).
+*Open:* that stage has never been run at corpus scale.
+
+### Routing is decided per page, not per document
+
+A document-level decision emitted **190 SC pages across 23 documents** as
+empty: they had neither a dominant image nor a text layer, so they matched
+neither branch. Every page now lands in exactly one of `scan_pages` /
+`native_pages`.
+
+### A page-sized image beats a hidden text layer
+
+Tried trusting an existing text layer over the image test. Worse: that text is
+some other scanner's OCR. The two signals are a union, not a precedence.
+Pinned by `test_ingest_router_uses_image_coverage_not_hidden_text`.
+
+### The hearing date *is* the decision date at SC
+
+In **30 of the 34** SC documents whose true decision date appears in the text
+at all, it appears as `Date of Hearing`. Ranking it above a bare `dated` took
+SC label agreement 1.0% to 56.7%, and LHC year-agreement 33.7% to 68.4%. This
+was the opposite of what the plan had assumed.
+
+### An "impugned date" guard was measured and deleted
+
+Skipping dates that follow `against` / `impugned` / `passed by` was tried:
+identical on SC, **worse on LHC (64.9% vs 68.4%)**. Removed rather than kept as
+inert complexity.
+
+### A bare `dated` is not the court's own date
+
+It was the last rung of the date ladder, on the reasoning that a document
+stating one date states its own. Measured on the **152 documents where it was
+the rung that decided** -- 23 at SC, 129 at IHC -- it was right **once**. What
+it finds is the impugned order, an FIR, or an agreement recited in the facts.
+It also pre-empted the ORDER SHEET's own structural date, which the page states
+correctly. Removing it took IHC decision dates 49.6% to **74.4%**, and to
+**93.5%** among the documents that state one at all. LHC loses coverage on 36%
+of documents, which is the honest state: those judgments do not state a date.
+
+### A label fills a gap; it never overwrites the page
+
+Filenames (SC), folder names (IHC) and `meta.json` (IHC) are labels produced by
+a scraper. They fill a field extraction left empty, tagged with their source
+and an empty bbox, and every disagreement goes to `label_check`. Applied by the
+CLI and deliberately **not** by `parse_pdf`, or the benchmark would score the
+corpus against itself.
+
+### A neutral citation is not a case number
+
+`2013LHC3273` is how a judgment is *cited*, not the number the court gave the
+case. Reading it as one produced `None.5924/2023` in the metadata and **16
+false disagreements across 22 LHC documents** while the extraction (`Writ
+Petition No.23303/13`) was right throughout. Modelled as `neutral_citation`.
+
+### Statutes are a document *kind*, not another court
+
+An Act has no parties, no bench and no decision date, and has what a judgment
+does not: a numbered run of sections. Judgment-only fields are dropped rather
+than reported empty.
+
+### Section runs are a free correctness metric
+
+A statute numbers its sections 1..N, so a hole is a miss and needs no
+annotation. Three defects found this way, all fixed:
+
+| defect | evidence |
+| --- | --- |
+| Schedule entries counted as sections | the Provident Funds Act reported **11 missing sections** that were listed banks in its schedule |
+| The contents page opened a schedule | all four sections of the Commercial Documents Evidence Act read as schedule entries; **5 statutes lost every section** |
+| A heading part-way through a block was missed | section 28 of the Co-operative Societies Act follows section 27's prose in one block, so its text was folded into section 27 |
+
+Complete section runs went **93% to 98%** (57 of 58). `act_number` went 60% to
+**93%** after two fixes: the number is often set mid-line, and `\b` does not
+exist between the footnote marker and the word in `1ACT No. LXIV OF 1975`.
+
+### Party names are filled from a label but never checked against one
+
+The IHC record writes a display title -- `FOP etc`, `MD, OGDCL etc`, `Toyata
+Islamabad Moters` -- where the cause title prints the name in full, and the
+page is usually the better of the two. Comparing them reported a disagreement
+on **176 of 281 documents** and not one was actionable. A check that fires on
+half a corpus is not a check. Party extraction is still *measured* against
+these labels in the benchmark, where the caveat can be stated.
+
+### Output names are assigned before anything is written
+
+**21,712 of IHC's 60,529 PDFs are called `judgment.pdf`.** The router used to
+skip repeats and report them, which is honest but would have parsed an eighth
+of the corpus. A filename distinct across the run is kept -- so no LHC or SC
+path moves -- and any other is rebuilt from its case folder plus a digest of
+its path, because the same case number recurs under different judges **7,544
+times**.
+
+### Scanned page images are not saved by default
+
+They are OCR *input*. Saved, they were **63% of a run's bytes** and nothing
+read them back: `specter inspect` re-renders from the source PDF, which is the
+same picture. The corpus output estimate fell **24 GB to 9 GB**. Verified on
+four scanned documents: identical text, 5.63 MB to 0.69 MB, and the JSON
+reports `rendered_image: null` rather than a path to a file that is not there.
+Urdu crops are different and are always written: the text under them is
+unrecoverable, so the crop *is* the data.
+
+### Benchmark sampling made explicit after it was changed silently
+
+Adding IHC introduced a shuffled `--limit` draw, because IHC is filed by year
+and judge and its first 250 documents are all 2014 and one judge. That silently
+changed which documents every metric read, making the stored baselines
+non-comparable -- the SC figures reported alongside it were not a delta at all.
+Path order is the default again; `--shuffle` is opt-in and recorded.
+
+### Citations: a reporter whitelist, not a general shape
+
+The pattern in use required the reporter *before* the year. Pakistan writes the
+year first, so it found **0 of the 17** authorities in the first judgment it
+was tested against. A general `<year> <word> <number>` shape was rejected in
+turn: the survey found it matching `2018 AND 3`, `Crl. Appeal No. 2014 ... 9`
+and `Dated 2019 ... 5` in quantity. Pakistan's law reports are a closed set, so
+naming them keeps precision high, and a wrong edge asserts an authority the
+judge never relied on.
+
+Two bugs found while building it, both silent:
+
+* `str.rstrip` on a character class ate the last letter of every spelling that
+  ended in one of its characters -- `Supreme Court Cases` matched only
+  `...Case`, so **every Indian citation in the corpus was missed**.
+* The volume was captured and then dropped from the identifier, merging
+  `(2015) 11 SCC 493` and `(2015) 2 SCC 493` into one node.
+
+Measured after the fixes: **2,516 citations across 450 documents**; 75% of LHC,
+66% of SC and 36% of IHC judgments cite at least one authority.
+
+*Precision:* thirty matches sampled with their surrounding text -- all thirty
+genuine.
+
+*Recall:* of the 1,062 reporter tokens (`SCMR`, `PLD`, `AIR`, ...) printed
+across 150 LHC judgments, **96.6% fall inside a citation that was extracted**.
+The remainder are almost all correct refusals: `air` used as an ordinary
+English word ("blockage of air passages"), and OCR corruption where the page
+itself is unreadable -- `2OlO SCMR 650`, `2O14 SCMR 7464`, a zero read as the
+letter O. Guessing at those would invent an authority. Two classes *were* real
+misses and were fixed: courts not on the list (`PLD 1960 West Pakistan 111`,
+`PLJ 2014 Tax Cases (Kar.) 181`) and a missing space before the court
+(`PLD 1996Supreme Court 543`), which took recall 96.0% to 96.6%.
+
+### The corpus and the courts use two different namespaces
+
+Measured on 231 parsed LHC judgments: **all 231 state a citation for
+themselves** (the neutral citation their filename is built from), and **not one
+of them cites another by neutral citation.** Courts cite the *reported*
+citation -- `2008 SCMR 598`, `PLD 2015 SC 123` -- which a judgment downloaded
+from a court website does not state about itself, because the reporter assigns
+it only on publication.
+
+So case-to-case resolution is 0% today, and not because of a defect: the corpus
+keys documents in one namespace and judgments cite in another. Closing it needs
+a neutral-to-reported concordance, which is exactly what a law *publisher* has
+and a court website does not. That is why a published index can show resolved
+citations both ways and this cannot.
+
+What the graph gives without it is co-citation, and that is the query a lawyer
+actually runs: "which of our judgments rely on 2008 SCMR 598" is answerable
+from the citing side alone, with the page and box of every reliance.
+
+### An impossible citation is reported, not corrected -- and it found a *date* bug
+
+A judgment cannot rely on a case decided after it, so `cited_year >
+citing_year` is a free correctness check needing no annotation.
+
+The first measurement said **zero anachronisms in 1,332 citations**, and that
+number was misleading: it could only run where the corpus states a decision
+date in its path, which is SC and IHC. **LHC was skipped entirely** -- its
+filename is a neutral citation, not a date.
+
+Run over 400 parsed LHC judgments the check fired **36 times**, and the
+citations were not the problem. `2014 LHC 3328` was extracted with a decision
+date of `17.9.2004`; it cites 2010, 2011 and 2012 cases quite properly. Four
+more of the worst:
+
+| document | year in its own citation | date extracted |
+| --- | --- | --- |
+| `2022LHC1690` | 2022 | `9-10-1982` |
+| `2018LHC2340` | 2018 | `26-6-1991` |
+| `2025LHC2177` | 2025 | `28.06.2000` |
+| `2024LHC850` | 2024 | `23.9.2013` |
+
+The citation graph turned out to be a check on the date field -- the part of
+LHC metadata that nothing else could measure.
+
+### LHC decision dates are measurable after all
+
+The neutral citation states the year, so `2014 LHC 3328` is a 2014 judgment.
+That is a free year-level label for all 9,512 LHC documents, and it had been
+missed: the open items list said LHC decision dates could not be scored.
+
+Measured on 400: **329 of 400 (82%) state a decision date at all**, and of
+those **315 of 329 (95.7%) agree with the year in their own citation** (±1
+year, since a December judgment can carry the next year's citation). Fourteen
+are wrong by more than a year.
+
+A smaller, separate class of anachronism is a misprint on the page itself --
+`2077 SCMR 7354` for `2017 SCMR 1354`, a `1` read as a `7`. Neither class is
+corrected: the check cannot tell them apart, and guessing would damage one to
+flatter the other.
+
+---
+
+## Open items
+
+Tracked here rather than closed by assertion.
+
+| item | why it is open |
+| --- | --- |
+| Urdu at corpus scale | `specter urdu` is wired and tested on crops, never run over a corpus. No local engine reads Nastaleeq. |
+| IHC counsel | An order-sheet judgment has no cover table; counsel appear as prose in the first proceedings entry. There is no label to measure an extractor against, so none was built. |
+| Citation to document resolution | Measured at **0 of 1,118 edges** over 231 LHC judgments. Documents are keyed by neutral citation; judgments cite by reported citation. Needs a concordance between the two, which no corpus we hold provides. |
+| Graph size | `graph.json` runs about **187 MB** for the full 71,870-document corpus, extrapolated from 0.60 MB at 229 documents. Fine as a build artifact, too large to load per query -- it is input to an index, not the index. |
+| Statute and judgment linking | Both sides are parsed and keyed; the edge type is not built. |
+| LHC decision dates | 95.7% agree with the year in their own neutral citation; 14 of 329 are wrong by more than a year. The label exists and is free -- wiring it into `specter benchmark` as an LHC date report is not done. |
+| Text gold for IHC and statutes | Metadata is measured against the corpus's own labels; page text is not measured at all outside LHC and SC. |
+| `SCC` is ambiguous | Indian "Supreme Court Cases" and a Pakistani tax-reporting usage share the abbreviation, so `1993 SCC 1011` -- a Pakistani case -- is tagged `IN`. Measured at **1 bare SCC against 20 with a volume** in 400 documents, so ~0.08% of all citations. The volume is recorded, so a consumer can apply the discriminator; the pipeline does not guess. |
+| One statute section hole | `323_works_of_defence_act_1903` is missing section 1, which appears to be absent from the print rather than missed. Unproven. |

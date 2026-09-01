@@ -30,6 +30,7 @@ import fitz
 
 from specter.courts import (IHC_ORDER, court_id, matches_case_number, matches_judge,
                             path_labels, same_date)
+from specter.citations import cited_authorities
 from specter.statutes import detect_structure, extract_statute_metadata, statute_labels
 from specter.scanned_parser import _dominant_page_image, ScannedParser
 from specter.specter_parser import PUA_CHAR_RE, SpecterParser, write_result
@@ -162,7 +163,11 @@ def write_metadata(result: dict[str, object], output_dir: Path) -> Path:
     payload = {key: document.get(key) for key in (
         "source_name", "source_file", "page_count", "extraction_mode", "router",
         "document_kind", "metadata", "metadata_provenance", "confidence", "diagnostics",
-        "stats", "warnings", "label_check", "structure", "source_metadata",
+        "stats", "warnings", "label_check", "structure", "source_metadata", "citations",
+        # The name this document's own JSON and Markdown were written under.
+        # It is what links a metadata record back to its files, and the only
+        # identifier that is distinct across a corpus reusing filenames.
+        "output_stem",
     )}
     payload["template_key"] = (document.get("fingerprint") or {}).get("template_key")
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -229,6 +234,25 @@ def apply_document_kind(result: dict[str, object], pdf: Path) -> dict[str, objec
                 if key not in JUDGMENT_ONLY_FIELDS}
     document["metadata"] = {**metadata, **statute}
     document["structure"] = structure
+    return result
+
+
+def apply_citations(result: dict[str, object]) -> dict[str, object]:
+    """Attach every authority the document relies on, with where it says so.
+
+    Read from the blocks rather than from the flat text, so each citation
+    carries the page and box it was printed in -- the difference between a
+    citation graph you can check and one you have to trust.
+
+    An Act cites no case law, so statutes are skipped rather than reporting an
+    empty list that would read as "none found".
+    """
+    document = result["document"]
+    if document.get("document_kind") == "statute":
+        return result
+    citations = cited_authorities(result.get("pages", []))
+    document["citations"] = citations
+    document.setdefault("metadata", {})["citations"] = [entry["id"] for entry in citations]
     return result
 
 
@@ -379,6 +403,7 @@ def _parse_one(job: tuple) -> tuple[dict[str, object] | None, dict[str, object] 
                            preprocess_variant=preprocess_variant, retry_threshold=retry_threshold,
                            stem=stem, save_page_images=page_images)
         apply_document_kind(result, pdf)
+        apply_citations(result)
         apply_path_labels(result, pdf)
         write_result(result, out)
         write_metadata(result, out)
