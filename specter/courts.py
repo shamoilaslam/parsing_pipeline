@@ -49,6 +49,12 @@ class Court:
     # How this court writes a case number, so the label reads the way the court
     # itself would write it.  ``None`` means the common "C.A.634/2018" form.
     case_number_format: str | None = None
+    # Whether this court sits in more than one place.  A High Court with
+    # regional benches names its seat on the cover -- "MULTAN BENCH MULTAN".
+    # The Supreme Court and IHC sit only at Islamabad, so every "Bench" on
+    # their pages names the court *below*, and reading one as their own was
+    # wrong on all 14 SC documents in a 120-document sample.
+    has_benches: bool = False
 
     def keys(self) -> tuple[str, ...]:
         return tuple(_letters(value) for value in (self.name, *self.spellings))
@@ -135,7 +141,8 @@ COURTS: tuple[Court, ...] = (
         judge_from_folder=True,
     ),
     Court(court_id="federal_shariat_court", name="FEDERAL SHARIAT COURT"),
-    Court(court_id="lahore_high_court", name="LAHORE HIGH COURT", path_pattern=LHC_PATH),
+    Court(court_id="lahore_high_court", name="LAHORE HIGH COURT", path_pattern=LHC_PATH,
+          has_benches=True),
     Court(
         court_id="islamabad_high_court",
         name="ISLAMABAD HIGH COURT",
@@ -145,9 +152,10 @@ COURTS: tuple[Court, ...] = (
         sidecar="meta.json",
         case_number_format="{case_type}-{case_number}-{year}",
     ),
-    Court(court_id="sindh_high_court", name="SINDH HIGH COURT", spellings=("HIGH COURT OF SINDH",)),
-    Court(court_id="peshawar_high_court", name="PESHAWAR HIGH COURT"),
-    Court(court_id="balochistan_high_court", name="BALOCHISTAN HIGH COURT"),
+    Court(court_id="sindh_high_court", name="SINDH HIGH COURT", spellings=("HIGH COURT OF SINDH",),
+          has_benches=True),
+    Court(court_id="peshawar_high_court", name="PESHAWAR HIGH COURT", has_benches=True),
+    Court(court_id="balochistan_high_court", name="BALOCHISTAN HIGH COURT", has_benches=True),
 )
 
 # "Mr. Justice X" at SC, "Former Honourable Chief Justice Mr. Justice X" at IHC.
@@ -190,6 +198,17 @@ def canonical_name(value: str | None) -> str | None:
 def court_id(value: str | None) -> str | None:
     court = court_for_name(value)
     return court.court_id if court else None
+
+
+def sits_in_benches(value: str | None) -> bool:
+    """Whether a bench line on this court's cover names its own seat.
+
+    A High Court with regional benches prints one -- "MULTAN BENCH MULTAN".
+    The Supreme Court and IHC sit in one place, so a "Bench" on their pages is
+    always the court below, recited in the impugned-judgment line.
+    """
+    court = court_for_name(value)
+    return bool(court and court.has_benches)
 
 
 def path_labels(pdf_path: str | Path) -> dict[str, Any] | None:

@@ -98,6 +98,43 @@ def document_header(document: dict[str, Any]) -> str:
             f'<tr><th>{html.escape(key)}</th><td>{html.escape(str(value)[:200])}</td>'
             f'<td class="muted">{html.escape(located)}</td></tr>'
         )
+    # A statute has no parties or bench; what it has is a numbered run of
+    # sections, and whether that run is complete is the check that matters.
+    if document.get("document_kind") == "statute":
+        fields = []
+        for key in ("title", "act_number", "act_year", "commencement_date",
+                    "section_count", "highest_section", "sections_complete"):
+            value = metadata.get(key)
+            if value in (None, "", []):
+                continue
+            note = ""
+            if key == "sections_complete":
+                missing = metadata.get("missing_sections") or []
+                note = ("every section 1..N found" if value
+                        else f"holes at {', '.join(str(n) for n in missing[:8])}")
+            fields.append(
+                f'<tr><th>{html.escape(key)}</th><td>{html.escape(str(value)[:200])}</td>'
+                f'<td class="muted">{html.escape(note)}</td></tr>')
+        structure = document.get("structure") or []
+        sections = [item for item in structure
+                    if item.get("kind") in {"section", "definitions"}]
+        if sections:
+            shown = ", ".join(
+                f'{html.escape(str(item.get("number")))}. {html.escape((item.get("title") or "")[:38])}'
+                for item in sections[:14])
+            more = f" &hellip; and {len(sections) - 14} more" if len(sections) > 14 else ""
+            fields.append(f'<tr><th>sections</th><td colspan="2">{shown}{more}</td></tr>')
+
+    for key, label in (("acts", "statutes named"), ("citations", "cases cited")):
+        value = metadata.get(key) or document.get(key)
+        if not value:
+            continue
+        items = [entry.get("id", "") if isinstance(entry, dict) else str(entry) for entry in value]
+        fields.append(
+            f'<tr><th>{label}</th><td colspan="2">'
+            f'{html.escape("; ".join(items[:10]))}'
+            f'{f" &hellip; and {len(items) - 10} more" if len(items) > 10 else ""}</td></tr>')
+
     findings = (document.get("label_check") or {}).get("findings") or []
     if findings:
         items = "".join(
@@ -110,8 +147,14 @@ def document_header(document: dict[str, Any]) -> str:
         fields.append(f'<tr><th>label check</th><td colspan="2"><ul class="findings">{items}</ul></td></tr>')
     router = document.get("router") or {}
     diagnostics = document.get("diagnostics") or {}
+    # 21,712 IHC files are called judgment.pdf, so the filename alone does not
+    # tell two documents apart on the page.
+    case_number = metadata.get("case_number") or metadata.get("title")
+    named = html.escape(document["source_name"])
+    if case_number:
+        named += f" &mdash; {html.escape(str(case_number)[:70])}"
     return (
-        f'<div class="doc"><h2>{html.escape(document["source_name"])}</h2>'
+        f'<div class="doc"><h2>{named}</h2>'
         f'<p class="muted">{html.escape(str(router.get("mode", "")))} &middot; '
         f'{document.get("page_count", 0)} pages &middot; confidence {document.get("confidence", 0)} &middot; '
         f'{html.escape(str(diagnostics.get("status", "")))}</p>'

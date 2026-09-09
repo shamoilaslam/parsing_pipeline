@@ -11,6 +11,8 @@ COMMANDS = {
     "report": ("specter.report", "Summarise what a corpus run produced: routes, failures, disagreements, worst documents"),
     "inspect": ("specter.inspect_html", "Render parsed output beside the source pages, with bounding boxes"),
     "graph": ("specter.citations", "Build the citation graph over a parsed corpus"),
+    "sections": ("specter.statute_sections", "Build a section-addressable statute corpus from a parsed run"),
+    "link": ("specter.statute_links", "Link the statutes a judgment names to the statutes the corpus holds"),
     "benchmark": ("specter.benchmark", "Score the parser against the gold pages and the corpus's own labels"),
     "validate": ("specter.validate_document", "Validate a canonical Specter JSON document"),
     "urdu": ("specter.urdu_vision", "Transcribe Urdu crops through a vision model, budgeted and resumable"),

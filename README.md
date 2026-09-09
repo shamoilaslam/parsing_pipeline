@@ -12,7 +12,7 @@ python -m pip install -e .
 python -m pip install -e ".[ocr]"
 
 # Add the benchmark scorer, and the local Urdu experiments, only if you need them
-python -m pip install -e ".[ocr,bench]" 
+python -m pip install -e ".[ocr,bench]"
 
 # Parse a whole folder with automatic digital/scanned routing
 python -m specter parse "D:\corpus\LHC" --out artifacts/run --recursive
@@ -23,6 +23,56 @@ python -m specter parse data/pdfs/2024LHC6559.pdf --out artifacts/run
 # Run tests
 python -m pytest tests -q
 ```
+
+## Running it on your own PDFs
+
+Nothing in the pipeline is specific to one corpus: point it at a folder of PDFs
+and it routes each one itself. The whole loop is five commands.
+
+```bash
+git clone <this repo> && cd parsing_pipeline
+python -m pip install -e ".[ocr,bench]"      # ocr is needed for scanned pages
+python -m pytest tests -q                    # 484 tests, ~2 minutes
+
+# 1. Parse.  --recursive walks sub-folders; --workers scales near-linearly.
+python -m specter parse "/path/to/your/pdfs" --out artifacts/run --recursive --workers 4
+
+# 2. See what the run produced: routes, failures, label disagreements, worst documents.
+python -m specter report artifacts/run
+
+# 3. Look at the output beside the source pages, with boxes drawn.
+python -m specter inspect artifacts/run --out artifacts/demo.html --max-pages 3
+
+# 4. Build the citation graph over everything parsed.
+python -m specter graph artifacts/run
+
+# 5. Link the statutes those judgments name to a statute corpus, if you have one.
+python -m specter link artifacts/run --statutes "/path/to/statute/pdfs"
+
+# 6. Turn parsed statutes into one record per section, ready to chunk.
+python -m specter sections artifacts/run
+```
+
+Per document you get `<stem>.json` (canonical, with page/block geometry),
+`<stem>.md`, and `metadata/<stem>.json`; per run, `manifest.json`.
+
+**Resuming.** `--skip-existing` picks up where a run stopped without re-parsing
+what is done, and still rebuilds the manifest for the whole corpus.
+
+**A different court.** Court-specific knowledge lives in one place,
+`specter/courts.py`. Adding a court is an entry in `COURTS` -- its name, the
+spellings seen on the page, and where its corpus states the case in the file
+path -- not an edit to the parser, the router and the benchmark. A court the
+registry does not know still parses; it just gets no path labels.
+
+**What you need on the machine.** CPU only. No GPU, no API key, no network for
+the parsing and OCR paths. A vision model is used *only* for Urdu paragraphs,
+and only if you run `specter urdu` yourself.
+
+**See it before running it.** [`RESULTS.md`](RESULTS.md) has every measured
+number and what it is measured against. [`docs/demo/demo.html`](docs/demo/demo.html)
+is a self-contained page showing eight parsed documents -- one per route and
+corpus -- beside their source pages; open it in a browser, nothing to install.
 
 ## Parsing a corpus
 
@@ -244,6 +294,50 @@ Section detection is checkable without annotation: a statute numbers its
 sections 1..N, so `sections_complete` being false means one was missed. That is
 reported per document alongside `missing_sections`.
 
+Two things a printed statute does that a naive reading gets wrong:
+
+* **Its contents page numbers sections 1..N exactly as the body does.** Every
+  entry is set like a heading, so read straight it duplicates the whole Act --
+  91 phantom sections in the Sales Tax Act, each one a row of dot leaders. The
+  body is taken to begin at the enacting formula (act number, commencement
+  date, long title, preamble), and markers before it are index entries.
+* **Some documents are not one Act.** Estacode is 1,044 pages of separate
+  rule-sets, each numbered from 1, so "section 1" names sixty different texts.
+  A run that begins again is counted: `numbering_restarts > 1` means the
+  document has no single section run, `sections_complete` is reported as `null`
+  rather than guessed, and `specter sections` names it in `index.json` under
+  `compendia` instead of writing unciteable chunks into the corpus.
+
+## Retrieval
+
+Chunking, embedding and hybrid retrieval live in `rag/`, with their own
+[README](rag/README.md).
+
+One command takes a folder of PDFs to a searchable index -- parse, chunk,
+index -- and needs nothing else on the machine:
+
+```bash
+python -m rag pipeline "D:\corpus\pakistancode" --out work --workers 4
+python -m rag search "bail before arrest in a non-bailable offence" --index work/index
+```
+
+It picks its own backend (Metal, CUDA or CPU) and **resumes** if interrupted,
+which matters because parsing 9,512 judgments takes hours and embedding 200,000
+chunks is hours on Apple Silicon and days on a CPU. `work/pipeline.json` records
+what each stage did. The stages are separate commands too (`rag chunk`,
+`rag index`), and `--stages chunk,index` runs a subset.
+
+Chunks carry the page and bounding boxes they came from, so an answer can point
+at the region of the page that supports it -- verified by re-reading the PDF at
+those coordinates, not asserted. Index building is sharded and resumes after an
+interruption, because embedding this corpus is hours on Apple Silicon and days
+on a CPU.
+
+`rag evaluate` scores against a query set the corpus labels itself: a judgment
+names the section it applies, and the statute corpus holds that section. It
+reports **each retrieval leg separately**, because rank fusion weights legs
+equally and a weak leg makes the blend worse than the strong leg alone.
+
 ## Repository map
 
 ```text
@@ -260,7 +354,17 @@ specter/
   urdu_ocr.py            Local Urdu recogniser adapter
   urdu_vision.py         Urdu crops through a vision model (`specter urdu`)
   citations.py           Case citations and the graph over them (`specter graph`)
-tests/                   351 tests: contract, regression and unit
+  statute_links.py       Judgment-to-statute linking (`specter link`)
+  statute_sections.py    Section-addressable statute corpus (`specter sections`)
+rag/                     Retrieval over a parsed corpus -- see rag/README.md
+  normalise.py           One record shape, and the offset map that carries provenance
+  chunk.py               Section chunks for statutes, paragraph chunks for judgments
+  acts.py                How a statute is named when it is cited
+  embed.py               BGE-M3 dense and sparse, and BM25 beside them
+  build.py               Sharded, resumable index building
+  retrieve.py            Hybrid retrieval fused by reciprocal rank
+  evaluate.py            The evaluation set the corpus labels itself
+tests/                   484 tests: contract, regression and unit
 docs/                    Architecture, evaluation, and how the gold set was built
 data/pdfs/               The sample PDFs the gold set and tests refer to
 artifacts/gold/          The gold sets and the scripts that built them
@@ -283,19 +387,13 @@ PDF
 
 The digital route provides character/span/word geometry, paragraph bboxes, deterministic reading order, repeated header/footer detection, native table cells, metadata provenance, fingerprints, and a quality profile. The scanned route is separate and records OCR engine/model, preprocessing, line boxes, retries, and confidence.
 
-Read [docs/architecture.md](docs/architecture.md) for the design contract, [docs/evaluation.md](docs/evaluation.md) for metrics and limitations, and [docs/PROJECT_REPORT.md](docs/PROJECT_REPORT.md) for the current corpus audit.
+Read [docs/architecture.md](docs/architecture.md) for the design contract, [docs/evaluation.md](docs/evaluation.md) for metrics and limitations.
 
 ## Useful commands
 
 ```powershell
 # Validate one canonical document
 python -m specter validate artifacts/digital/2024LHC6559.json
-
-# Compare text/layout with a reference (reference is not ground truth)
-python -m specter evaluate `
-  artifacts/digital/2024LHC6559.json `
-  data/references/llamaparse/2024LHC6559.json `
-  --output artifacts/digital/2024LHC6559_reference_metrics.json
 
 # Build a cheap stratified annotation manifest
 python artifacts/gold/build_gold_manifest.py "D:\corpus\SC" --output artifacts/gold/gold_manifest_SC.json
@@ -310,4 +408,20 @@ Copy `.env.example` to `.env` only if using optional Urdu vision providers. `.en
 
 ## Status
 
-The deterministic digital pipeline is the current production path. Tables and legal metadata remain the main areas requiring independent gold data before claiming corpus-wide accuracy. LlamaParse outputs in `data/references/` are regression references only.
+The deterministic digital pipeline is the production path.
+
+What is measured, and against what, is in [`RESULTS.md`](RESULTS.md). The short
+version: **the only human-annotated gold is 192 Lahore High Court pages.**
+Supreme Court and Islamabad High Court metadata are scored against labels the
+corpora publish about themselves, which is useful but is not gold; their page
+text is not scored against anything, and neither is the statute corpus. Table
+structure and legal metadata are the areas that most need independent gold
+before anyone claims corpus-wide accuracy.
+
+Retrieval is measured, but **lexically only**: BGE-M3 has not been run here --
+568M parameters and no GPU -- so every figure in `rag/` is the baseline a dense
+leg has to beat rather than a result for the system. Nothing yet measures
+finding a *precedent*, only finding a section.
+
+LlamaParse outputs in `data/references/` are regression references, not ground
+truth.

@@ -16,6 +16,9 @@ from specter.specter_parser import (
     _metadata_provenance,
     _narrow_to_spans,
     _party_side,
+    _named_statutes,
+    _is_bench_heading,
+    BARE_COVER_LABEL_RE,
     _signed_judges,
     CASE_RE,
 )
@@ -164,6 +167,140 @@ class PartySideTests(unittest.TestCase):
     def test_meaningful_text_is_kept_with_its_periods(self):
         # "etc." and initials must survive so the value stays quotable.
         self.assertEqual(_party_side(" The State etc. "), "The State etc.")
+
+
+class ScannedCoverBleedTests(unittest.TestCase):
+    """Defects that only surface once OCR merges a cover into one block.
+
+    Measured on a 120-document sample: 8 of 17 scanned documents carried at
+    least one of these, against 4 of 71 digital.
+    """
+
+    def test_the_recital_of_the_judgment_appealed_from_is_not_a_party(self):
+        # A Supreme Court cover names the case, recites what it is an appeal
+        # from, and only then names anyone.  OCR puts all three on one line.
+        caption = ("CIVIL PETITION NO.2298 OF 2025 (On appeal against the judgment "
+                   "dated 18.04.2025 passed by the Islamabad High Court, Islamabad "
+                   "in W.P. No.1/2025) Ali Khan")
+        self.assertEqual(_party_side(caption), "Ali Khan")
+
+    def test_it_is_stripped_however_the_cover_words_it(self):
+        for caption in ("AFR JailPetitionNo.217of2017 (Against the judgment of the "
+                        "Lahore High Court, Multan Bench) Muhammad Siddique",
+                        "CivilAppealNo.1241 of2013. (Against the order dated 24.4.2013 "
+                        "passed by the Lahore High Court) Ms. Kaneez Fatima"):
+            self.assertNotIn("gainst", _party_side(caption), caption)
+
+    def test_a_plain_name_is_never_touched(self):
+        for name in ("Mst. Rehmat & others", "The State etc", "Muhammad Siddique"):
+            self.assertEqual(_party_side(name), name)
+
+    def test_a_sentence_is_not_a_case_number(self):
+        # "Nos?" matched the "no" inside "not", so a sentence from the body
+        # became the case number and blocked the filename label from filling it.
+        self.assertIsNone(CASE_RE.search("the petitioner for matter to police. He did not"))
+
+    def test_real_case_numbers_still_match_whole(self):
+        for written in ("Writ Petition No.23303/13", "CIVIL APPEAL NO.108 OF 2015",
+                        "Civil Petition No.2475 / 2018", "Crl. Misc. No.1565 -B/ 2023",
+                        "Civil Appeals No.101 & 102-P of 2011"):
+            match = CASE_RE.search(written)
+            self.assertIsNotNone(match, written)
+            self.assertEqual(match.group(1), written, written)
+
+
+    def test_a_serial_number_on_an_objections_sheet_is_not_a_case_number(self):
+        # "reflected at Sr.No.3, 4, 6, 7, ..." ran the comma continuation across
+        # a whole list of objection numbers.
+        self.assertIsNone(
+            CASE_RE.search("this FAO which are reflected at Sr.No.3, 4, 6, 7, 8, 12(i)"))
+
+    def test_a_label_run_into_the_one_below_it_is_not_a_counsel_name(self):
+        # OCR merges "For the State:" with the "DATE OF HEARING" label under it.
+        for label in ("DATE OF HEARING", "Date of Decision:", "PRESENT"):
+            self.assertTrue(BARE_COVER_LABEL_RE.match(label), label)
+        for name in ("Mirza Abid Majeed, DPG", "Ch. Abdul Ghaffar Bhuttoa, ASC"):
+            self.assertIsNone(BARE_COVER_LABEL_RE.match(name), name)
+
+
+class NamedStatuteTests(unittest.TestCase):
+    """The statutes a judgment relies on, replacing a five-item whitelist.
+
+    Every string here is from the corpus.  The whitelist named a statute on 19
+    of 90 judgments while 54 named one it could not see.
+    """
+
+    def test_the_kind_word_may_close_the_name_or_open_it(self):
+        self.assertEqual(_named_statutes("under the Limitation Act, 1908 it is barred"),
+                         ["Limitation Act, 1908"])
+        self.assertEqual(_named_statutes("provisions of the Code of Criminal Procedure, 1898"),
+                         ["Code of Criminal Procedure, 1898"])
+
+    def test_names_the_old_whitelist_could_never_see(self):
+        for written, expected in (
+                ("under the Guardians and Wards Act", "Guardians and Wards Act"),
+                ("the West Pakistan Family Court Act, 1964", "West Pakistan Family Court Act, 1964"),
+                ("University of the Punjab Act", "University of the Punjab Act"),
+                ("Higher Education Commission Ordinance", "Higher Education Commission Ordinance"),
+                ("repealed Pakistan Prison Rules", "Pakistan Prison Rules")):
+            self.assertEqual(_named_statutes(written), [expected], written)
+
+    def test_a_reference_to_a_statute_is_not_its_name(self):
+        # Each of these was produced by a general "<Capitalised words> Act"
+        # shape, which has no left boundary.
+        for written in ("If any provision of an Act",
+                        "Whereas the theme and philosophy of Order",
+                        "To resolve the proposition in hand, the provisions of Order",
+                        "Date of Order",
+                        "an application under Order VII Rule 11 CPC was filed"):
+            self.assertEqual(_named_statutes(written), [], written)
+
+    def test_the_name_starts_where_the_title_starts(self):
+        for written, expected in (
+                ("First Schedule to the Limitation Act", "Limitation Act"),
+                ("Moreover, Schedule of Family Court Act applies", "Family Court Act"),
+                ("A of the General Clauses Act", "General Clauses Act")):
+            self.assertEqual(_named_statutes(written), [expected], written)
+
+    def test_a_name_never_runs_across_a_sentence(self):
+        # "Court." and "Order" are two sentences; the full stop separates them.
+        self.assertEqual(_named_statutes("dismissed by the Court. Order XI is not attracted"), [])
+
+    def test_the_form_label_above_the_word_order_is_not_a_statute(self):
+        # Every LHC and IHC judgment sheet prints "Form No: HCJD/C-121" above
+        # the word ORDER, which read as the act "C-121 ORDER" on 8 documents.
+        self.assertEqual(_named_statutes("Form No: HCJD/C-121\nORDER SHEET"), [])
+
+    def test_the_year_is_kept_where_the_page_states_it(self):
+        self.assertEqual(_named_statutes("the Qanun-e-Shahadat Order, 1984 governs"),
+                         ["Qanun-e-Shahadat Order, 1984"])
+
+
+class BenchHeadingTests(unittest.TestCase):
+    """A bench is where the court sat, not any line containing the word."""
+
+    def test_a_seat_in_the_heading_is_a_bench(self):
+        for line in ("MULTAN BENCH MULTAN.", "BAHAWALPUR BENCH BAHAWALPUR",
+                     "IN THE LAHORE HIGH COURT, RAWALPINDI BENCH,"):
+            self.assertTrue(_is_bench_heading(line), line)
+
+    def test_a_recital_of_the_court_below_is_not(self):
+        for line in ("[Against the order dated 13.11.2024, passed by the Lahore High "
+                     "Court, Multan Bench, Multan in Civil Revision No.1/2024",
+                     "The Division Bench of the Peshawar High Court after",
+                     "objected to the composition of the Bench. Contents of",
+                     "Bench, Bahawalpur in ICA No.98 of 2022)"):
+            self.assertFalse(_is_bench_heading(line), line)
+
+    def test_a_court_that_sits_in_one_place_reports_no_bench(self):
+        # Every "Bench" on a Supreme Court cover names the court below.
+        page = ("IN THE SUPREME COURT OF PAKISTAN\n"
+                "(Against the judgment of the Lahore High Court, Multan Bench)\n")
+        self.assertIsNone(_extract_metadata(page, {})["bench"])
+
+    def test_a_high_court_still_reports_its_own(self):
+        page = "IN THE LAHORE HIGH COURT\nMULTAN BENCH MULTAN.\n"
+        self.assertEqual(_extract_metadata(page, {})["bench"], "MULTAN BENCH MULTAN.")
 
 
 class PartyCaptionTests(unittest.TestCase):

@@ -74,8 +74,9 @@ REPORTERS: tuple[Reporter, ...] = (
     Reporter("PLJ", "Pakistan Law Journal", "PK", ("PLJ",), names_court=True),
     Reporter("NLR", "National Law Reporter", "PK", ("NLR",), names_court=True),
     Reporter("KLR", "Karachi Law Reporter", "PK", ("KLR",), names_court=True),
-    Reporter("PCRLJ_N", "P.Cr.L.J. Note", "PK", ("PCrLJ Note", "P.Cr.L.J. Note")),
-    Reporter("CLC_N", "CLC Note", "PK", ("CLC Note",)),
+    # There is no separate entry for a series' Notes section: every series has
+    # one, so it is read as a suffix on whichever reporter was printed.
+    #
     # The neutral citation the Lahore High Court assigns itself, which is also
     # how its own corpus names its files -- so these are the citations that can
     # be resolved against documents we hold.
@@ -143,9 +144,11 @@ def _spelling_pattern(spelling: str) -> str:
     for character in spelling:
         if character.isalnum():
             pieces.append(re.escape(character))
-        elif character in "().&":
+        elif character in "()&":
             # Bracketed sub-series ("PLC (C.S.)") must keep their brackets --
-            # they are what distinguishes one series from another.
+            # they are what distinguishes one series from another.  Dots are
+            # *not* kept: keeping them made "PLC C.S." require its dots, so
+            # "2012 PLC CS 90" -- printed exactly like that -- was missed.
             pieces.append(re.escape(character))
         # Spaces and dots are dropped here and allowed back as optional
         # separators between every piece, which is what lets one entry match
@@ -175,6 +178,25 @@ def _year_of(match: re.Match[str], name: str) -> int:
 
 _COURT_ALTERNATIVES = _alternatives([name for names in COURTS.values() for name in names])
 
+# Every series runs a separately paginated "Notes" section, and the corpus
+# writes it six ways -- "2018 YLR Note 114", "2017 CLC (N) 227", "2022 PCRLJ-N
+# 64", "2023 PLC(CS)N 14".  A note is a different case from the same page of
+# the main series, so it belongs in the identifier, not beside it.
+_NOTE = r"(?:\s*[-(]?\s*(?:Notes?|N)\s*\)?)"
+# Where a series covers every court, the reporter often annotates which one --
+# "1987 CLC [Karachi] 2185".  It is an annotation, not part of the citation:
+# these series paginate continuously across courts, so the court must be read
+# and kept *out* of the identifier or one case becomes two nodes.
+_BRACKETED_COURT = r"(?:\s*[\[(]\s*(?P<court>" + _COURT_ALTERNATIVES + r")\s*[\])])"
+# The same annotation is also printed after the page -- "2009 YLR 550-Karachi",
+# "2011 YLR 2393 [Lahore]".  Brackets are unambiguous; a bare hyphen is not, so
+# there it must not be followed by an ordinary word: several court
+# abbreviations ("All", "Kar", "PC") are also English words, and "2018 CLC 392
+# - All the parties" must not read as a citation from Allahabad.
+_TRAILING_COURT = (r"(?:\s*(?:\[\s*(?P<court_afterb>" + _COURT_ALTERNATIVES + r")\s*\]"
+                   r"|\(\s*(?P<court_afterp>" + _COURT_ALTERNATIVES + r")\s*\)"
+                   r"|-\s*(?P<court_afterh>" + _COURT_ALTERNATIVES + r")\b(?!\s+[a-z])))")
+
 # "2008 SCMR 598", "(2015) 11 Supreme Court Cases 493" -- the optional volume
 # number is how the Indian series is written and how it must be read back.
 YEAR_FIRST_RE = re.compile(
@@ -183,7 +205,11 @@ YEAR_FIRST_RE = re.compile(
     r"(?P<reporter>" + _alternatives(
         [spelling for reporter in REPORTERS if not reporter.names_court
          for spelling in reporter.spellings]) + r")"
-    r"\s*[.,]?\s*(?P<page>\d{1,5})(?![\d/-])",
+    + f"(?P<note>{_NOTE})?" + f"{_BRACKETED_COURT}?"
+    # A page may be followed by a hyphenated court but never by a hyphenated
+    # year: "550-Karachi" is a citation, "3098-2019" is a case number.
+    + r"\s*[.,]?\s*(?P<page>\d{1,5})(?![\d/])(?!-\d)"
+    + f"{_TRAILING_COURT}?",
     re.IGNORECASE,
 )
 
@@ -198,8 +224,12 @@ REPORTER_FIRST_RE = re.compile(
     r")"
     # No space is required before the court: "PLD 1996Supreme Court 543" is
     # printed exactly like that, and the court list is a whitelist, so nothing
-    # else can slip in.
-    r"\s*(?P<court>" + _COURT_ALTERNATIVES + r")\s*[.,]?\s*(?P<page>\d{1,5})(?![\d/-])",
+    # else can slip in.  The brackets of "PLD 2016 [Lahore] 383" are taken only
+    # as a matched pair, so a stray one stays with the sentence that owns it.
+    r"\s*(?:\[\s*(?P<courta>" + _COURT_ALTERNATIVES + r")\s*\]"
+    r"|\(\s*(?P<courtb>" + _COURT_ALTERNATIVES + r")\s*\)"
+    r"|(?P<courtc>" + _COURT_ALTERNATIVES + r"))"
+    r"\s*[.,]?\s*(?P<page>\d{1,5})(?![\d/-])",
     re.IGNORECASE,
 )
 
@@ -227,18 +257,26 @@ def _court_for(spelling: str) -> str | None:
 
 
 def _entry(reporter: Reporter, year: int, page: int, text: str,
-           court: str | None = None, volume: int | None = None) -> dict[str, Any] | None:
+           court: str | None = None, volume: int | None = None,
+           note: bool = False) -> dict[str, Any] | None:
     if not 0 < page <= MAX_PAGE:
         return None
+    # A note is a different case from the same page of the main series, so the
+    # two must not share a node.
+    key = f"{reporter.key}-N" if note else reporter.key
     # The volume belongs in the identifier wherever it is printed: the Indian
     # series numbers several volumes a year, so "(2015) 11 SCC 493" and
     # "(2015) 2 SCC 493" are different cases and must not share a node.
-    series = f"{volume} {reporter.key}" if volume else reporter.key
-    identifier = (f"{reporter.key} {year} {court} {page}" if court
+    series = f"{volume} {key}" if volume else key
+    # The court belongs in the identifier only where the series paginates by
+    # court, which is what ``names_court`` records.  CLC and its siblings run
+    # one continuous pagination across every court, so "1987 CLC [Karachi]
+    # 2185" and "1987 CLC 2185" are one case and must resolve to one node.
+    identifier = (f"{key} {year} {court} {page}" if court and reporter.names_court
                   else f"{year} {series} {page}")
     return {
         "id": identifier,
-        "reporter": reporter.key,
+        "reporter": key,
         "reporter_name": reporter.name,
         "jurisdiction": reporter.jurisdiction,
         "year": year,
@@ -262,7 +300,12 @@ def find_citations(text: str) -> list[dict[str, Any]]:
             continue
         volume = int(match.group("volume")) if match.group("volume") else None
         entry = _entry(reporter, _year_of(match, "year"), int(match.group("page")),
-                       match.group(0), volume=volume)
+                       match.group(0), volume=volume,
+                       court=_court_for(next(
+                           (match.group(name) for name in
+                            ("court", "court_afterb", "court_afterp", "court_afterh")
+                            if match.group(name)), None)),
+                       note=bool(match.group("note")))
         if entry:
             found[(match.start(), match.end())] = entry
     for match in REPORTER_FIRST_RE.finditer(text):
@@ -272,7 +315,9 @@ def find_citations(text: str) -> list[dict[str, Any]]:
         leading = any(match.group(f"year{suffix}") for suffix in "abc")
         entry = _entry(reporter, _year_of(match, "year" if leading else "alt"),
                        int(match.group("page")), match.group(0),
-                       court=_court_for(match.group("court")))
+                       court=_court_for(next(
+                           (match.group(f"court{suffix}") for suffix in "abc"
+                            if match.group(f"court{suffix}")), None)))
         if entry:
             found[(match.start(), match.end())] = entry
     # A reporter-first match subsumes the year-first one inside it: "PLD 2015

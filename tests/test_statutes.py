@@ -1,6 +1,7 @@
 import unittest
 from pathlib import Path
 
+from specter.specter_parser import _carry_footnote_run, _classify
 from specter.statutes import (
     _heading_line,
     _heading_title,
@@ -126,6 +127,19 @@ class FootnoteMarkerTests(unittest.TestCase):
         target = block("See section 4 above. 11. Not a heading",
                        [sized("See section 4 above. "), sized("11. Not a heading", bold=True)])
         self.assertEqual(_heading_line(target), "See section 4 above. 11. Not a heading")
+
+    def test_the_number_itself_is_not_stripped_as_a_marker(self):
+        # Public Private Partnership Authority Act 2017: the number is set
+        # plain and only the title emphasised, so the number matched the marker
+        # shape.  Stripping it left ". Chief Executive Officer", which is not a
+        # heading at all, and section 7 vanished from the run.
+        target = block("7. Chief Executive Officer. (1) The Federal Government", [
+            sized("7", 12.0),
+            sized(".  Chief Executive Officer", 12.0, bold=True, underline=True),
+            sized(". (1) The Federal Government", 12.0),
+        ])
+        self.assertEqual(_heading_line(target),
+                         "7. Chief Executive Officer. (1) The Federal Government")
 
     def test_a_block_with_no_spans_keeps_its_line(self):
         self.assertEqual(_heading_line({"text": "5. Plain", "spans": []}), "5. Plain")
@@ -270,7 +284,19 @@ class StructureTests(unittest.TestCase):
         kinds = [f["kind"] for f in detect_structure(pages)]
         self.assertEqual(kinds, ["schedule", "section", "definitions"])
 
-    def test_a_chapter_after_a_schedule_returns_to_sections(self):
+    def test_a_chapter_inside_a_schedule_does_not_end_the_schedule(self):
+        """A schedule may carry structure of its own.
+
+        The Carriage by Air Act reproduces the Montreal Convention as its
+        Fourth Schedule, chapters and all, and ending the schedule at
+        "CHAPTER I" put the Convention's 106 numbered Articles back in
+        collision with the Act's own sections.
+
+        This replaces a test asserting the opposite. Measured over the 841
+        parsed statutes, Carriage by Air is the *only* document where a chapter
+        follows a schedule at all, and there the numbering restarts -- no
+        statute in the corpus returns to its own sections that way.
+        """
         pages = [page(1, [
             block("1. Short title.", [span("1. Short title.", bold=True, underline=True)]),
             block("THE SCHEDULE", [span("THE SCHEDULE", bold=True)]),
@@ -278,7 +304,105 @@ class StructureTests(unittest.TestCase):
             block("2. Extent.", [span("2. Extent.", bold=True, underline=True)]),
         ])]
         found = detect_structure(pages)
-        self.assertEqual([f["kind"] for f in found], ["section", "schedule", "chapter", "section"])
+        self.assertEqual([f["kind"] for f in found],
+                         ["section", "schedule", "chapter", "schedule_item"])
+
+
+class BareNumberRecoveryTests(unittest.TestCase):
+    """A section number set alone, with no full stop, and typed as a footer.
+
+    The National Rahmatul-lil-Aalameen Authority Act prints "3" on its own and
+    the heading on the next line, so the number reads as a page number and the
+    section vanished from the run.
+    """
+
+    def pages(self, number_text):
+        return [{"page_number": 4, "blocks": [
+            {"id": "b0", "type": "text", "text": "1. Short title.", "bbox": [0, 0, 10, 10],
+             "spans": [span("1. Short title.", bold=True)]},
+            {"id": "b1", "type": "text", "text": "2. Definitions.", "bbox": [0, 10, 10, 20],
+             "spans": [span("2. Definitions.", bold=True)]},
+            {"id": "b2", "type": "footer", "text": number_text, "bbox": [0, 20, 10, 30],
+             "spans": [span(number_text)]},
+            {"id": "b3", "type": "text", "text": "Establishment of the Authority. (1) There shall be",
+             "bbox": [0, 30, 10, 40],
+             "spans": [span("Establishment of the Authority", bold=True, underline=True),
+                       span(". (1) There shall be")]},
+            {"id": "b4", "type": "text", "text": "4. Advisory Board.", "bbox": [0, 40, 10, 50],
+             "spans": [span("4. Advisory Board.", bold=True)]},
+        ]}]
+
+    def test_the_hole_is_filled_from_the_bare_number(self):
+        structure = detect_structure(self.pages("3"))
+        self.assertEqual(section_sequence(structure)["missing"], [])
+        recovered = [s for s in structure if s["number"] == "3"]
+        self.assertEqual(recovered[0]["title"], "Establishment of the Authority")
+
+    def test_a_page_number_is_not_read_as_a_section(self):
+        # 9 is outside the detected run, so it is never looked for.
+        structure = detect_structure(self.pages("9"))
+        self.assertNotIn("9", [s.get("number") for s in structure])
+
+    def test_a_number_followed_by_plain_prose_is_left_alone(self):
+        pages = self.pages("3")
+        pages[0]["blocks"][3]["spans"] = [span("Establishment of the Authority. (1) There shall be")]
+        structure = detect_structure(pages)
+        self.assertEqual(section_sequence(structure)["missing"], [3])
+
+
+class FootnoteTypingTests(unittest.TestCase):
+    """An amendment note is not the law, and must not read as body text.
+
+    Header and footer detection works by repetition across pages; a footnote is
+    different on every page, so 111 of the Penal Code's amendment notes were
+    typed as body text -- 29,942 characters that a retrieval system would have
+    quoted as statute.
+    """
+
+    def block(self, text, size=8.0, y0=700.0, kind="text"):
+        return {"text": text, "bbox": [72.0, y0, 500.0, y0 + 10.0],
+                "font_sizes": [size], "type": kind, "language": "en",
+                "contains_rtl": False}
+
+    def classify(self, text, size=8.0, y0=700.0):
+        return _classify(self.block(text, size, y0), set(), set(),
+                         842.0, 595.0, 12.0, [])[0]
+
+    def test_an_amendment_note_is_a_footnote(self):
+        for text in ("1Subs. by the Law Reforms Ordinance, 1972 (12 of 1972), s. 2",
+                     "2S.489E.ins. by the Indian Penal Code(Amdt.) Act, 1943",
+                     "10Subs. by the Indian Penal Code Amdt. Act, 1898 (4 of 1898), s. 2",
+                     "3Added by the West Pakistan Ordinance No. XIII of 1959, s. 3."):
+            self.assertEqual(self.classify(text), "footnote", text)
+
+    def test_body_text_of_the_same_shape_is_not(self):
+        # Same wording, body size, high on the page: this is the statute.
+        self.assertNotEqual(
+            self.classify("1Subs. by the Law Reforms Ordinance, 1972", size=12.0), "footnote")
+        self.assertNotEqual(
+            self.classify("1Subs. by the Law Reforms Ordinance, 1972", y0=120.0), "footnote")
+
+    def test_a_contents_entry_is_not_a_footnote(self):
+        # Small type low on the page, but no marker and no amendment wording --
+        # this is the contents list, and typing it as a footnote would drop it.
+        for text in ("Penalty and procedure, etc.", "Public servant.", "Any other toe"):
+            self.assertNotEqual(self.classify(text), "footnote", text)
+
+    def test_a_note_carries_on_into_the_block_it_wraps_into(self):
+        blocks = [self.block("1Subs. by A. O., 1949, Sch., for", y0=700.0, kind="footnote"),
+                  self.block("the Province of Baluchistan.", y0=712.0),
+                  self.block("302. Punishment of qatl-i-amd.", size=12.0, y0=300.0)]
+        _carry_footnote_run(blocks, 842.0, 12.0)
+        self.assertEqual([b["type"] for b in blocks], ["footnote", "footnote", "text"])
+
+    def test_a_footnote_is_never_read_as_a_section(self):
+        pages = [{"page_number": 1, "blocks": [
+            {"id": "b0", "type": "text", "text": "1. Short title.", "bbox": [0, 0, 10, 10],
+             "spans": [span("1. Short title.", bold=True)]},
+            {"id": "b1", "type": "footnote", "text": "2Subs. by Act XIV of 2011, s.63.",
+             "bbox": [0, 700, 10, 710], "spans": [span("2Subs. by Act XIV of 2011, s.63.")]},
+        ]}]
+        self.assertEqual([s["number"] for s in detect_structure(pages)], ["1"])
 
 
 class SequenceTests(unittest.TestCase):
@@ -304,7 +428,10 @@ class SequenceTests(unittest.TestCase):
     def test_a_section_repeated_in_the_contents_is_counted_once(self):
         got = section_sequence(self.items(["1", "2", "1", "2", "3"]))
         self.assertEqual(got["sections"], 3)
-        self.assertTrue(got["complete"])
+        # The contents list is cut before this is reached, so a run that still
+        # begins twice is either a compendium or an index nothing resolved.
+        # Neither has one run to be complete, and saying so beats asserting it.
+        self.assertIsNone(got["complete"])
 
     def test_a_statute_with_no_numbered_sections_says_so(self):
         self.assertIsNone(section_sequence([])["complete"])
@@ -397,3 +524,227 @@ class MetadataTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FrontMatterTests(unittest.TestCase):
+    """A contents listing numbers from 1 exactly as the body does.
+
+    Read as sections, its entries duplicate every real one and carry a dotted
+    leader instead of the law -- 91 of them in the Sales Tax Act.
+    """
+
+    def page(self, blocks):
+        return [{"page_number": 1, "blocks": blocks}]
+
+    def block(self, block_id, text, kind="heading", bold=True):
+        return {"id": block_id, "type": kind, "text": text,
+                "bbox": [72.0, 100.0, 500.0, 120.0],
+                "spans": [{"text": text, "size": 11.0, "bbox": [72.0, 100.0, 500.0, 120.0],
+                           "emphasis": {"bold": bold, "underline": False}}]}
+
+    def test_the_contents_list_is_not_the_statute(self):
+        pages = self.page([
+            self.block("b0", "Contents"),
+            self.block("b1", "1. Short title, extent and commencement. ....... 7"),
+            self.block("b2", "2. Definitions. ....... 8"),
+            self.block("b3", "An Act to consolidate the law relating to the levy of a tax"),
+            self.block("b4", "1. Short title, extent and commencement. This Act may be called"),
+            self.block("b5", "2. Definitions. In this Act, unless there is anything repugnant"),
+        ])
+        found = detect_structure(pages)
+        sections = [entry for entry in found if entry["kind"] in {"section", "definitions"}]
+        self.assertEqual([entry["block_id"] for entry in sections], ["b4", "b5"])
+
+    def test_the_cut_never_removes_a_section_printed_only_once(self):
+        """Section 1 recites the statute's own name.
+
+        "This Ordinance may be called the Islamabad Rent Restriction Ordinance,
+        2001." reads as a title, so the body was anchored *after* section 1 and
+        the section was cut away with the front matter -- in 77 statutes. A
+        contents list is a duplicate of the body, so a cut that loses a number
+        outright is not a contents list and is not taken.
+        """
+        pages = self.page([
+            self.block("b0", "WHEREAS it is expedient to restrict the increase of rent;"),
+            self.block("b1", "1. Short title, extent and commencement.— (1) This Ordinance may be called"),
+            self.block("b2", "the Islamabad Rent Restriction Ordinance, 2001."),
+            self.block("b3", "2. Definitions. In this Ordinance, unless the context otherwise requires"),
+        ])
+        numbers = [e["number"] for e in detect_structure(pages)
+                   if e["kind"] in {"section", "definitions"}]
+        self.assertEqual(numbers, ["1", "2"])
+
+    def test_a_statute_with_no_enacting_formula_keeps_every_section(self):
+        pages = self.page([
+            self.block("b0", "1. Short title. This Order may be called the Order of 1979."),
+            self.block("b1", "2. Definitions. In this Order, unless the context otherwise requires"),
+        ])
+        sections = [e for e in detect_structure(pages) if e["kind"] in {"section", "definitions"}]
+        self.assertEqual(len(sections), 2)
+
+
+class BackReferenceTests(unittest.TestCase):
+    """A cross-reference that opens a block reads as a section heading.
+
+    The Penal Code prints "127. Receiving property taken by war or depredation
+    mentioned in sections 125 and" / "126. Whoever receives any property...".
+    The "126." completes the reference; read as a heading it both invented a
+    second section 126 and took section 127's text away from it.
+    """
+
+    def page(self, blocks):
+        return [{"page_number": 1, "blocks": blocks}]
+
+    def block(self, block_id, text):
+        return {"id": block_id, "type": "list", "text": text,
+                "bbox": [72.0, 100.0, 500.0, 120.0],
+                "spans": [{"text": text, "size": 11.0, "bbox": [72.0, 100.0, 500.0, 120.0],
+                           "emphasis": {"bold": True, "underline": False}}]}
+
+    def test_a_number_that_goes_backwards_is_not_a_new_section(self):
+        pages = self.page([
+            self.block("b0", "126. Committing depredation on territories of Power at peace with Pakistan."),
+            self.block("b1", "127. Receiving property taken by war or depredation mentioned in sections 125 and"),
+            self.block("b2", "126. Whoever receives any property knowing the same to have been taken"),
+        ])
+        sections = [e for e in detect_structure(pages) if e["kind"] in {"section", "definitions"}]
+        self.assertEqual([e["block_id"] for e in sections], ["b0", "b1"])
+
+    def test_a_number_not_seen_before_is_kept_even_out_of_order(self):
+        # Only a repeat is a cross-reference; a genuine section printed out of
+        # order must not be thrown away.
+        pages = self.page([
+            self.block("b0", "126. Committing depredation on territories."),
+            self.block("b1", "128. Public servant voluntarily allowing prisoner to escape."),
+            self.block("b2", "127. Receiving property taken by war."),
+        ])
+        sections = [e for e in detect_structure(pages) if e["kind"] in {"section", "definitions"}]
+        self.assertEqual(len(sections), 3)
+
+
+class CompendiumTests(unittest.TestCase):
+    """Estacode is 1,044 pages of separate rule-sets, each numbered from 1.
+
+    Read as one Act it reported 1,179 sections in which "section 1" resolved to
+    62 different texts.  A repeated section 1 is what says the document is a
+    compendium rather than a statute, and a compendium has no section run to
+    check or to cite.
+    """
+
+    def page(self, blocks):
+        return [{"page_number": 1, "blocks": blocks}]
+
+    def block(self, block_id, text):
+        return {"id": block_id, "type": "list", "text": text,
+                "bbox": [72.0, 100.0, 500.0, 120.0],
+                "spans": [{"text": text, "size": 11.0, "bbox": [72.0, 100.0, 500.0, 120.0],
+                           "emphasis": {"bold": True, "underline": False}}]}
+
+    def test_a_repeated_section_one_is_not_a_single_act(self):
+        blocks = []
+        for run in range(3):
+            for number in (1, 2, 3):
+                blocks.append(self.block(f"b{run}_{number}",
+                                         f"{number}. Short title and commencement of rules {run}."))
+        structure = detect_structure(self.page(blocks))
+        self.assertEqual(section_sequence(structure)["restarts"], 3)
+        self.assertIsNone(section_sequence(structure)["complete"])
+
+    def test_a_statute_numbered_once_has_a_checkable_run(self):
+        blocks = [self.block(f"b{n}", f"{n}. A section of the Act.") for n in (1, 2, 3)]
+        sequence = section_sequence(detect_structure(self.page(blocks)))
+        self.assertEqual(sequence["restarts"], 1)
+        self.assertTrue(sequence["complete"])
+
+
+class TitleWithoutAYearTests(unittest.TestCase):
+    """Not every statute prints a year after its name.
+
+    Requiring one left the Penal Code with no title at all, so every section of
+    it was labelled with the filename slug -- "pakistan penal code ppc1860
+    under review".
+    """
+
+    def test_a_code_that_prints_no_year_still_has_a_title(self):
+        got = extract_statute_metadata("THE PAKISTAN PENAL CODE\n1Act No. XLV OF 1860\n")
+        self.assertEqual(got["title"], "THE PAKISTAN PENAL CODE")
+
+    def test_a_title_that_ends_in_a_full_stop_is_read(self):
+        got = extract_statute_metadata(
+            "THE FEDERAL PUBLIC SERVICE COMMISSION\nORDINANCE, 1977.\nCONTENTS\n")
+        self.assertEqual(got["title"], "THE FEDERAL PUBLIC SERVICE COMMISSION ORDINANCE, 1977")
+
+    def test_the_year_is_still_kept_where_it_is_printed(self):
+        got = extract_statute_metadata("THE CANTONMENTS ACT, 1924\n")
+        self.assertEqual(got["title"], "THE CANTONMENTS ACT, 1924")
+
+
+class ScheduleHeadingTests(unittest.TestCase):
+    """A schedule numbers its own entries from 1, so missing its heading puts
+    every one of them in collision with a real section.
+
+    The Stamp Act heads its duty table "1[SCHEDULE 1" -- the amendment marker
+    glued to the front, and the number printed after the word rather than
+    before it. Neither was allowed, so 123 of its 144 "sections" were schedule
+    entries, and 15 other statutes failed the same way.
+    """
+
+    def page(self, blocks):
+        return [{"page_number": 1, "blocks": blocks}]
+
+    def block(self, block_id, text):
+        return {"id": block_id, "type": "list", "text": text,
+                "bbox": [72.0, 100.0, 500.0, 120.0],
+                "spans": [{"text": text, "size": 11.0, "bbox": [72.0, 100.0, 500.0, 120.0],
+                           "emphasis": {"bold": True, "underline": False}}]}
+
+    def kinds(self, pages):
+        return [(entry["kind"], entry.get("number")) for entry in detect_structure(pages)]
+
+    def test_a_schedule_numbered_after_the_word_is_found(self):
+        got = self.kinds(self.page([
+            self.block("b0", "1. Short title. This Act may be called the Stamp Act, 1899."),
+            self.block("b1", "1[SCHEDULE 1"),
+            self.block("b2", "1. ACKNOWLEDGMENT of a debt exceeding twenty rupees in amount."),
+        ]))
+        self.assertIn(("schedule", None), got)
+        self.assertEqual([k for k, _ in got].count("section"), 1)
+        self.assertIn(("schedule_item", "1"), got)
+
+    def test_a_schedule_heading_naming_its_calling_section_is_found(self):
+        # "_____________ THE SCHEDULE (See section 41)" -- the rule printed above
+        # the heading comes back inside the same block, and the cross-reference
+        # follows the word.  The Quaid-e-Azam University Act's First Statutes,
+        # which number from 1, sat under it.
+        got = self.kinds(self.page([
+            self.block("b0", "1. Short title. This Act may be called the Act."),
+            self.block("b1", "_____________ THE SCHEDULE (See section 41)"),
+            self.block("b2", "1. The Faculties. The University shall include the following Faculties."),
+        ]))
+        self.assertIn(("schedule", None), got)
+        self.assertIn(("schedule_item", "1"), got)
+        self.assertEqual([k for k, _ in got].count("section"), 1)
+
+    def test_a_bracketed_cross_reference_is_allowed_too(self):
+        got = self.kinds(self.page([
+            self.block("b0", "1. Short title. This Act may be called the Act."),
+            self.block("b1", "SCHEDULE [see SECTION 5]"),
+            self.block("b2", "1. An entry of the schedule."),
+        ]))
+        self.assertIn(("schedule", None), got)
+        self.assertIn(("schedule_item", "1"), got)
+
+    def test_the_ordinal_before_the_word_still_works(self):
+        got = self.kinds(self.page([
+            self.block("b0", "1. Short title. This Act may be called the Act."),
+            self.block("b1", "THE FIRST SCHEDULE"),
+            self.block("b2", "1. An entry of the schedule."),
+        ]))
+        self.assertIn(("schedule", None), got)
+        self.assertIn(("schedule_item", "1"), got)
+
+    def test_a_sentence_mentioning_a_schedule_is_not_one(self):
+        got = self.kinds(self.page([
+            self.block("b0", "1. Short title. Nothing in the Schedule shall affect this Act."),
+        ]))
+        self.assertEqual(got, [("section", "1")])

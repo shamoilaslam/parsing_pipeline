@@ -22,7 +22,7 @@ import statistics
 from datetime import date
 
 from specter.citations import find_citations
-from specter.courts import canonical_name, court_id
+from specter.courts import canonical_name, court_id, sits_in_benches
 from urllib.parse import quote
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -42,6 +42,15 @@ RTL_RANGES = (
 # quote.  This avoids mistaking citation continuations such as ``17) and ...``
 # for a new judgment paragraph.
 LIST_RE = re.compile(r"^\s*(?:(?:\d+\s*[.)]\s+(?=[A-Z\"“‘(]))|(?:[A-Za-z]\s*[.)]\s+))")
+# A statute's amendment notes are printed at the foot of the page in small
+# type, opening with the marker that points at them.  "l" and "I" appear where
+# the digit 1 was set in a serif face and the text layer kept the glyph.
+FOOTNOTE_MARKER_RE = re.compile(r"^\s*[\d†‡*lI]{1,3}\s*[A-Za-z\[(]")
+# What those notes say.  Matched without a leading word boundary because the
+# marker is glued to the first word -- "1Subs. by", "2S.489E.ins. by".
+AMENDMENT_NOTE_RE = re.compile(
+    r"(?i)(?:subs|ins|added|omitted|rep|substituted|amended|deleted)\.?\s+by\b"
+    r"|see\s+Gazette\b|\bA\.\s?O\.,|\bw\.e\.f\.")
 # Consolidated cases are numbered as a run -- "Civil Appeals No.101 & 102-P of
 # 2011", "NO.616 AND 617 OF 2006", "Petitions No.43 to 46/2023".  Without the
 # connector clause the match stopped at the first number and the year was
@@ -58,7 +67,7 @@ CASE_RE = re.compile(
     # punctuation -- "No.2475 / 2018", "No.1565 -B/ 2023" -- and stopping at
     # the first space dropped the year, which is what makes a case number
     # ambiguous across years.
-    r"[^\n]{0,100}?\bNos?\.?\s*[\w()\-.]+(?:\s*[/\-]\s*[\w()\-.]+)*"
+    r"[^\n]{0,100}?(?<!Sr\.)(?<!S\.)\bNos?\.?(?![A-Za-z])\s*(?=[\w()\-.]*\d)[\w()\-.]+(?:\s*[/\-]\s*[\w()\-.]+)*"
     r"(?:\s*(?:&|and|to|,)\s*[\w/()\-.]+)*"
     r"(?:\s*of\s*\d{4})?)"
 )
@@ -111,6 +120,14 @@ ACT_RE = re.compile(r"(?i)\b(?:the\s+)?([A-Z][A-Za-z ]{2,80}?(?:Act|Code|Ordinan
 # by:", "For the State:") observed across LHC judgments.  Anchored at the
 # start of a block and terminated by ':' or '.' so ordinary prose that
 # happens to contain "state" or "by" does not match.
+# OCR runs a cover label straight into the one below it -- "For the State:
+# DATE OF HEARING" arrives as a single block -- so the value picked up after
+# the colon is the next field's label rather than anybody's name.
+BARE_COVER_LABEL_RE = re.compile(
+    r"(?i)^\s*(?:dates?\s+of\s+(?:hearing|decision|judgment|order)"
+    r"|present|versus|judgment|order|before)\s*[:.]?\s*$"
+)
+
 COVER_LABEL_RE = re.compile(
     r"(?i)^\s*(?P<label>"
     r"dates?\s+of\s+hearing"
@@ -369,10 +386,22 @@ def _classify(block: dict[str, Any], top_keys: set[str], bottom_keys: set[str], 
     if key in bottom_keys or _is_page_number(text):
         reasons.append("bottom_band")
         return "footer", 0.96 if key in bottom_keys else 0.88, reasons
-    if LIST_RE.match(text):
-        return "list", 0.93, ["numbered_or_lettered_prefix"]
     sizes = block["font_sizes"]
     largest = max(sizes or [0])
+    visible = _visible_font_size(block)
+    # A footnote is small type, low on the page, opening with its own marker.
+    # It has to be caught before the list branch, because "1Subs. by the Law
+    # Reforms Ordinance" reads as a numbered list item.  Header and footer
+    # detection cannot find these: it works by repetition across pages, and a
+    # footnote is different on every page, so 111 of the Penal Code's 185
+    # amendment notes were typed as body text and would have been read as the
+    # law itself.
+    if (median_size and visible and visible <= median_size - 2.0
+            and y0 >= page_height * 0.55
+            and (FOOTNOTE_MARKER_RE.match(text) or AMENDMENT_NOTE_RE.search(text[:160]))):
+        return "footnote", 0.90, ["small_type_low_on_page"]
+    if LIST_RE.match(text):
+        return "list", 0.93, ["numbered_or_lettered_prefix"]
     if len(text) <= 100 and (
         largest >= median_size * 1.20
         or (text.isupper() and largest >= median_size * 1.05)
@@ -424,6 +453,10 @@ def _merge_native_blocks(blocks: list[dict[str, Any]], median_size: float) -> li
             previous["type"] == block["type"] == "text"
             or previous["type"] == block["type"] == "list"
             or previous["type"] == "list" and block["type"] == "text"
+            # A footnote wraps like any paragraph.  Typing it separately from
+            # body text is what keeps it out of a section, but it must still
+            # join its own continuation, or one note arrives as 25 fragments.
+            or previous["type"] == block["type"] == "footnote"
         )
         can_join_header = previous["type"] == block["type"] == "header" and abs(previous["bbox"][0] - block["bbox"][0]) <= 24
         previous_number = numbered_re.match(str(previous.get("text", "")))
@@ -456,6 +489,43 @@ def _merge_native_blocks(blocks: list[dict[str, Any]], median_size: float) -> li
 
 
 NON_BODY_TYPES = {"header", "footer", "form_header"}
+
+
+def _visible_font_size(block: dict[str, Any]) -> float:
+    """The largest size among spans that actually print something.
+
+    ``font_sizes`` includes blank spans, and a stray 12pt space inside an 8pt
+    footnote put its maximum at 12 -- so one amendment note in the Penal Code
+    failed the size test and stayed in the body while its neighbours left it.
+    """
+    sizes = [span.get("size") for span in (block.get("spans") or [])
+             if (span.get("text") or "").strip() and span.get("size")]
+    return max(sizes) if sizes else max(block.get("font_sizes") or [0])
+
+
+def _carry_footnote_run(blocks: list[dict[str, Any]], page_height: float, median_size: float) -> None:
+    """Continue a footnote into the block it wraps into.
+
+    A long note runs past one block, and the second block carries no marker of
+    its own -- "The Act has also been amended in its application to the
+    Province of Baluchistan" is the rest of the note above it, not the statute
+    resuming.  Only small type low on the page can continue a run, so ordinary
+    body text below a footnote is never absorbed.
+    """
+    if not median_size:
+        return
+    in_run = False
+    for block in blocks:
+        largest = _visible_font_size(block)
+        small_and_low = (largest and largest <= median_size - 2.0
+                         and block["bbox"][1] >= page_height * 0.55)
+        if block["type"] == "footnote":
+            in_run = True
+        elif in_run and small_and_low and block["type"] in {"text", "list"}:
+            block["type"] = "footnote"
+            block.setdefault("type_reasons", []).append("continues_footnote_above")
+        elif not small_and_low:
+            in_run = False
 
 
 def _reading_order(blocks: list[dict[str, Any]], page_width: float, page_height: float = 0.0) -> list[dict[str, Any]]:
@@ -734,6 +804,10 @@ def _cover_fields_from_blocks(blocks: list[dict[str, Any]]) -> list[dict[str, An
             continue
         label = _clean(match.group("label"))
         inline_value = _clean(match.group("inline"))
+        # "For the State: DATE OF HEARING" is two labels OCR ran together, not
+        # a label and a name.
+        if BARE_COVER_LABEL_RE.match(inline_value):
+            inline_value = ""
         value_parts = [inline_value] if inline_value else []
         bbox = block["bbox"] if inline_value else None
         absorbed = 0
@@ -761,11 +835,163 @@ ROLE_ONLY_RE = re.compile(rf"(?i)^[.…\s]*(?:{ROLES}|the\s+state)[.…\s()]*$")
 ROLE_SUFFIX_RE = re.compile(rf"(?i)\s*[.…]+\s*{ROLES}\s*[.…]*\s*$")
 CASE_REF_ONLY_RE = re.compile(r"(?i)^\s*\(?\s*in\s+(?:civil|criminal|crl|c\.|appeal|petition|both)\b.*$")
 CASE_REF_SUFFIX_RE = re.compile(r"(?i)\s*\(\s*in\s+[^)]*\)\s*\.?\s*$")
+# A Supreme Court cover states the case number and then recites the judgment
+# appealed from -- "CIVIL PETITION NO.2298 OF 2025 (On appeal against the
+# judgment dated 18.04.2025 passed by the Islamabad High Court ...)" -- before
+# naming anyone.  On a scanned page OCR merges all of that into the caption
+# line, so the petitioner came back as the recital.  It is not this case's
+# party, and everything up to its closing bracket is dropped.
+IMPUGNED_RECITAL_RE = re.compile(
+    r"(?is)^.*?\(\s*(?:on\s+appeal\s+)?(?:against|from)\b[^)]*\)"
+)
+
+
+# "MULTAN BENCH MULTAN.", "IN THE LAHORE HIGH COURT, RAWALPINDI BENCH," -- a
+# heading, not a sentence.  Requiring heading shape is what separates the
+# court's own seat from a recital of the court below, which reads
+# "...passed by the Lahore High Court, Multan Bench, Multan in Civil ...".
+_BENCH_RECITAL_RE = re.compile(r"(?i)\b(?:against|passed|dated|division|in\s+(?:c|w|i))\b")
+
+
+def _is_bench_heading(line: str) -> bool:
+    stripped = line.strip()
+    if "BENCH" not in stripped.upper() or not 4 <= len(stripped) <= 60:
+        return False
+    if _BENCH_RECITAL_RE.search(stripped) or DATE_RE.search(stripped):
+        return False
+    letters = [character for character in stripped if character.isalpha()]
+    # A heading on these covers is set in capitals; a sentence is not.
+    return bool(letters) and sum(character.isupper() for character in letters) / len(letters) >= 0.8
+
+
+# ---------------------------------------------------------------------------
+# Statutes a judgment relies on
+# ---------------------------------------------------------------------------
+#
+# This was a whitelist of five acts.  Measured over 90 judgments it named one
+# on 19 of them while 54 named a statute it could not see -- the Limitation
+# Act, the Contract Act, the Income Tax Ordinance, the Guardians and Wards Act.
+# A closed list cannot cover a corpus that holds 1,039 statutes.
+#
+# A statute names itself in title case around the word saying what kind of
+# instrument it is, and that word can open the name ("Code of Criminal
+# Procedure") or close it ("Limitation Act"), so the run is read outward from
+# it in both directions.  A general "<Capitalised words> Act" shape was tried
+# first and rejected: it has no left boundary, and produced "Judge or pendency
+# of petition under the Guardians and Wards Act" and "Date of Order".
+STATUTE_KINDS = {"act", "ordinance", "code", "order", "rules", "regulations", "constitution"}
+STATUTE_JOINERS = {"of", "the", "and", "for", "to", "in", "on"}
+STATUTE_STOPS = {"section", "sections", "article", "articles", "schedule", "schedules",
+                 "chapter", "part", "rule", "clause", "sub", "date", "provisions",
+                 "provision", "proviso", "under", "vide", "read", "terms", "purposes",
+                 "meaning", "scope", "case", "cases", "matter", "light", "view",
+                 "sheet", "petition", "appeal", "revision", "suit", "reference",
+                 "no", "this", "that", "against", "such", "said",
+                 "according", "appendix", "preamble", "however", "whereas",
+                 "moreover", "therefore", "accordingly", "further", "writ",
+                 "since", "hearing", "dated", "before"}
+ROMAN_RE = re.compile(r"(?i)^[ivxlcdm]+$")
+# A trailing full stop is not part of the word: taking it made "Court." and
+# "Order" read as one run across a sentence boundary.  Dots *between* letters
+# are kept, because "Cr.P.C" is one token.
+TOKEN_RE = re.compile(r"[A-Za-z][\w'’&-]*(?:\.[A-Za-z][\w'’&-]*)*|\d{4}")
+GAP_RE = re.compile(r"^[\s,]*$")
+MAX_ACT_NAME = 70
+
+
+def _joins(text: str, left: int, right: int) -> bool:
+    return bool(GAP_RE.match(text[left:right]))
+
+
+def _stem(word: str) -> str:
+    return word.split('-')[0].lower()
+
+
+def _part_of_name(word: str) -> bool:
+    # A word carrying a digit is not part of a title: the form label "C-121"
+    # sits directly above the word ORDER on every LHC and IHC judgment sheet,
+    # and read as a name it became "C-121 ORDER" on 8 documents.
+    if any(character.isdigit() for character in word):
+        return False
+    return word[:1].isupper() or word.lower() in STATUTE_JOINERS
+
+
+def _named_statutes(text: str) -> list[str]:
+    """Every statute the page names, as the page names it.
+
+    Precision matters more than recall here, as it does for citations: a
+    wrongly named act asserts a law the judgment never engaged.  Coverage went
+    from 21% of judgments to 68%, with no name the old whitelist found lost.
+    """
+    tokens = [(m.group(0), m.start(), m.end()) for m in TOKEN_RE.finditer(text)]
+    found = {}
+    for index, (word, start, end) in enumerate(tokens):
+        if word.lower() not in STATUTE_KINDS or not word[:1].isupper():
+            continue
+        first = last = index
+        while first > 0:
+            previous, p_start, p_end = tokens[first - 1]
+            if (_stem(previous) in STATUTE_STOPS or not _part_of_name(previous)
+                    or not _joins(text, p_end, tokens[first][1])):
+                break
+            first -= 1
+        while last + 1 < len(tokens):
+            following, f_start, f_end = tokens[last + 1]
+            if (_stem(following) in STATUTE_STOPS or not _part_of_name(following)
+                    or not _joins(text, tokens[last][2], f_start)):
+                break
+            # Forward, a title only ever continues through "of".  Any other
+            # word after the kind is the sentence resuming.
+            if last == index and following.lower() != "of":
+                break
+            if following.lower() in STATUTE_JOINERS and following.lower() not in {"of", "the"}:
+                break
+            last += 1
+        # A lone initial is not the start of a title -- "(a) of the General
+        # Clauses Act" opened the name at the sub-clause letter.
+        while first < last and (tokens[first][0].lower() in STATUTE_JOINERS
+                                or len(tokens[first][0]) == 1
+                                or ROMAN_RE.match(tokens[first][0])):
+            first += 1
+        while last > first and tokens[last][0].lower() in STATUTE_JOINERS:
+            last -= 1
+        words = [tokens[i][0] for i in range(first, last + 1)]
+        if len(words) < 2:
+            continue
+        closing = index == last and first < index
+        if closing and tokens[index - 1][0].lower() in STATUTE_JOINERS:
+            continue
+        # A title needs a word of its own: "Order XLI Rule" is a procedural
+        # reference built entirely from kind words and a numeral.
+        if not any(w[:1].isupper() and w.lower() not in STATUTE_KINDS
+                   and w.lower() not in STATUTE_JOINERS and not ROMAN_RE.match(w)
+                   for w in words):
+            continue
+        name = re.sub(r"-\s+", "-", " ".join(words))
+        if len(name) > MAX_ACT_NAME:
+            continue
+        year = ""
+        after = last + 1
+        if after < len(tokens) and re.fullmatch(r"(?:1[89]|20)\d{2}", tokens[after][0]) \
+                and _joins(text, tokens[last][2], tokens[after][1]):
+            year = f", {tokens[after][0]}"
+        found.setdefault(name, set()).add(year)
+    # Where a document states the year somewhere, keep the stated form only.
+    names = []
+    for name, years in found.items():
+        real = sorted(y for y in years if y)
+        names.extend(f"{name}{y}" for y in real) if real else names.append(name)
+    return sorted(set(names))
+
 
 
 def _party_side(value: str) -> str:
     """Trim caption punctuation, treating a wordless remainder as absent."""
-    trimmed = CASE_REF_SUFFIX_RE.sub("", value.strip(" :-"))
+    # The case number and the recital of the judgment appealed from both sit
+    # ahead of the petitioner's name on a Supreme Court cover.  Dropping them
+    # first is what leaves a name rather than the whole cover block.
+    trimmed = IMPUGNED_RECITAL_RE.sub("", value).strip(" :-")
+    trimmed = CASE_REF_SUFFIX_RE.sub("", trimmed.strip(" :-"))
     trimmed = ROLE_SUFFIX_RE.sub("", trimmed).strip(" :-")
     if ROLE_ONLY_RE.match(trimmed) or CASE_REF_ONLY_RE.match(trimmed):
         return ""
@@ -906,12 +1132,7 @@ def _extract_metadata(text: str, pdf_metadata: dict[str, Any]) -> dict[str, Any]
     for match in re.finditer(r"(?i)\b(?:sections?|s\.)\s+([^.;\n]{1,100})", text):
         section_numbers.update(re.findall(r"\b\d{1,4}(?:-[A-Za-z])?(?:\([^)]+\))?", match.group(1)))
     section_numbers.difference_update({"1860", "1898", "1984", "1997"})
-    known_acts = re.compile(
-        r"(?i)\b(?:Pakistan Penal Code(?:,?\s*1860)?|Anti-Terrorism Act(?:,?\s*1997)?|"
-        r"Code of Criminal Procedure(?:,?\s*1898)?|Qanun-e-Shahadat Order(?:,?\s*1984)?|"
-        r"Constitution of Pakistan|Control of Narcotic Substances Act(?:,?\s*1997)?)\b"
-    )
-    acts = sorted(set(_clean(x) for x in known_acts.findall(text)))
+    acts = _named_statutes(text)
     court = next((
         line.strip()
         for line in head.splitlines()
@@ -923,7 +1144,14 @@ def _extract_metadata(text: str, pdf_metadata: dict[str, Any]) -> dict[str, Any]
         # the body that merely mentioned a High Court.
         and re.match(r"^\s*(?:IN\s*THE\s*)?(?:[A-Z][A-Z &.\-]{2,60}?\s*)?(?:HIGH|SUPREME)\s*COURT", line, re.I)
     ), None)
-    bench = next((line.strip() for line in head.splitlines() if "BENCH" in line.upper()), None)
+    # A bench line names where the court sat, so it only exists at a court that
+    # sits in more than one place, and it is part of the *heading*.  Taking any
+    # line containing "BENCH" read the impugned court's bench out of the
+    # "(Against the judgment ... Lahore High Court, Multan Bench)" recital, and
+    # body prose about "the learned Bench", as this court's own -- wrong on all
+    # 14 Supreme Court documents in a 120-document sample.
+    bench = (next((line.strip() for line in head.splitlines() if _is_bench_heading(line)), None)
+             if sits_in_benches(_normalise_court(court)) else None)
     # "NAME, J.-" at LHC and SC; "NAME, J:-" at IHC.  Requiring the period lost
     # the author on every IHC judgment that writes the colon.
     judge_matches = re.findall(r"(?i)([A-Z][A-Za-z .'-]{3,60}),\s*J\s*[.:]", text)
@@ -1499,6 +1727,7 @@ class SpecterParser:
                         tables_count += 1
                     candidates.append((table["bbox"][1], table_block))
                 ordered_blocks = _reading_order([block for _, block in candidates], float(page.rect.width), float(page.rect.height))
+                _carry_footnote_run(ordered_blocks, page_heights[page_index], median_size)
                 for order, block in enumerate(ordered_blocks):
                     block["reading_order"] = order
                     block["id"] = f"p{page_no}_b{order}"

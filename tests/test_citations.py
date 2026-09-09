@@ -82,6 +82,62 @@ class JurisdictionTests(unittest.TestCase):
         self.assertEqual(find_citations("2008 SCMR 598")[0]["jurisdiction"], "PK")
 
 
+class AnnotatedCourtTests(unittest.TestCase):
+    """A series that paginates across every court often names one anyway.
+
+    All of these were found uncovered in a 698-document IHC sample.
+    """
+
+    def test_the_court_is_read_before_or_after_the_page(self):
+        for written in ("1987 CLC [Karachi] 2185", "1987 CLC (Karachi) 2185",
+                        "1987 CLC 2185 [Karachi]", "1987 CLC 2185-Karachi"):
+            found = find_citations(written)
+            self.assertEqual([c["court"] for c in found], ["Karachi"], written)
+
+    def test_it_is_kept_out_of_the_identifier(self):
+        # CLC runs one continuous pagination across every court, so "1987 CLC
+        # [Karachi] 2185" and "1987 CLC 2185" are one case.  Putting the court
+        # in the identifier would make them two nodes.
+        self.assertEqual(ids("1987 CLC [Karachi] 2185"), ids("1987 CLC 2185"))
+
+    def test_but_a_court_paginated_series_keeps_it(self):
+        # PLD numbers its pages per court, so there the court *is* the case.
+        self.assertEqual(ids("PLD 2016 [Lahore] 383"), ["PLD 2016 Lahore 383"])
+        self.assertNotEqual(ids("PLD 2016 [Lahore] 383"), ids("PLD 2016 SC 383"))
+
+    def test_a_court_abbreviation_that_is_also_a_word_is_not_taken(self):
+        # "All" is Allahabad and also English.  A trailing hyphen followed by
+        # ordinary prose is prose.
+        found = find_citations("2018 CLC 392 - All the parties agreed")
+        self.assertEqual([(entry["id"], entry["court"]) for entry in found],
+                         [("2018 CLC 392", None)])
+
+
+class NoteSeriesTests(unittest.TestCase):
+    """Every series runs a separately paginated Notes section."""
+
+    def test_the_six_spellings_the_corpus_uses(self):
+        for written in ("2018 YLR Note 114", "2018 YLR Notes 114", "2018 YLR-N 114",
+                        "2018 YLR (N) 114", "2018 YLR N 114"):
+            self.assertEqual(ids(written), ["2018 YLR-N 114"], written)
+
+    def test_a_note_is_not_the_same_case_as_the_page_it_shares(self):
+        self.assertNotEqual(ids("2018 YLR Note 114"), ids("2018 YLR 114"))
+
+    def test_a_sub_series_keeps_both_its_brackets_and_its_note(self):
+        self.assertEqual(ids("2019 PLC (CS) Note 19"), ["2019 PLC(CS)-N 19"])
+
+
+class SpellingTests(unittest.TestCase):
+    """One entry per series has to cover how the corpus actually prints it."""
+
+    def test_dots_are_optional_everywhere_they_are_written(self):
+        # Keeping the dots literal made "PLC C.S." require them, so "2012 PLC
+        # CS 90" -- printed exactly like that -- was missed.
+        for written in ("2012 PLC CS 90", "2012 PLC C.S. 90", "2012 PLC (C.S.) 90"):
+            self.assertEqual(ids(written), ["2012 PLC(CS) 90"], written)
+
+
 class PrecisionTests(unittest.TestCase):
     """What the corpus contains that looks like a citation and is not."""
 
