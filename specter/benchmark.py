@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 import re
 import statistics
@@ -322,8 +323,9 @@ def render(report: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-SC_ROOT = Path(r"D:\Shamoil Data\specter_data\SC")
-IHC_ROOT = Path(r"D:\Shamoil Data\specter_data\IHC")
+# Where the corpora live on this machine; override per machine rather than edit.
+SC_ROOT = Path(os.getenv("SPECTER_SC_ROOT", r"D:\Shamoil Data\specter_data\SC"))
+IHC_ROOT = Path(os.getenv("SPECTER_IHC_ROOT", r"D:\Shamoil Data\specter_data\IHC"))
 
 
 def evaluate_label_metadata(root: Path, limit: int | None = None, include_scanned: bool = False,

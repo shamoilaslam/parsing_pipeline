@@ -22,6 +22,10 @@ python -m specter parse data/pdfs/2024LHC6559.pdf --out artifacts/run
 
 # Run tests
 python -m pytest tests -q
+
+# Byte-level regression gate: fails if anything the parser writes for
+# data/pdfs changed (see eval/snapshot.py; ~20 min, one scanned PDF dominates)
+python -m eval.snapshot check data/pdfs
 ```
 
 ## Running it on your own PDFs
@@ -208,6 +212,10 @@ python -m specter benchmark --ihc-metadata --shuffle    # extraction vs each met
 python -m specter benchmark --sc-gold          # the reviewed SC gold pages
 python -m specter benchmark                    # the LHC gold pages
 ```
+
+The corpus roots default to this project's original machine; set
+`SPECTER_SC_ROOT` / `SPECTER_IHC_ROOT` in the environment, or pass
+`--sc-root` / `--ihc-root`, anywhere else.
 
 `--limit` reads the corpus in path order so a report stays comparable with
 earlier ones; `--shuffle` draws from across it with a fixed seed, which IHC

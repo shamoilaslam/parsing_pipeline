@@ -213,9 +213,11 @@ class GeminiVision:
             parts.append({"text": f"\nCROP_ID={task['id']}\n"})
             parts.append({"inline_data": {"mime_type": "image/png", "data": base64.b64encode(Path(task["image"]).read_bytes()).decode("ascii")}})
         payload = _json_request(
-            f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent?key={self.key}",
+            f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent",
             {"contents": [{"role": "user", "parts": parts}], "generationConfig": {"temperature": 0, "responseMimeType": "application/json", "maxOutputTokens": 4096}},
-            {},
+            # In a header, not the query string: a URL is what proxies, error
+            # messages and access logs record.
+            {"x-goog-api-key": self.key},
         )
         return _validate_items(_parse_model_json(_response_text(payload)), tasks, self.name, self.model)
 

@@ -11,18 +11,24 @@ requires-python = ">=3.11"
 # else: `specter.urdu_ocr` is the sole module that imports the ML stack, and
 # no parse path imports it.  Keeping torch out of the base install is what
 # makes this deployable on another machine in seconds rather than 2 GB.
+#
+# PyMuPDF is pinned exactly: a minor release has changed the whitespace it
+# extracts, which moves the gold numbers.  Upgrading it is a deliberate
+# re-baseline, not a routine bump.
 dependencies = [
-  "PyMuPDF>=1.24",
+  "PyMuPDF==1.28.0",
   "Pillow>=10",
   "numpy>=1.26",
   "opencv-python>=4.8",
-  "python-bidi>=0.4",
   "psutil>=5.9",
+  "pydantic>=2.7",
 ]
 
 [project.optional-dependencies]
 # Required for scanned documents -- 29% of IHC, 28% of SC, 3.5% of LHC.
-ocr = ["rapidocr-onnxruntime>=1.3"]
+# Pinned to the version every scanned-slice number was measured with.  (The
+# old ">=1.3" named releases that do not exist for Python 3.13.)
+ocr = ["rapidocr-onnxruntime==1.2.3"]
 # The local Urdu recogniser experiments only (`specter/urdu_ocr.py`).
 urdu = [
   "accelerate==1.12.0",
@@ -35,13 +41,35 @@ urdu = [
 ]
 # `specter benchmark` scores text with jiwer; parsing does not.
 bench = ["jiwer>=3.0"]
-dev = ["pytest>=8", "jiwer>=3.0"]
+dev = ["pytest>=8", "jiwer>=3.0", "ruff>=0.6", "mypy>=1.11", "pre-commit>=3.7"]
 
 [project.scripts]
 specter = "specter.__main__:main"
 
 [tool.setuptools.packages.find]
-include = ["specter*"]
+include = ["specter*", "docintel*"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+extend-exclude = ["_quarantine"]
+
+[tool.ruff.lint]
+# Lint for defects only.  The existing modules are not reformatted: that would
+# rewrite most lines of the repository, and every one of them would lose its blame.
+select = ["F", "E9", "B"]
+ignore = [
+  "B008",   # argparse / dataclass defaults are intentional
+  "B905",   # zip() without strict=: the codebase relies on truncation deliberately
+]
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+# Gradual: modules opt in to strict checking as they are written or touched.
+check_untyped_defs = false
+# Widened module by module as each is moved into docintel/ or touched.
+files = ["eval", "docintel"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
