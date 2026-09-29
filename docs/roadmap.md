@@ -15,7 +15,12 @@ Every phase must pass all three:
    python -m eval.snapshot check data/pdfs
    ```
 
-3. The LHC 5-slice gold benchmark, bit-identical, under the `offline` policy.
+3. The LHC 5-slice gold benchmark, bit-identical per page, under the `offline` policy. This takes about 80 minutes, almost all of it OCR on the scanned gold documents:
+
+   ```
+   python -m specter benchmark --output artifacts/benchmark/latest.json
+   python -m eval.gold_gate artifacts/benchmark/latest.json
+   ```
 
 ## Phase 0: make the gates real (no behaviour change)
 
@@ -26,7 +31,9 @@ Every phase must pass all three:
 | ruff / mypy / pre-commit / GitHub Actions, scoped to new code | done |
 | Gemini key moved from the URL to a header; corpus roots overridable by env | done |
 | Dependencies: PyMuPDF pinned exactly, RapidOCR pinned to the measured version, unused `python-bidi` dropped | done |
-| Gold PDFs (76, ~24 MB) and `phase5b.json` baseline made fetchable, manifest paths relative | waiting on files |
+| LHC gold baseline regenerated and committed (`eval/baselines/lhc_gold.json`); it reproduces RESULTS.md §A exactly | done |
+| Per-page gold gate (`python -m eval.gold_gate <report>`) | done |
+| The 76 gold source PDFs (~24 MB) live only at `D:\Shamoil Data\specter_data\LHC`, so the gold gate runs on that machine only | open: needs the PDFs in the repo (Git LFS) |
 | Linux vs Windows byte equality of the snapshot | open |
 
 ## Phase 1: `docintel` package, seams, v2 output
