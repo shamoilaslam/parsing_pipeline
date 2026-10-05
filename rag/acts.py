@@ -97,7 +97,7 @@ def court_name(court_id: str | None) -> str | None:
     """
     if not court_id:
         return None
-    from specter.courts import COURTS  # noqa: PLC0415 -- avoids a package cycle
+    from docintel.legal.courts import COURTS  # noqa: PLC0415 -- avoids a package cycle
 
     for court in COURTS:
         if court.court_id == court_id:

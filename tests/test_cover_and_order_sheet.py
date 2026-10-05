@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from specter.specter_parser import (
+from docintel.engines.native import (
     SpecterParser,
     _coalesce_lines,
     _cover_fields_from_blocks,

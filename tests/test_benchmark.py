@@ -1,6 +1,6 @@
 import unittest
 
-from specter.benchmark import (
+from docintel.benchmark import (
     classify,
     summarise_labels,
     error_rates,

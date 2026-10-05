@@ -30,7 +30,7 @@ import cv2
 import fitz
 import numpy as np
 
-from specter.specter_parser import (
+from docintel.engines.native import (
     DATE_RE,
     _area,
     _bbox,
@@ -314,7 +314,7 @@ class ScannedParser:
         self.urdu_ocr = None
         if use_urdu_router:
             try:
-                from specter.urdu_ocr import RapidArabicOCR
+                from docintel.engines.urdu_ocr import RapidArabicOCR
 
                 self.urdu_ocr = RapidArabicOCR(urdu_model_dir)
             except (FileNotFoundError, ImportError, RuntimeError):

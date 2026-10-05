@@ -44,6 +44,7 @@ bench = ["jiwer>=3.0"]
 dev = ["pytest>=8", "jiwer>=3.0", "ruff>=0.6", "mypy>=1.11", "pre-commit>=3.7"]
 
 [project.scripts]
+docintel = "docintel.__main__:main"
 specter = "specter.__main__:main"
 
 [tool.setuptools.packages.find]
@@ -52,7 +53,8 @@ include = ["specter*", "docintel*"]
 [tool.ruff]
 line-length = 120
 target-version = "py311"
-extend-exclude = ["_quarantine"]
+# Moved-not-rewritten code is outside the lint/type gates until it is touched on purpose.
+extend-exclude = ["_quarantine", "docintel/engines", "docintel/legal", "docintel/pipeline.py", "docintel/benchmark.py", "docintel/report.py", "docintel/inspect_html.py", "docintel/validate.py"]
 
 [tool.ruff.lint]
 # Lint for defects only.  The existing modules are not reformatted: that would
@@ -70,6 +72,7 @@ ignore_missing_imports = true
 check_untyped_defs = false
 # Widened module by module as each is moved into docintel/ or touched.
 files = ["eval", "docintel"]
+exclude = ['docintel/engines/', 'docintel/legal/', 'docintel/(pipeline|benchmark|report|inspect_html|validate)\.py']
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

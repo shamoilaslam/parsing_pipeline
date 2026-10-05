@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from specter import urdu_vision
+from docintel.engines import urdu_vision
 
 
 class GeminiRequestTests(unittest.TestCase):

@@ -30,7 +30,7 @@ from urllib.request import Request, urlopen
 
 import fitz
 
-from specter.specter_parser import SpecterParser, _is_rtl
+from docintel.engines.native import SpecterParser, _is_rtl
 
 
 DEFAULT_GEMINI_MODEL = "gemini-3.6-flash"

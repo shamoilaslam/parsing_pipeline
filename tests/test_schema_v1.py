@@ -8,7 +8,7 @@ from pathlib import Path
 from pydantic import ValidationError
 
 from docintel.schema import SpecterV1
-from specter.ingest_pdfs import _parse_one
+from docintel.pipeline import _parse_one
 
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLE = ROOT / "data" / "pdfs" / "2021LHC9943.pdf"      # 2 pages, digital: fast

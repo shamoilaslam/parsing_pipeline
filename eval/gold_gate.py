@@ -1,11 +1,11 @@
 """Gold gate: does the LHC benchmark still score every page exactly as before?
 
-``specter benchmark --baseline`` prints the slice deltas but never fails, and a
+``docintel benchmark --baseline`` prints the slice deltas but never fails, and a
 slice mean can hold still while individual pages move in opposite directions.
 This compares every scored page -- CER, WER, character counts, tables found --
 against a committed report and exits non-zero on any difference.
 
-    python -m specter benchmark --output artifacts/benchmark/latest.json
+    python -m docintel benchmark --output artifacts/benchmark/latest.json
     python -m eval.gold_gate artifacts/benchmark/latest.json
 """
 
@@ -40,7 +40,7 @@ def compare(baseline: dict[str, Any], current: dict[str, Any]) -> list[str]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Fail if any LHC gold page scores differently from the baseline.")
-    parser.add_argument("report", type=Path, help="a report written by `specter benchmark --output`")
+    parser.add_argument("report", type=Path, help="a report written by `docintel benchmark --output`")
     parser.add_argument("--baseline", type=Path, default=BASELINE)
     args = parser.parse_args()
     current = json.loads(args.report.read_text(encoding="utf-8"))

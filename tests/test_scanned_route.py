@@ -4,9 +4,9 @@ from pathlib import Path
 
 import fitz
 
-from specter.ingest_pdfs import _merge_native_pages, _page_needs_ocr
-from specter.scanned_parser import ScannedParser, _detect_blue_slip
-from specter.specter_parser import _cover_fields_from_table, _narrow_to_spans
+from docintel.pipeline import _merge_native_pages, _page_needs_ocr
+from docintel.engines.scanned import ScannedParser, _detect_blue_slip
+from docintel.engines.native import _cover_fields_from_table, _narrow_to_spans
 
 
 ROOT = Path(__file__).resolve().parents[1]

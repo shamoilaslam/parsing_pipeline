@@ -4,7 +4,7 @@ from pathlib import Path
 
 import fitz
 
-from specter.specter_parser import (
+from docintel.engines.native import (
     SpecterParser,
     _counsel_role,
     _court_id,

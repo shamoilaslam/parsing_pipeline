@@ -1,6 +1,6 @@
 import unittest
 
-from specter.specter_parser import _decision_date
+from docintel.engines.native import _decision_date
 
 
 class DecisionDateTests(unittest.TestCase):

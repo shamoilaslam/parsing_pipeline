@@ -21,8 +21,8 @@ import re
 import statistics
 from datetime import date
 
-from specter.citations import find_citations
-from specter.courts import canonical_name, court_id, sits_in_benches
+from docintel.legal.citations import find_citations
+from docintel.legal.courts import canonical_name, court_id, sits_in_benches
 from urllib.parse import quote
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -72,7 +72,7 @@ CASE_RE = re.compile(
     r"(?:\s*of\s*\d{4})?)"
 )
 DATE_RE = re.compile(r"\b(?:\d{1,2}[./-]\d{1,2}[./-]\d{2,4}|\d{1,2}\s+[A-Za-z]+\s+\d{4})\b")
-# Citations live in ``specter/citations.py``.  The pattern that used to be
+# Citations live in ``docintel.legal.citations.py``.  The pattern that used to be
 # here required the reporter *before* the year -- "PLD 2015 SC 123" -- and
 # Pakistan writes the year first, so it found none of the 17 authorities in
 # the judgment it was first tested against.
@@ -1087,7 +1087,7 @@ def _bench_judges(head_lines: list[str]) -> list[str]:
     return names
 
 
-# Court naming lives in the registry (``specter/courts.py``) so that adding a
+# Court naming lives in the registry (``docintel.legal.courts.py``) so that adding a
 # court is a config entry rather than an edit here.  Both fields are kept: the
 # verbatim name for quoting, a canonical id for querying -- a corpus that
 # stores only what the page says ends up with one court under several
@@ -1508,7 +1508,7 @@ def _md_link(path: str) -> str:
 
 def _attach_diagnostics(result: dict[str, Any]) -> dict[str, Any]:
     """Embed validator output in the canonical document without changing content."""
-    from specter.validate_document import validate
+    from docintel.validate import validate
 
     report = validate(result)
     scores = [float(score) for score in report["quality_profile"].values()]
@@ -1867,7 +1867,7 @@ def main() -> None:
 
     urdu_ocr = None
     if args.urdu_ocr != "none":
-        from specter.urdu_ocr import build_urdu_ocr
+        from docintel.engines.urdu_ocr import build_urdu_ocr
         urdu_ocr = build_urdu_ocr(args.urdu_ocr, args.urdu_model_dir, args.urdu_model_id)
     engine = SpecterParser(rtl_mode=args.rtl_mode, urdu_ocr=urdu_ocr)
     summary = []

@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from specter.report import load, render, summarise
+from docintel.report import load, render, summarise
 
 
 def document(name="judgment.pdf", folder="Writ Petition-1-2020", score=1.0, status="PASS",

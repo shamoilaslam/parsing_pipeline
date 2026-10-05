@@ -14,8 +14,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from specter.ingest_pdfs import output_stems, _parse_one, expand_paths, main, write_metadata
-from specter.specter_parser import _md_link
+from docintel.pipeline import output_stems, _parse_one, expand_paths, main, write_metadata
+from docintel.engines.native import _md_link
 
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLE = ROOT / "data" / "pdfs" / "2021LHC9943.pdf"      # 2 pages, digital: fast

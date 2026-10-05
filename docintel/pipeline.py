@@ -28,12 +28,12 @@ from pathlib import Path
 
 import fitz
 
-from specter.courts import (IHC_ORDER, court_id, matches_case_number, matches_judge,
+from docintel.legal.courts import (IHC_ORDER, court_id, matches_case_number, matches_judge,
                             path_labels, same_date)
-from specter.citations import cited_authorities
-from specter.statutes import detect_structure, extract_statute_metadata, statute_labels
-from specter.scanned_parser import _dominant_page_image, ScannedParser
-from specter.specter_parser import PUA_CHAR_RE, SpecterParser, write_result
+from docintel.legal.citations import cited_authorities
+from docintel.legal.statutes import detect_structure, extract_statute_metadata, statute_labels
+from docintel.engines.scanned import _dominant_page_image, ScannedParser
+from docintel.engines.native import PUA_CHAR_RE, SpecterParser, write_result
 
 
 # A text layer this far into the private-use area is a legacy InPage/Nastaleeq
