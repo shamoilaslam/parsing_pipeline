@@ -54,7 +54,7 @@ include = ["specter*", "docintel*"]
 line-length = 120
 target-version = "py311"
 # Moved-not-rewritten code is outside the lint/type gates until it is touched on purpose.
-extend-exclude = ["_quarantine", "docintel/engines", "docintel/legal", "docintel/pipeline.py", "docintel/benchmark.py", "docintel/report.py", "docintel/inspect_html.py", "docintel/validate.py"]
+extend-exclude = ["_quarantine", "docintel/engines/native.py", "docintel/engines/scanned.py", "docintel/engines/urdu_ocr.py", "docintel/engines/urdu_vision.py", "docintel/legal", "docintel/pipeline.py", "docintel/benchmark.py", "docintel/report.py", "docintel/inspect_html.py", "docintel/validate.py"]
 
 [tool.ruff.lint]
 # Lint for defects only.  The existing modules are not reformatted: that would
@@ -72,7 +72,12 @@ ignore_missing_imports = true
 check_untyped_defs = false
 # Widened module by module as each is moved into docintel/ or touched.
 files = ["eval", "docintel"]
-exclude = ['docintel/engines/', 'docintel/legal/', 'docintel/(pipeline|benchmark|report|inspect_html|validate)\.py']
+exclude = ['docintel/engines/(native|scanned|urdu_ocr|urdu_vision)\.py', 'docintel/legal/', 'docintel/(pipeline|benchmark|report|inspect_html|validate)\.py']
+
+# Errors inside the moved modules are not this gate's business (see `exclude`).
+[[tool.mypy.overrides]]
+module = ["docintel.engines.native", "docintel.engines.scanned", "docintel.engines.urdu_ocr", "docintel.engines.urdu_vision", "docintel.legal.*", "docintel.pipeline", "docintel.benchmark", "docintel.report", "docintel.inspect_html", "docintel.validate"]
+follow_imports = "silent"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

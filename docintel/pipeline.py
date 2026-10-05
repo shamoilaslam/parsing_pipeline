@@ -32,8 +32,9 @@ from docintel.legal.courts import (IHC_ORDER, court_id, matches_case_number, mat
                             path_labels, same_date)
 from docintel.legal.citations import cited_authorities
 from docintel.legal.statutes import detect_structure, extract_statute_metadata, statute_labels
-from docintel.engines.scanned import _dominant_page_image, ScannedParser
-from docintel.engines.native import PUA_CHAR_RE, SpecterParser, write_result
+from docintel.engines.local import NativeEngine, OcrEngine
+from docintel.engines.scanned import _dominant_page_image
+from docintel.engines.native import PUA_CHAR_RE, write_result
 
 
 # A text layer this far into the private-use area is a legacy InPage/Nastaleeq
@@ -129,17 +130,16 @@ def parse_pdf(pdf: Path, out: Path, engine: str = "auto", rtl_mode: str = "image
     route = classify_pdf(pdf)
     selected = engine if engine != "auto" else ("scanned" if route["mode"] != "digital" else "digital")
     if selected == "digital":
-        result = SpecterParser(rtl_mode=rtl_mode).parse(pdf, out, stem=stem)
+        result = NativeEngine(rtl_mode=rtl_mode).parse(pdf, out, stem=stem)
     else:
         # OCR only the pages that need it.  A mixed document's readable pages
         # are taken from the digital parse below, so OCR-ing them costs ~30s
         # each and the result is thrown away.
-        result = ScannedParser(render_scale=render_scale, preprocess_variant=preprocess_variant,
-                               retry_threshold=retry_threshold,
-                               save_page_images=save_page_images).parse(pdf, out, ocr_pages=route["scan_pages"],
-                                                                       stem=stem)
+        result = OcrEngine(render_scale=render_scale, preprocess_variant=preprocess_variant,
+                           retry_threshold=retry_threshold,
+                           save_page_images=save_page_images).parse(pdf, out, pages=route["scan_pages"], stem=stem)
         if route["native_pages"]:
-            result = _merge_native_pages(result, SpecterParser(rtl_mode=rtl_mode).parse(pdf, out, stem=stem),
+            result = _merge_native_pages(result, NativeEngine(rtl_mode=rtl_mode).parse(pdf, out, stem=stem),
                                          route["native_pages"])
     result["document"]["router"] = {"requested": engine, "selected": selected, **route}
     if stem:
