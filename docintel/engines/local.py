@@ -6,8 +6,10 @@ from pathlib import Path
 from typing import Any
 
 from docintel.engines.base import Policy
+from docintel.engines.hints import LegalHints
 from docintel.engines.native import SpecterParser
 from docintel.engines.scanned import ScannedParser
+from docintel.legal.hints import LEGAL_HINTS
 
 
 class NativeEngine:
@@ -16,8 +18,8 @@ class NativeEngine:
     name = "digital"
     policy: Policy = "local"
 
-    def __init__(self, rtl_mode: str = "image") -> None:
-        self._parser = SpecterParser(rtl_mode=rtl_mode)
+    def __init__(self, rtl_mode: str = "image", hints: LegalHints = LEGAL_HINTS) -> None:
+        self._parser = SpecterParser(rtl_mode=rtl_mode, hints=hints)
 
     def parse(
         self, pdf: Path, output_dir: Path | None, *, stem: str | None = None, pages: list[int] | None = None
@@ -33,9 +35,11 @@ class OcrEngine:
     policy: Policy = "local"
 
     def __init__(self, render_scale: float = 2.0, preprocess_variant: str = "grayscale",
-                 retry_threshold: float = 0.45, save_page_images: bool = False) -> None:
+                 retry_threshold: float = 0.45, save_page_images: bool = False,
+                 hints: LegalHints = LEGAL_HINTS) -> None:
         self._parser = ScannedParser(render_scale=render_scale, preprocess_variant=preprocess_variant,
-                                     retry_threshold=retry_threshold, save_page_images=save_page_images)
+                                     retry_threshold=retry_threshold, save_page_images=save_page_images,
+                                     hints=hints)
 
     def parse(
         self, pdf: Path, output_dir: Path | None, *, stem: str | None = None, pages: list[int] | None = None

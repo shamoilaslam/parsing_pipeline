@@ -21,8 +21,9 @@ import re
 import statistics
 from datetime import date
 
-from docintel.legal.citations import find_citations
-from docintel.legal.courts import canonical_name, court_id, sits_in_benches
+from docintel.engines.hints import LegalHints
+from docintel.legal.courts import canonical_name, court_id
+from docintel.legal.hints import LEGAL_HINTS
 from urllib.parse import quote
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -1117,7 +1118,7 @@ def _iso_date(value: str | None) -> str | None:
         return None
 
 
-def _extract_metadata(text: str, pdf_metadata: dict[str, Any]) -> dict[str, Any]:
+def _extract_metadata(text: str, pdf_metadata: dict[str, Any], hints: LegalHints = LEGAL_HINTS) -> dict[str, Any]:
     head = text[:12000]
     dates = DATE_RE.findall(head)
     # Preferring a match from the first 25 lines -- the caption, where a
@@ -1127,7 +1128,7 @@ def _extract_metadata(text: str, pdf_metadata: dict[str, Any]) -> dict[str, Any]
     # caption naming a different case from the folder it was filed in; that is
     # the corpus disagreeing with itself, and ``label_check`` reports it.
     case_match = CASE_RE.search(head)
-    citations = sorted({citation["id"] for citation in find_citations(text)})
+    citations = sorted({citation["id"] for citation in hints.find_citations(text)})
     section_numbers: set[str] = set()
     for match in re.finditer(r"(?i)\b(?:sections?|s\.)\s+([^.;\n]{1,100})", text):
         section_numbers.update(re.findall(r"\b\d{1,4}(?:-[A-Za-z])?(?:\([^)]+\))?", match.group(1)))
@@ -1151,7 +1152,7 @@ def _extract_metadata(text: str, pdf_metadata: dict[str, Any]) -> dict[str, Any]
     # body prose about "the learned Bench", as this court's own -- wrong on all
     # 14 Supreme Court documents in a 120-document sample.
     bench = (next((line.strip() for line in head.splitlines() if _is_bench_heading(line)), None)
-             if sits_in_benches(_normalise_court(court)) else None)
+             if hints.sits_in_benches(hints.canonical_court(court)) else None)
     # "NAME, J.-" at LHC and SC; "NAME, J:-" at IHC.  Requiring the period lost
     # the author on every IHC judgment that writes the colon.
     judge_matches = re.findall(r"(?i)([A-Z][A-Za-z .'-]{3,60}),\s*J\s*[.:]", text)
@@ -1204,8 +1205,8 @@ def _extract_metadata(text: str, pdf_metadata: dict[str, Any]) -> dict[str, Any]
             petitioner, respondent = left, right
             break
     return {
-        "court": _normalise_court(court),
-        "court_id": _court_id(_normalise_court(court)),
+        "court": hints.canonical_court(court),
+        "court_id": hints.court_id(hints.canonical_court(court)),
         "bench": bench,
         "case_number": _clean(case_match.group(1)) if case_match else None,
         "decision_date": decision_value,
@@ -1524,12 +1525,14 @@ def _attach_diagnostics(result: dict[str, Any]) -> dict[str, Any]:
 
 
 class SpecterParser:
-    def __init__(self, rtl_mode: str = "image", image_scale: float = 2.0, urdu_ocr: Any = None):
+    def __init__(self, rtl_mode: str = "image", image_scale: float = 2.0, urdu_ocr: Any = None,
+                 hints: LegalHints = LEGAL_HINTS):
         if rtl_mode not in {"raw", "image", "both"}:
             raise ValueError("rtl_mode must be raw, image, or both")
         self.rtl_mode = rtl_mode
         self.image_scale = image_scale
         self.urdu_ocr = urdu_ocr
+        self.hints = hints
 
     def parse(self, pdf_path: str | Path, output_dir: str | Path | None = None,
               stem: str | None = None) -> dict[str, Any]:
@@ -1771,7 +1774,7 @@ class SpecterParser:
             digital_pages = sum(page["extraction"] == "digital" for page in pages)
             mode = "digital" if digital_pages == len(pages) else ("mixed" if digital_pages else "scanned_or_image_only")
             scores = [page["confidence"] for page in pages if page["blocks"]]
-            metadata = _extract_metadata(body_text, dict(doc.metadata or {}))
+            metadata = _extract_metadata(body_text, dict(doc.metadata or {}), self.hints)
             order_dates = [
                 {**block["order_date"], "page": page["page_number"]}
                 for page in pages
