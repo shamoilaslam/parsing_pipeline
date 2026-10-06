@@ -1383,6 +1383,18 @@ parsed were duplicate-dense. 13.3% is the rate.
 
 ---
 
+### specter.v2, step 1: `document.id` and block `uid`
+
+`document.id` is the SHA-256 of the source PDF's bytes; a block's `uid` is the
+first 16 hex characters of it, a slash, and the block's own `id`
+(`<id16>/p1_b3`). The block `id` was only unique inside one document, so
+nothing could cite a block from outside it. Content addressing means the same
+file has the same id on any machine, which is also the key the Phase 2 cache
+needs. Added by `docintel.schema.v2.upgrade` after enrichment, so both engines
+get it identically. v1 validation is unchanged. Snapshot re-recorded:
+every document moves in `document.id`, its pages' blocks and the metadata
+record, and nowhere else. *Open:* none.
+
 ## Open items
 
 Tracked here rather than closed by assertion.

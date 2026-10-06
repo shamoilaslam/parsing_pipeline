@@ -30,6 +30,7 @@ import fitz
 
 from docintel.enrich import Enricher
 from docintel.legal.enricher import LegalEnricher
+from docintel.schema.v2 import upgrade
 from docintel.engines.local import NativeEngine, OcrEngine
 from docintel.engines.scanned import _dominant_page_image
 from docintel.engines.native import PUA_CHAR_RE, write_result
@@ -163,7 +164,7 @@ def write_metadata(result: dict[str, object], output_dir: Path) -> Path:
     path = meta_dir / f"{stem}.json"
     payload = {key: document.get(key) for key in (
         "source_name", "source_file", "page_count", "extraction_mode", "router",
-        "document_kind", "metadata", "metadata_provenance", "confidence", "diagnostics",
+        "id", "document_kind", "metadata", "metadata_provenance", "confidence", "diagnostics",
         "stats", "warnings", "label_check", "structure", "source_metadata", "citations",
         # The name this document's own JSON and Markdown were written under.
         # It is what links a metadata record back to its files, and the only
@@ -246,6 +247,7 @@ def _parse_one(job: tuple) -> tuple[dict[str, object] | None, dict[str, object] 
                            stem=stem, save_page_images=page_images)
         for enricher in ENRICHERS:
             enricher.enrich(result, pdf)
+        upgrade(result, pdf)
         write_result(result, out)
         write_metadata(result, out)
         return _row(pdf, result, stem), None
