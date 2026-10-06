@@ -8,7 +8,7 @@ from pathlib import Path
 
 from docintel.pipeline import _parse_one
 from docintel.schema import SpecterV1, SpecterV2
-from docintel.schema.v2 import UID_PREFIX, document_id
+from docintel.schema.v2 import UID_PREFIX, document_id, script_and_direction
 
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLE = ROOT / "data" / "pdfs" / "2021LHC9943.pdf"      # 2 pages, digital: fast
@@ -46,3 +46,24 @@ class SpecterV2Tests(unittest.TestCase):
         self.assertTrue(all(uid.startswith(prefix + "/") for uid in uids))
         first = self.result["pages"][0]["blocks"][0]
         self.assertEqual(first["uid"], f"{prefix}/{first['id']}")
+
+    def test_every_block_has_a_script_and_direction(self):
+        blocks = [block for page in self.result["pages"] for block in page["blocks"]]
+        self.assertTrue(all(block["script"] in {"Latn", "Arab", "Zyyy"} for block in blocks))
+        self.assertTrue(all(block["direction"] in {"ltr", "rtl", "mixed"} for block in blocks))
+
+
+class ScriptAndDirectionTests(unittest.TestCase):
+    def test_cases(self):
+        cases = {
+            "The petitioner appeals": ("Latn", "ltr"),
+            "درخواست گزار": ("Arab", "rtl"),
+            "Section 497 کے تحت": ("Zyyy", "mixed"),
+            "12.3 (4)": ("Zyyy", "ltr"),
+            "": ("Zyyy", "ltr"),
+            "۱۲۳": ("Zyyy", "ltr"),       # digits carry no script of their own
+            "école": ("Latn", "ltr"),
+        }
+        for text, expected in cases.items():
+            with self.subTest(text=text):
+                self.assertEqual(script_and_direction(text), expected)

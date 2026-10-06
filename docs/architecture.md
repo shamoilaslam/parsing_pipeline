@@ -1395,6 +1395,20 @@ get it identically. v1 validation is unchanged. Snapshot re-recorded:
 every document moves in `document.id`, its pages' blocks and the metadata
 record, and nowhere else. *Open:* none.
 
+### specter.v2, step 2: `script` and `direction` per block
+
+`script` is an ISO 15924 code from the block's letters: `Arab`, `Latn`, or
+`Zyyy` when there are no letters or both scripts occur. `direction` is `rtl`,
+`ltr` or `mixed`. Digits and punctuation never decide, since both scripts
+share them; a block of digits is `Zyyy`/`ltr`. A mixed block is `Zyyy` because
+no 15924 code names a mixture, and `direction: mixed` is what says it is
+mixed. This sits beside the existing `language` (`en`/`ur`/`mixed`), which is
+the parser's own judgement and is unchanged. Snapshot
+re-recorded: only pages with blocks, the whole-document hash and nothing in
+`document.*` move. *Open:* the rules are letter-presence, not a share
+threshold, so one Latin word in an Urdu block makes it `mixed`. They are computed at parse
+time from the text then present; `urdu` transcription does not recompute them.
+
 ## Open items
 
 Tracked here rather than closed by assertion.

@@ -6,11 +6,15 @@ here until every commit of the v2 series has landed.
 
 from __future__ import annotations
 
+from typing import Literal
+
 from docintel.schema.specter_v1 import Block, Document, Page, SpecterV1
 
 
 class BlockV2(Block):
     uid: str | None = None
+    script: Literal["Latn", "Arab", "Zyyy"] | None = None
+    direction: Literal["ltr", "rtl", "mixed"] | None = None
 
 
 class PageV2(Page):
