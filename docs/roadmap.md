@@ -38,10 +38,21 @@ Every phase must pass all three:
 
 ## Phase 1: `docintel` package, seams, v2 output
 
-- `git mv` the modules into `docintel/`, leaving `sys.modules` shims.
-- Add the `Enricher` protocol. `LegalEnricher` absorbs the legal steps in `ingest_pdfs`, the inline metadata block and the legal validators. `LegalHints` is injected into the native engine.
-- Add the `Engine` protocol, wrapping the two existing engines.
-- Schema v2 lands as deliberate snapshot changes, one PR each: `id`, `uid`, `source`, `provenance`, `script`/`direction`, `readings`, and row/col on scanned table cells.
+| task | status |
+| --- | --- |
+| `git mv` the modules into `docintel/`, leaving `sys.modules`-style aliases under `specter` | done |
+| `Engine` protocol (`docintel/engines/base.py`) wrapping the native and OCR engines | done |
+| `Enricher` protocol; `LegalEnricher` takes the post-layout legal steps; `LegalHints` injected into the metadata pass | done |
+| v2: document `id`, block `uid` | done |
+| v2: block `script` / `direction` | done |
+| v2: block `readings[]` | done |
+| v2: `row` / `column` on scanned table cells | done (unit-tested only: no scanned ruled table in `data/pdfs`) |
+| v2: block-level `source` and `provenance` | open: undefined; needs a decision on what they add to the existing `source` string and `metadata_provenance` |
+| Bump `schema_version` to `specter.v2` and make the v2 fields required | open: waits on the item above |
+| Gold gate on slice 4 | open: `benchmark` scores the engines directly and does not pass through the v2 step, so it cannot move; run it once at the end of the phase |
+| Validators (`validate`) and the inline metadata block moved behind `LegalEnricher` | open: deliberately left (ADR 0001 slice depth) |
+
+Gates passed per slice: unit tests, byte snapshot, and (slices 1-3 together) the LHC gold gate, 191 pages, 0 changed.
 
 ## Phase 2: triage, cache, Gemini, Urdu at corpus scale for public data
 
