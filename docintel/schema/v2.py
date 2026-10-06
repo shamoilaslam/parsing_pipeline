@@ -83,7 +83,49 @@ def add_script(result: dict[str, Any]) -> None:
             block["script"], block["direction"] = script_and_direction(block["text"])
 
 
+def add_readings(result: dict[str, Any]) -> None:
+    """``readings[]``: every candidate transcription of a block, and why one was accepted.
+
+    A block leaves a parse with the one reading its engine produced.  ``engine``
+    is the block's ``source`` verbatim, so it names what actually read the
+    text; ``policy`` is ``local`` because every engine that writes a block
+    today runs in this process.  ``checks`` is empty until something verifies
+    the reading.  Later readings (a vision model's, a human's) are appended by
+    the step that makes them; ``text`` always equals the accepted reading.
+    """
+    for page in result.get("pages", []):
+        for block in page.get("blocks", []):
+            block["readings"] = [{
+                "text": block["text"],
+                "engine": block["source"],
+                "policy": "local",
+                "checks": [],
+                "accepted": True,
+            }]
+
+
+def add_scanned_cell_positions(result: dict[str, Any]) -> None:
+    """``row`` and ``column`` on scanned table cells, as native cells already have.
+
+    The ruled-grid detector emits cells row by row, so a cell's position
+    follows from the lengths of the table's ``rows``.  A table whose cell count
+    does not match its rows is left alone rather than guessed at.
+    """
+    for page in result.get("pages", []):
+        for block in page.get("blocks", []):
+            cells, rows = block.get("cells"), block.get("rows")
+            if not cells or not rows or "row" in cells[0]:
+                continue
+            if len(cells) != sum(len(row) for row in rows):
+                continue
+            positions = [(r, c) for r, row in enumerate(rows) for c in range(len(row))]
+            for cell, (row, column) in zip(cells, positions, strict=True):
+                cell["row"], cell["column"] = row, column
+
+
 def upgrade(result: dict[str, Any], pdf: Path) -> dict[str, Any]:
     add_identity(result, pdf)
     add_script(result)
+    add_readings(result)
+    add_scanned_cell_positions(result)
     return result

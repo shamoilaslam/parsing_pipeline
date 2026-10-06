@@ -8,13 +8,42 @@ from __future__ import annotations
 
 from typing import Literal
 
-from docintel.schema.specter_v1 import Block, Document, Page, SpecterV1
+from pydantic import BaseModel, ConfigDict
+
+from docintel.schema.specter_v1 import Block, Document, NativeCell, Page, ScannedCell, SpecterV1
+
+
+class Check(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str
+    passed: bool
+    detail: str | None = None
+
+
+class Reading(BaseModel):
+    """One candidate transcription of a block."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    text: str
+    engine: str
+    policy: Literal["local", "self_hosted", "third_party"]
+    checks: list[Check]
+    accepted: bool
+
+
+class ScannedCellV2(ScannedCell):
+    row: int | None = None
+    column: int | None = None
 
 
 class BlockV2(Block):
     uid: str | None = None
     script: Literal["Latn", "Arab", "Zyyy"] | None = None
     direction: Literal["ltr", "rtl", "mixed"] | None = None
+    readings: list[Reading] | None = None
+    cells: list[NativeCell | ScannedCellV2] | None = None  # type: ignore[assignment]
 
 
 class PageV2(Page):

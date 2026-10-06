@@ -1409,6 +1409,30 @@ re-recorded: only pages with blocks, the whole-document hash and nothing in
 threshold, so one Latin word in an Urdu block makes it `mixed`. They are computed at parse
 time from the text then present; `urdu` transcription does not recompute them.
 
+### specter.v2, step 3: `readings[]` per block
+
+Every block carries `readings`: a list of `{text, engine, policy, checks,
+accepted}`. A fresh parse writes exactly one, the engine's own text, with
+`engine` set to the block's `source` verbatim, `policy: local` (every engine
+that writes a block today runs in-process), `checks: []` and `accepted: true`.
+`text` is always the accepted reading. The point is the shape: Phase 2's
+vision readings and char-bag verification append to the list instead of
+rewriting `text`, so the native text of an Urdu block is never lost. *Open:*
+`checks` is empty for now; a block with `text_status: unreliable_native` still
+shows `accepted: true`, because it is the only reading there is.
+
+### specter.v2, step 4: `row` and `column` on scanned table cells
+
+A scanned table cell carried only `bbox`, `text`, `confidence` and `model`,
+where a native cell has `row` and `column`, so a consumer had to branch on the
+route. The ruled-grid detector emits cells row by row, so each cell's position
+follows exactly from the lengths of the table's `rows`; no geometry is
+re-clustered. A table whose cell count does not equal its rows' total is left
+without positions rather than guessed. Spans stay out: the detector produces
+none. *Open:* the 22 PDFs in the snapshot corpus contain no scanned ruled
+table, so the snapshot did not move and this step is covered by unit tests
+only. A scanned table in the snapshot corpus would close that.
+
 ## Open items
 
 Tracked here rather than closed by assertion.

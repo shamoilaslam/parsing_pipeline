@@ -8,7 +8,7 @@ from pathlib import Path
 
 from docintel.pipeline import _parse_one
 from docintel.schema import SpecterV1, SpecterV2
-from docintel.schema.v2 import UID_PREFIX, document_id, script_and_direction
+from docintel.schema.v2 import UID_PREFIX, add_scanned_cell_positions, document_id, script_and_direction
 
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLE = ROOT / "data" / "pdfs" / "2021LHC9943.pdf"      # 2 pages, digital: fast
@@ -52,6 +52,15 @@ class SpecterV2Tests(unittest.TestCase):
         self.assertTrue(all(block["script"] in {"Latn", "Arab", "Zyyy"} for block in blocks))
         self.assertTrue(all(block["direction"] in {"ltr", "rtl", "mixed"} for block in blocks))
 
+    def test_every_block_has_one_accepted_reading_equal_to_its_text(self):
+        for page in self.result["pages"]:
+            for block in page["blocks"]:
+                accepted = [r for r in block["readings"] if r["accepted"]]
+                self.assertEqual(len(accepted), 1)
+                self.assertEqual(accepted[0]["text"], block["text"])
+                self.assertEqual(accepted[0]["engine"], block["source"])
+                self.assertEqual(accepted[0]["policy"], "local")
+
 
 class ScriptAndDirectionTests(unittest.TestCase):
     def test_cases(self):
@@ -67,3 +76,25 @@ class ScriptAndDirectionTests(unittest.TestCase):
         for text, expected in cases.items():
             with self.subTest(text=text):
                 self.assertEqual(script_and_direction(text), expected)
+
+
+class ScannedCellPositionTests(unittest.TestCase):
+    def _result(self, cells, rows):
+        return {"pages": [{"blocks": [{"cells": cells, "rows": rows}]}]}
+
+    def test_positions_follow_the_row_lengths(self):
+        cells = [{"bbox": [0, 0, 1, 1], "text": t} for t in "abcde"]
+        result = self._result(cells, [["a", "b"], ["c", "d", "e"]])
+        add_scanned_cell_positions(result)
+        self.assertEqual([(c["row"], c["column"]) for c in cells],
+                         [(0, 0), (0, 1), (1, 0), (1, 1), (1, 2)])
+
+    def test_a_mismatch_is_left_unguessed(self):
+        cells = [{"bbox": [0, 0, 1, 1], "text": "a"}]
+        add_scanned_cell_positions(self._result(cells, [["a", "b"]]))
+        self.assertNotIn("row", cells[0])
+
+    def test_native_cells_are_untouched(self):
+        cells = [{"row": 3, "column": 4, "text": "a"}]
+        add_scanned_cell_positions(self._result(cells, [["a"]]))
+        self.assertEqual((cells[0]["row"], cells[0]["column"]), (3, 4))
