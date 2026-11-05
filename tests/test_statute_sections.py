@@ -303,3 +303,45 @@ class MissingSectionsAreVisibleTests(unittest.TestCase):
         act = build(payload)
         self.assertEqual(act["sections"], [])
         self.assertTrue(act["repealed"])
+
+
+class ReadNumberTests(unittest.TestCase):
+    """A number the structure reread is stripped from the text as it was printed."""
+
+    def test_the_printed_number_is_what_is_stripped(self):
+        doc = {"pages": [{"page_number": 1, "blocks": [
+            block("b0", "125. Commission to examine. The Court may issue a commission."),
+            block("b1", "26. Institution of suits."),
+        ]}]}
+        structure = [{**marker("section", "25", "Commission to examine", "b0"), "number_printed": "125"},
+                     marker("section", "26", "Institution of suits", "b1")]
+        first = section_bodies(doc, structure)[0]
+        self.assertEqual((first["number"], first["heading"]), ("25", "Commission to examine"))
+        self.assertEqual(first["number_printed"], "125")
+
+    def test_an_omitted_section_says_so(self):
+        doc = {"pages": [{"page_number": 1, "blocks": [block("b0", "16. 1[Omitted]."), block("b1", "17. Government.")]}]}
+        structure = [{**marker("section", "16", "", "b0"), "omitted": True}, marker("section", "17", "Government", "b1")]
+        self.assertEqual([s.get("omitted", False) for s in section_bodies(doc, structure)], [True, False])
+
+
+class RuleTests(unittest.TestCase):
+    """The CPC's Rules are addressable as Order and Rule, and end at the next Order."""
+
+    def test_rules_become_records_under_their_order(self):
+        doc = {"pages": [{"page_number": 1, "blocks": [
+            block("b0", "1. Cases in which temporary injunction may be granted. Where in any suit it is proved."),
+            block("b1", "2. Injunction to restrain repetition."),
+            block("b2", "ORDER XL"),
+            block("b3", "1. Appointment of receivers."),
+        ]}]}
+        structure = [{**marker("schedule_item", "1", "Cases in which temporary injunction may be granted", "b0"),
+                      "order": "XXXIX"},
+                     {**marker("schedule_item", "2", "Injunction to restrain repetition", "b1"), "order": "XXXIX"},
+                     marker("order", "XL", "", "b2"),
+                     {**marker("schedule_item", "1", "Appointment of receivers", "b3"), "order": "XL"}]
+        rules = section_bodies(doc, structure)
+        self.assertEqual([(r["kind"], r["number"]) for r in rules],
+                         [("rule", "O.XXXIX R.1"), ("rule", "O.XXXIX R.2"), ("rule", "O.XL R.1")])
+        self.assertNotIn("ORDER XL", rules[1]["text"])
+        self.assertTrue(rules[0]["text"].startswith("Cases in which temporary injunction"))

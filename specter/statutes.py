@@ -82,8 +82,26 @@ CONTENTS_RE = re.compile(r"(?im)^\s*CONTENTS?\s*$")
 # span boundary for the marker stripper to use either, so the digit-then-bracket
 # form is allowed here as well; the bracket is what distinguishes it from the
 # section number, which never carries one.
+#
+# The number itself is taken loosely and read afterwards (``_read_numbers``),
+# because the PDFs' own text is not always digits: the CrPC prints section 417
+# as "4l7" and the Anti-Terrorism Act section 21F as "2IF".  A footnote marker
+# can also sit against the number with nothing to tell them apart -- the CPC's
+# section 25 reads "125", the CrPC's 514 reads "5514" -- so a fourth digit is
+# admitted here for the run to settle.
 SECTION_RE = re.compile(
-    r"^\s*(?:\d{1,3}\s*\[\s*)?[*†‡§]?\s*\[?\s*(?P<number>\d{1,3}[A-Z]{0,2})\.\s*(?P<title>.*)$")
+    r"^\s*(?:\d{1,3}\s*\[\s*)?[*†‡§]?\s*\[?\s*(?P<number>\d[\dlIO]{0,3}[A-Z]{0,2})\.\s*(?P<title>.*)$")
+# A section repealed in place keeps its number and says so where its heading
+# would be: "13. [Definition of “Queen”.] Omitted by A.O., 1961", "16. 1[Omitted].",
+# "15. [Definition of “British India”.] Rep. by A. O., 1937".
+OMITTED_RE = re.compile(r"^\W{0,3}\d{0,3}\s*\[?\s*(?:[^\]\[]{0,200}\]\s*\.?\s*)?\d{0,3}\s*\[?\s*"
+                        r"(?:Omitted\b|Rep\.|Repealed\b)")
+# The Code of Civil Procedure's First Schedule numbers its Rules from 1 under
+# each Order ("ORDER XXXIX", "1[ORDER XXXIX"), so a Rule is only addressable
+# with its Order.  Upper case, standing alone or with an upper-case title: "Order
+# XXI of the Code shall apply" in prose is not one.
+ORDER_RE = re.compile(r"^\s*(?:\d{1,3}\s*\[\s*)?ORDER\s+(?P<number>[IVXLC]+[A-Z]{0,2})\s*\]?"
+                      r"(?P<title>(?:\s+[A-Z][A-Z ,.'’&()\-]*)?)\s*$")
 # A chapter designation stands alone or carries a title; it never runs on
 # into a sentence.  Section 109 of the Penal Code says "...an offence referred
 # to in Chapter XVI shall be liable to punishment of ta'zir", and read as a
@@ -408,6 +426,7 @@ def detect_structure(pages: list[dict[str, Any]]) -> list[dict[str, Any]]:
     # collision with the Act's own sections.
     in_schedule = False
     seen_section = False
+    order = None
     for page in pages:
         for block in page.get("blocks", []):
             line = _heading_line(block)
@@ -417,6 +436,12 @@ def detect_structure(pages: list[dict[str, Any]]) -> list[dict[str, Any]]:
             box = block.get("bbox")
             chapter = CHAPTER_RE.match(line)
             part = PART_RE.match(line)
+            order_heading = ORDER_RE.match(line) if in_schedule else None
+            if order_heading:
+                order = order_heading.group("number")
+                found.append({"kind": "order", "number": order, "title": order_heading.group("title").strip(),
+                              "page": page["page_number"], "block_id": block.get("id"), "bbox": box})
+                continue
             # A footnote is not a section heading: "1Subs. by Act XIV of 2011,
             # s.63" opens with a number and would read as one.  Header and
             # footer blocks are skipped for the same reason -- but a chapter
@@ -433,6 +458,7 @@ def detect_structure(pages: list[dict[str, Any]]) -> list[dict[str, Any]]:
                             "title": part.group("title")}, box)]
             elif SCHEDULE_RE.match(line):
                 marked = [({"kind": "schedule", "number": None, "title": line.strip()}, box)]
+                order = None
                 # A schedule cannot precede section 1 of the body, so one that
                 # does is the table of contents announcing it.  Acting on that
                 # listing swallowed the whole statute: every section of the
@@ -464,8 +490,12 @@ def detect_structure(pages: list[dict[str, Any]]) -> list[dict[str, Any]]:
                     kind = "schedule_item" if in_schedule else (
                         "definitions" if DEFINITIONS_RE.match(title) else "section")
                     seen_section = seen_section or kind != "schedule_item"
-                    marked.append(({"kind": kind, "number": section.group("number"),
-                                    "title": title[:MAX_SECTION_TITLE]}, where))
+                    entry = {"kind": kind, "number": section.group("number"), "title": title[:MAX_SECTION_TITLE]}
+                    if kind == "schedule_item" and order:
+                        entry["order"] = order
+                    if OMITTED_RE.match(section.group("title")):
+                        entry["omitted"] = True
+                    marked.append((entry, where))
             for entry, where in marked:
                 found.append({
                     **entry,
@@ -493,10 +523,110 @@ def detect_structure(pages: list[dict[str, Any]]) -> list[dict[str, Any]]:
                  or (entry["kind"], entry.get("number")) not in repeated]
     # In a compendium a number going backwards opens the next rule-set rather
     # than completing a cross-reference, so the back-reference rule is only
-    # safe where the run is numbered once.
+    # safe where the run is numbered once.  The same holds for reading a number
+    # by the run around it.
+    found = _read_numbers(found, by_the_run=_restarts(found) <= 1)
     if _restarts(found) <= 1:
         found = _drop_back_references(found)
     return found + _sections_numbered_on_their_own_line(pages, found)
+
+
+SECTION_NUMBER_RE = re.compile(r"^\d{1,3}[A-Z]{0,2}$")
+MAX_GLUED_MARKER = 2
+
+
+def _readings(printed: str) -> list[tuple[str, float]]:
+    """Every section number the printed one can stand for, with what taking it costs.
+
+    The plain reading is free.  A lower-case "l" is always a one -- section
+    letters are capitals -- so it costs nothing either.  A capital "I" or "O"
+    may be a one or a nought, or a real letter (the Anti-Terrorism Act has
+    sections 21I and 11O), so the digit reading is offered at a small cost.
+    Taking a glued footnote marker (one or two digits) off the front costs
+    more: it changes the number's magnitude, and two of them must not outweigh
+    one genuine step backwards in the run.
+    """
+    base = printed.replace("l", "1")
+    readings = [("", 0.0)]
+    for char in base:
+        options = [(char, 0.0)] + [(digit, OCR_COST) for digit in {"I": ["1"], "O": ["0"]}.get(char, [])]
+        readings = [(reading + option, cost + extra) for reading, cost in readings for option, extra in options]
+    out = [(reading, cost) for reading, cost in readings if SECTION_NUMBER_RE.match(reading)]
+    for reading, cost in readings:
+        digits = len(re.match(r"\d*", reading).group(0))
+        for cut in range(1, MAX_GLUED_MARKER + 1):
+            if digits - cut >= 1 and SECTION_NUMBER_RE.match(reading[cut:]):
+                out.append((reading[cut:], cost + GLUED_COST))
+    best: dict[str, float] = {}
+    for reading, cost in out:
+        best[reading] = min(cost, best.get(reading, cost))
+    return sorted(best.items(), key=lambda item: item[1])
+
+
+OCR_COST = 0.3        # reading a printed I or O as a digit
+GLUED_COST = 0.6      # taking a footnote marker off the front
+DROP_COST = 0.9       # dropping a four-digit number no reading fits
+BACKWARDS_COST = 1.0  # a step back in the run
+
+
+def _read_numbers(entries: list[dict[str, Any]], by_the_run: bool) -> list[dict[str, Any]]:
+    """Settle each printed section number into the number it is.
+
+    The readings are chosen together, as the cheapest path through the run: the
+    plain reading costs nothing, any other a little, and every step backwards
+    costs more than both.  So a number is reread only where that removes a break
+    in the run -- "125" between 24 and 26 becomes 25 -- and a real section 125
+    between 124 and 126 stays.  Judging each number against its neighbours one
+    at a time failed exactly where it mattered: a misread number next door made
+    the good one look out of place.
+
+    The printed form is kept as ``number_printed`` wherever the number changed.
+    A four-digit number that no reading fits (a year set like a heading) is
+    dropped.
+    """
+    numbered = [entry for entry in entries if entry["kind"] in {"section", "definitions"}]
+    chosen: dict[int, str | None] = {}
+    if not by_the_run:
+        for entry in numbered:
+            plain = entry["number"].replace("l", "1")
+            chosen[id(entry)] = plain if SECTION_NUMBER_RE.match(plain) else None
+    else:
+        # Each state: (cost, lead number carried, reading or None, back-pointer).
+        layers: list[list[tuple[float, int, str | None, int]]] = []
+        for entry in numbered:
+            states: list[tuple[str | None, float]] = list(_readings(entry["number"]))
+            if not SECTION_NUMBER_RE.match(entry["number"].replace("l", "1")):
+                states.append((None, DROP_COST))
+            previous = layers[-1] if layers else [(0.0, 0, None, -1)]
+            layer = []
+            for reading, own in states:
+                best = None
+                for back, (cost, lead, _, _) in enumerate(previous):
+                    step = 0.0 if reading is None or _leading_number(reading) >= lead else BACKWARDS_COST
+                    total = cost + own + step
+                    if best is None or total < best[0]:
+                        carried = lead if reading is None else _leading_number(reading)
+                        best = (total, carried, reading, back)
+                layer.append(best)
+            layers.append(layer)
+        if layers:
+            index = min(range(len(layers[-1])), key=lambda i: layers[-1][i][0])
+            for depth in range(len(layers) - 1, -1, -1):
+                _, _, reading, back = layers[depth][index]
+                chosen[id(numbered[depth])] = reading
+                index = back
+    kept = []
+    for entry in entries:
+        if id(entry) not in chosen:
+            kept.append(entry)
+            continue
+        number = chosen[id(entry)]
+        if number is None:
+            continue
+        if number != entry["number"]:
+            entry = {**entry, "number": number, "number_printed": entry["number"]}
+        kept.append(entry)
+    return kept
 
 
 BARE_NUMBER_RE = re.compile(r"^\s*(\d{1,3})\s*$")

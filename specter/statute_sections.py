@@ -33,12 +33,12 @@ from collections import Counter
 from typing import Any, Iterable
 
 from specter.specter_parser import AMENDMENT_NOTE_RE
-from specter.statutes import _heading_title
+from specter.statutes import _heading_title, detect_structure, extract_statute_metadata
 
 # A section ends where the next piece of structure begins.  A chapter or part
 # heading is a boundary as much as the next section is.
 BOUNDARY_KINDS = frozenset({"section", "definitions", "chapter", "part", "schedule",
-                            "schedule_item"})
+                            "schedule_item", "order"})
 SECTION_KINDS = frozenset({"section", "definitions"})
 # Blocks that are on the page but are not the law.
 NOT_THE_LAW = frozenset({"header", "footer", "footnote"})
@@ -155,7 +155,10 @@ def section_bodies(document: dict[str, Any], structure: list[dict[str, Any]]) ->
         if marker["kind"] == "part":
             part = marker.get("number")
             continue
-        if marker["kind"] not in SECTION_KINDS:
+        # A schedule entry is only law a lawyer cites by number where it sits
+        # under an Order: the CPC's Rules, cited "O.XXXIX R.1".
+        rule = marker["kind"] == "schedule_item" and bool(marker.get("order"))
+        if marker["kind"] not in SECTION_KINDS and not rule:
             continue
         start = _starts_at(blocks, position[marker["block_id"]])
         # The next section may reach back over its own margin number too, so the
@@ -186,7 +189,8 @@ def section_bodies(document: dict[str, Any], structure: list[dict[str, Any]]) ->
         # The text opens with the section number, and any amendment marker in
         # front of it.  Dropping that leaves the heading first, which is what
         # makes the heading recoverable from the text at all.
-        number = re.escape(str(marker.get("number") or ""))
+        # As printed: section 25 read from "125." still opens with "125.".
+        number = re.escape(str(marker.get("number_printed") or marker.get("number") or ""))
         text = re.sub(r"^\s*(?:\d{1,3}\s*\[\s*)?"
                       r"[*†‡§]?\s*\[?\s*" + number + r"\.\s*"
                       # "371A.__ Selling person for purposes of prostitution" puts the
@@ -194,8 +198,9 @@ def section_bodies(document: dict[str, Any], structure: list[dict[str, Any]]) ->
                       # and the heading reader then stopped at once and returned nothing.
                       r"(?:(?:[—–]|_{2,}|-{2,})\s*)?",
                       "", text, count=1)
-        sections.append({
-            "number": marker.get("number"),
+        record = {
+            "kind": "rule" if rule else marker["kind"],
+            "number": f"O.{marker['order']} R.{marker.get('number')}" if rule else marker.get("number"),
             # A heading wraps across blocks, so the marker's own title stops at
             # the first line -- "Every member of unlawful assembly guilty of
             # offence committed in prosecution of".  The assembled text carries
@@ -209,7 +214,11 @@ def section_bodies(document: dict[str, Any], structure: list[dict[str, Any]]) ->
             "page_end": blocks[position[ids[-1]]]["page"],
             "block_ids": ids,
             "rtl": rtl,
-        })
+        }
+        for key in ("number_printed", "omitted"):
+            if marker.get(key):
+                record[key] = marker[key]
+        sections.append(record)
     return sections
 
 
@@ -269,6 +278,22 @@ def build(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def restructured(payload: dict[str, Any]) -> dict[str, Any]:
+    """The parsed statute with its structure read again from its own pages.
+
+    The structure rules change more often than the parse does -- a misread
+    section number, an Order heading -- and re-reading the stored pages applies
+    them without parsing a PDF again.  The payload passed in is not modified.
+    """
+    pages = payload.get("pages", [])
+    structure = detect_structure(pages)
+    text = "\n".join(block.get("text") or "" for page in pages for block in page.get("blocks", []))
+    document = dict(payload.get("document") or {})
+    document["metadata"] = {**(document.get("metadata") or {}), **extract_statute_metadata(text, structure)}
+    document["structure"] = structure
+    return {**payload, "document": document}
+
+
 def summarise(built: Iterable[dict[str, Any]]) -> dict[str, Any]:
     acts = list(built)
     sections = [section for act in acts for section in act["sections"]]
@@ -290,8 +315,16 @@ def main() -> None:
     parser.add_argument("output_dir", type=Path, help="the --out folder of a `specter parse` run")
     parser.add_argument("--out", type=Path, default=None,
                         help="where to write the per-statute files (default: <output_dir>/sections)")
+    parser.add_argument("--restructure", action="store_true",
+                        help="read the structure again from the parsed pages with the current rules; "
+                             "writes structure/ and sections/ under --out, which must be outside output_dir")
     args = parser.parse_args()
     destination = args.out or args.output_dir / "sections"
+    if args.restructure:
+        if args.out is None or args.out.resolve().is_relative_to(args.output_dir.resolve()):
+            parser.error("--restructure writes a new corpus: give an --out outside the parsed folder")
+        (args.out / "structure").mkdir(parents=True, exist_ok=True)
+        destination = args.out / "sections"
     destination.mkdir(parents=True, exist_ok=True)
 
     built: list[dict[str, Any]] = []
@@ -304,6 +337,14 @@ def main() -> None:
             continue
         if (payload.get("document") or {}).get("document_kind") != "statute":
             continue
+        if args.restructure:
+            payload = restructured(payload)
+            document = payload["document"]
+            (args.out / "structure" / f"{path.stem}.json").write_text(json.dumps(
+                {"structure": document["structure"],
+                 "metadata": {key: document["metadata"].get(key) for key in (
+                     "sections_complete", "missing_sections", "numbering_restarts")}},
+                ensure_ascii=False, indent=1), encoding="utf-8")
         act = build(payload)
         if not act["sections"]:
             # Most of these are repealed stubs, which is a real state of the

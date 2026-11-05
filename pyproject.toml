@@ -41,7 +41,7 @@ dev = ["pytest>=8", "jiwer>=3.0"]
 specter = "specter.__main__:main"
 
 [tool.setuptools.packages.find]
-include = ["specter*"]
+include = ["specter*", "intel*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
