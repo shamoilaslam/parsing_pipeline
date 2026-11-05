@@ -2,6 +2,21 @@
 
 Specter is a deterministic, layout-aware parser for Pakistani case-law PDFs. It uses native PDF text and geometry first, keeps OCR isolated to scanned documents, and never uses an LLM to rewrite authoritative legal text.
 
+## Quick start: parse a folder
+
+```powershell
+python -m pip install -e ".[ocr]"
+python -m docintel run D:\cases\my_folder
+```
+
+That parses every PDF under the folder, sub-folders included, into
+`D:\cases\my_folder_parsed`: per document `<stem>.json` (text, page and block
+bounding boxes), `<stem>.md` and `metadata/<stem>.json`, plus `manifest.json` and
+a `report.json` summary, which is also printed. Re-running resumes where it
+stopped. Options: `--out`, `--workers`, and `--engine nemotron --nemotron-work
+<folder>` to read scanned pages from a GPU session (see
+[`docs/gpu-runbook.md`](docs/gpu-runbook.md)). The exit code is 1 if any PDF failed.
+
 ## Start here
 
 ```powershell

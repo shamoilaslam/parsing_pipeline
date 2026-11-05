@@ -7,6 +7,7 @@ import sys
 
 
 COMMANDS = {
+    "run": ("docintel.run", "One step: parse every PDF under a folder into a parsed folder, then summarise it"),
     "parse": ("docintel.pipeline", "Parse a folder (or files) into JSON, Markdown, and metadata"),
     "report": ("docintel.report", "Summarise what a corpus run produced: routes, failures, disagreements, worst documents"),
     "inspect": ("docintel.inspect_html", "Render parsed output beside the source pages, with bounding boxes"),
@@ -27,7 +28,9 @@ def main(prog: str = "docintel") -> None:
     args, rest = parser.parse_known_args()
     module = __import__(COMMANDS[args.command][0], fromlist=["main"])
     sys.argv = [f"{prog} {args.command}", *rest]
-    module.main()
+    exit_code = module.main()
+    if exit_code:
+        sys.exit(exit_code)
 
 
 if __name__ == "__main__":
