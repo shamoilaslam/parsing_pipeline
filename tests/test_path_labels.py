@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from specter.ingest_pdfs import apply_path_labels
+from docintel.legal.enricher import apply_path_labels
 
 
 PDF = Path(r"D:\corpus\SC\Mr. Justice Maqbool Baqar\SCP_C.A.634_2018_11-09-2025.pdf")

@@ -2,6 +2,21 @@
 
 Specter is a deterministic, layout-aware parser for Pakistani case-law PDFs. It uses native PDF text and geometry first, keeps OCR isolated to scanned documents, and never uses an LLM to rewrite authoritative legal text.
 
+## Quick start: parse a folder
+
+```powershell
+python -m pip install -e ".[ocr]"
+python -m docintel run D:\cases\my_folder
+```
+
+That parses every PDF under the folder, sub-folders included, into
+`D:\cases\my_folder_parsed`: per document `<stem>.json` (text, page and block
+bounding boxes), `<stem>.md` and `metadata/<stem>.json`, plus `manifest.json` and
+a `report.json` summary, which is also printed. Re-running resumes where it
+stopped. Options: `--out`, `--workers`, and `--engine nemotron --nemotron-work
+<folder>` to read scanned pages from a GPU session (see
+[`docs/gpu-runbook.md`](docs/gpu-runbook.md)). The exit code is 1 if any PDF failed.
+
 ## Start here
 
 ```powershell
@@ -22,6 +37,10 @@ python -m specter parse data/pdfs/2024LHC6559.pdf --out artifacts/run
 
 # Run tests
 python -m pytest tests -q
+
+# Byte-level regression gate: fails if anything the parser writes for
+# data/pdfs changed (see eval/snapshot.py; ~20 min, one scanned PDF dominates)
+python -m eval.snapshot check data/pdfs
 ```
 
 ## Running it on your own PDFs
@@ -208,6 +227,10 @@ python -m specter benchmark --ihc-metadata --shuffle    # extraction vs each met
 python -m specter benchmark --sc-gold          # the reviewed SC gold pages
 python -m specter benchmark                    # the LHC gold pages
 ```
+
+The corpus roots default to this project's original machine; set
+`SPECTER_SC_ROOT` / `SPECTER_IHC_ROOT` in the environment, or pass
+`--sc-root` / `--ihc-root`, anywhere else.
 
 `--limit` reads the corpus in path order so a report stays comparable with
 earlier ones; `--shuffle` draws from across it with a fixed seed, which IHC

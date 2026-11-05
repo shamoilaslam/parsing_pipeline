@@ -1,0 +1,680 @@
+{
+ "$defs": {
+  "Block": {
+   "additionalProperties": true,
+   "properties": {
+    "id": {
+     "title": "Id",
+     "type": "string"
+    },
+    "type": {
+     "enum": [
+      "text",
+      "list",
+      "heading",
+      "header",
+      "footer",
+      "footnote",
+      "table",
+      "form_header"
+     ],
+     "title": "Type",
+     "type": "string"
+    },
+    "text": {
+     "title": "Text",
+     "type": "string"
+    },
+    "markdown": {
+     "title": "Markdown",
+     "type": "string"
+    },
+    "bbox": {
+     "items": {
+      "type": "number"
+     },
+     "maxItems": 4,
+     "minItems": 4,
+     "title": "Bbox",
+     "type": "array"
+    },
+    "reading_order": {
+     "title": "Reading Order",
+     "type": "integer"
+    },
+    "document_reading_order": {
+     "anyOf": [
+      {
+       "type": "integer"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Document Reading Order"
+    },
+    "language": {
+     "title": "Language",
+     "type": "string"
+    },
+    "source": {
+     "title": "Source",
+     "type": "string"
+    },
+    "confidence": {
+     "$ref": "#/$defs/Confidence"
+    },
+    "rtl": {
+     "additionalProperties": true,
+     "title": "Rtl",
+     "type": "object"
+    },
+    "contains_rtl": {
+     "anyOf": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Contains Rtl"
+    },
+    "decorative": {
+     "anyOf": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Decorative"
+    },
+    "spans": {
+     "anyOf": [
+      {
+       "items": {
+        "$ref": "#/$defs/Span"
+       },
+       "type": "array"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Spans"
+    },
+    "line_bboxes": {
+     "anyOf": [
+      {
+       "items": {
+        "items": {
+         "type": "number"
+        },
+        "maxItems": 4,
+        "minItems": 4,
+        "type": "array"
+       },
+       "type": "array"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Line Bboxes"
+    },
+    "heading_level": {
+     "anyOf": [
+      {
+       "type": "integer"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Heading Level"
+    },
+    "text_status": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/TextStatus"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "start_index": {
+     "anyOf": [
+      {
+       "type": "integer"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Start Index"
+    },
+    "end_index": {
+     "anyOf": [
+      {
+       "type": "integer"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "End Index"
+    },
+    "rows": {
+     "anyOf": [
+      {
+       "items": {
+        "items": {
+         "type": "string"
+        },
+        "type": "array"
+       },
+       "type": "array"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Rows"
+    },
+    "cells": {
+     "anyOf": [
+      {
+       "items": {
+        "anyOf": [
+         {
+          "$ref": "#/$defs/NativeCell"
+         },
+         {
+          "$ref": "#/$defs/ScannedCell"
+         }
+        ]
+       },
+       "type": "array"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Cells"
+    }
+   },
+   "required": [
+    "id",
+    "type",
+    "text",
+    "markdown",
+    "bbox",
+    "reading_order",
+    "language",
+    "source",
+    "confidence",
+    "rtl"
+   ],
+   "title": "Block",
+   "type": "object"
+  },
+  "Confidence": {
+   "additionalProperties": false,
+   "properties": {
+    "score": {
+     "title": "Score",
+     "type": "number"
+    },
+    "reasons": {
+     "items": {
+      "type": "string"
+     },
+     "title": "Reasons",
+     "type": "array"
+    }
+   },
+   "required": [
+    "score",
+    "reasons"
+   ],
+   "title": "Confidence",
+   "type": "object"
+  },
+  "Document": {
+   "additionalProperties": true,
+   "properties": {
+    "source_file": {
+     "title": "Source File",
+     "type": "string"
+    },
+    "source_name": {
+     "title": "Source Name",
+     "type": "string"
+    },
+    "engine": {
+     "title": "Engine",
+     "type": "string"
+    },
+    "extraction_mode": {
+     "title": "Extraction Mode",
+     "type": "string"
+    },
+    "page_count": {
+     "title": "Page Count",
+     "type": "integer"
+    },
+    "metadata": {
+     "additionalProperties": true,
+     "title": "Metadata",
+     "type": "object"
+    },
+    "confidence": {
+     "title": "Confidence",
+     "type": "number"
+    },
+    "warnings": {
+     "items": {
+      "type": "string"
+     },
+     "title": "Warnings",
+     "type": "array"
+    }
+   },
+   "required": [
+    "source_file",
+    "source_name",
+    "engine",
+    "extraction_mode",
+    "page_count",
+    "metadata",
+    "confidence",
+    "warnings"
+   ],
+   "title": "Document",
+   "type": "object"
+  },
+  "Emphasis": {
+   "additionalProperties": false,
+   "properties": {
+    "bold": {
+     "anyOf": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Bold"
+    },
+    "italic": {
+     "anyOf": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Italic"
+    },
+    "underline": {
+     "anyOf": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Underline"
+    },
+    "superscript": {
+     "anyOf": [
+      {
+       "type": "boolean"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Superscript"
+    }
+   },
+   "title": "Emphasis",
+   "type": "object"
+  },
+  "NativeCell": {
+   "additionalProperties": false,
+   "description": "A cell from PyMuPDF's table finder (``_table_cells``).",
+   "properties": {
+    "row": {
+     "title": "Row",
+     "type": "integer"
+    },
+    "column": {
+     "title": "Column",
+     "type": "integer"
+    },
+    "row_span": {
+     "title": "Row Span",
+     "type": "integer"
+    },
+    "column_span": {
+     "title": "Column Span",
+     "type": "integer"
+    },
+    "bbox": {
+     "items": {
+      "type": "number"
+     },
+     "maxItems": 4,
+     "minItems": 4,
+     "title": "Bbox",
+     "type": "array"
+    },
+    "text": {
+     "title": "Text",
+     "type": "string"
+    },
+    "words": {
+     "items": {
+      "$ref": "#/$defs/Word"
+     },
+     "title": "Words",
+     "type": "array"
+    }
+   },
+   "required": [
+    "row",
+    "column",
+    "row_span",
+    "column_span",
+    "bbox",
+    "text",
+    "words"
+   ],
+   "title": "NativeCell",
+   "type": "object"
+  },
+  "Page": {
+   "additionalProperties": true,
+   "properties": {
+    "page_number": {
+     "title": "Page Number",
+     "type": "integer"
+    },
+    "width": {
+     "title": "Width",
+     "type": "number"
+    },
+    "height": {
+     "title": "Height",
+     "type": "number"
+    },
+    "rotation": {
+     "title": "Rotation",
+     "type": "integer"
+    },
+    "blocks": {
+     "items": {
+      "$ref": "#/$defs/Block"
+     },
+     "title": "Blocks",
+     "type": "array"
+    },
+    "markdown": {
+     "title": "Markdown",
+     "type": "string"
+    },
+    "confidence": {
+     "title": "Confidence",
+     "type": "number"
+    },
+    "extraction": {
+     "enum": [
+      "digital",
+      "scanned_or_image_only",
+      "scanned",
+      "excluded",
+      "native_text_pending"
+     ],
+     "title": "Extraction",
+     "type": "string"
+    }
+   },
+   "required": [
+    "page_number",
+    "width",
+    "height",
+    "rotation",
+    "blocks",
+    "markdown",
+    "confidence",
+    "extraction"
+   ],
+   "title": "Page",
+   "type": "object"
+  },
+  "ScannedCell": {
+   "additionalProperties": false,
+   "description": "A cell from the ruled-grid detector on a scan (``ScannedParser._table_blocks``).\n\nIt carries no row or column index -- a known inconsistency with\n``NativeCell`` that v2 removes.",
+   "properties": {
+    "bbox": {
+     "items": {
+      "type": "number"
+     },
+     "maxItems": 4,
+     "minItems": 4,
+     "title": "Bbox",
+     "type": "array"
+    },
+    "text": {
+     "title": "Text",
+     "type": "string"
+    },
+    "confidence": {
+     "title": "Confidence",
+     "type": "number"
+    },
+    "model": {
+     "title": "Model",
+     "type": "string"
+    }
+   },
+   "required": [
+    "bbox",
+    "text",
+    "confidence",
+    "model"
+   ],
+   "title": "ScannedCell",
+   "type": "object"
+  },
+  "Span": {
+   "additionalProperties": false,
+   "description": "A styled run from the native text layer (``_span_record``).",
+   "properties": {
+    "text": {
+     "title": "Text",
+     "type": "string"
+    },
+    "bbox": {
+     "items": {
+      "type": "number"
+     },
+     "maxItems": 4,
+     "minItems": 4,
+     "title": "Bbox",
+     "type": "array"
+    },
+    "font": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "title": "Font"
+    },
+    "size": {
+     "title": "Size",
+     "type": "number"
+    },
+    "flags": {
+     "anyOf": [
+      {
+       "type": "integer"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "title": "Flags"
+    },
+    "script": {
+     "title": "Script",
+     "type": "string"
+    },
+    "emphasis": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/Emphasis"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "char_bboxes": {
+     "anyOf": [
+      {
+       "items": {
+        "items": {
+         "type": "number"
+        },
+        "maxItems": 4,
+        "minItems": 4,
+        "type": "array"
+       },
+       "type": "array"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Char Bboxes"
+    }
+   },
+   "required": [
+    "text",
+    "bbox",
+    "font",
+    "size",
+    "flags",
+    "script"
+   ],
+   "title": "Span",
+   "type": "object"
+  },
+  "TextStatus": {
+   "additionalProperties": false,
+   "properties": {
+    "status": {
+     "const": "unreliable_native",
+     "title": "Status",
+     "type": "string"
+    },
+    "reasons": {
+     "items": {
+      "type": "string"
+     },
+     "title": "Reasons",
+     "type": "array"
+    }
+   },
+   "required": [
+    "status",
+    "reasons"
+   ],
+   "title": "TextStatus",
+   "type": "object"
+  },
+  "Word": {
+   "additionalProperties": false,
+   "properties": {
+    "text": {
+     "title": "Text",
+     "type": "string"
+    },
+    "bbox": {
+     "items": {
+      "type": "number"
+     },
+     "maxItems": 4,
+     "minItems": 4,
+     "title": "Bbox",
+     "type": "array"
+    }
+   },
+   "required": [
+    "text",
+    "bbox"
+   ],
+   "title": "Word",
+   "type": "object"
+  }
+ },
+ "additionalProperties": false,
+ "properties": {
+  "schema_version": {
+   "const": "specter.v1",
+   "title": "Schema Version",
+   "type": "string"
+  },
+  "document": {
+   "$ref": "#/$defs/Document"
+  },
+  "pages": {
+   "items": {
+    "$ref": "#/$defs/Page"
+   },
+   "title": "Pages",
+   "type": "array"
+  },
+  "markdown": {
+   "title": "Markdown",
+   "type": "string"
+  }
+ },
+ "required": [
+  "schema_version",
+  "document",
+  "pages",
+  "markdown"
+ ],
+ "title": "SpecterV1",
+ "type": "object"
+}

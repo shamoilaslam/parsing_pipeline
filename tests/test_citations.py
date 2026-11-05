@@ -7,7 +7,7 @@ at all, and a reporter whitelist is the only thing separating them.
 """
 import unittest
 
-from specter.citations import (
+from docintel.legal.citations import (
     build_graph,
     cited_authorities,
     find_citations,

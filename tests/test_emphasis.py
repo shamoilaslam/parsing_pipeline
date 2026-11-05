@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from specter.specter_parser import (
+from docintel.engines.native import (
     CHAR_UNDERLINE,
     FONT_BOLD,
     FONT_ITALIC,

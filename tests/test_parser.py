@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from specter.specter_parser import SpecterParser
+from docintel.engines.native import SpecterParser
 
 
 ROOT = Path(__file__).resolve().parents[1]

@@ -143,7 +143,7 @@ class ProvenanceRoundTripTests(unittest.TestCase):
     def setUpClass(cls):
         import fitz
 
-        from specter.specter_parser import SpecterParser
+        from docintel.engines.native import SpecterParser
 
         cls.fitz = fitz
         cls.path = Path(__file__).resolve().parents[1] / "data" / "pdfs" / "2024LHC6559.pdf"

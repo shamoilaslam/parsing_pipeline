@@ -1,6 +1,6 @@
 import unittest
 
-from specter.specter_parser import _bench_judges, _extract_metadata, _party_near, _party_side
+from docintel.engines.native import _bench_judges, _extract_metadata, _party_near, _party_side
 
 
 class PartySideTests(unittest.TestCase):

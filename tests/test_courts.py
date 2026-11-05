@@ -1,6 +1,6 @@
 import unittest
 
-from specter.courts import canonical_name, court_id, matches_case_number, matches_judge, path_labels, same_date
+from docintel.legal.courts import canonical_name, court_id, matches_case_number, matches_judge, path_labels, same_date
 
 
 class PathLabelTests(unittest.TestCase):

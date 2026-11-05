@@ -4,8 +4,8 @@ from pathlib import Path
 
 import fitz
 
-from specter.ingest_pdfs import classify_pdf
-from specter.specter_parser import PUA_BLOCK_RATIO, SpecterParser, _unreliable_text_reasons
+from docintel.pipeline import classify_pdf
+from docintel.engines.native import PUA_BLOCK_RATIO, SpecterParser, _unreliable_text_reasons
 
 
 ROOT = Path(__file__).resolve().parents[1]

@@ -2,8 +2,8 @@ import unittest
 
 import fitz
 
-from specter.scanned_parser import _detect_blue_slip, _detect_table_grids, _preprocess, _render_page
-from specter.ingest_pdfs import classify_pdf
+from docintel.engines.scanned import _detect_blue_slip, _detect_table_grids, _preprocess, _render_page
+from docintel.pipeline import classify_pdf
 
 
 class ScannedPipelineTests(unittest.TestCase):

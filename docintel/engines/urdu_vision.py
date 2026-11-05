@@ -23,14 +23,16 @@ import uuid
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, get_args
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
 import fitz
 
-from specter.specter_parser import SpecterParser, _is_rtl
+from docintel.engines.native import SpecterParser, _is_rtl
+from docintel.engines.base import Policy
+from docintel.escalation import may_send
 
 
 DEFAULT_GEMINI_MODEL = "gemini-3.6-flash"
@@ -213,9 +215,11 @@ class GeminiVision:
             parts.append({"text": f"\nCROP_ID={task['id']}\n"})
             parts.append({"inline_data": {"mime_type": "image/png", "data": base64.b64encode(Path(task["image"]).read_bytes()).decode("ascii")}})
         payload = _json_request(
-            f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent?key={self.key}",
+            f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent",
             {"contents": [{"role": "user", "parts": parts}], "generationConfig": {"temperature": 0, "responseMimeType": "application/json", "maxOutputTokens": 4096}},
-            {},
+            # In a header, not the query string: a URL is what proxies, error
+            # messages and access logs record.
+            {"x-goog-api-key": self.key},
         )
         return _validate_items(_parse_model_json(_response_text(payload)), tasks, self.name, self.model)
 
@@ -314,7 +318,9 @@ def _extract_llama_text(value: Any) -> str:
     return ""
 
 
-def prepare_queue(pdf_path: Path, prediction_path: Path, output_dir: Path, scale: float = 4.0) -> Path:
+def prepare_queue(
+    pdf_path: Path, prediction_path: Path, output_dir: Path, scale: float = 4.0, ceiling: Policy = "local"
+) -> Path:
     prediction = json.loads(prediction_path.read_text(encoding="utf-8"))
     stem = pdf_path.stem
     queue_dir = output_dir / "vision_queue"
@@ -322,11 +328,17 @@ def prepare_queue(pdf_path: Path, prediction_path: Path, output_dir: Path, scale
     queue_dir.mkdir(parents=True, exist_ok=True)
     image_dir.mkdir(parents=True, exist_ok=True)
     tasks = []
+    withheld = []
     doc = fitz.open(pdf_path)
     try:
         for page_index, page in enumerate(doc):
             for block in prediction.get("pages", [])[page_index].get("blocks", []):
                 if not block.get("contains_rtl"):
+                    continue
+                # The provider is a third party: text local reading found sensitive stays here.
+                if not may_send(engine="third_party", ceiling=ceiling, text=block.get("text", "")):
+                    reason = "sensitive_text" if may_send(engine="third_party", ceiling=ceiling, text="") else "policy_ceiling"
+                    withheld.append({"id": block["id"], "reason": reason})
                     continue
                 path = image_dir / f"page_{page_index + 1:03d}_{block['id']}.png"
                 if not path.exists():
@@ -347,7 +359,7 @@ def prepare_queue(pdf_path: Path, prediction_path: Path, output_dir: Path, scale
     for task in tasks:
         if previous_status.get(task["id"]) == "accepted":
             task["status"] = "accepted"
-    manifest = {"version": 1, "pdf": str(pdf_path), "prediction": str(prediction_path), "created_at": previous.get("created_at", datetime.now(timezone.utc).isoformat()), "tasks": tasks}
+    manifest = {"version": 1, "pdf": str(pdf_path), "prediction": str(prediction_path), "created_at": previous.get("created_at", datetime.now(timezone.utc).isoformat()), "tasks": tasks, "withheld": withheld}
     path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
     return path
 
@@ -391,9 +403,9 @@ def _apply_results(prediction_path: Path, output_dir: Path, manifest: dict[str, 
     return prediction_path
 
 
-def run(pdf_path: Path, prediction_path: Path, output_dir: Path, mode: str = "auto", batch_size: int = 10, allow_llamaparse: bool = False, replace_text: bool = True, fresh: bool = False) -> dict[str, Any]:
+def run(pdf_path: Path, prediction_path: Path, output_dir: Path, mode: str = "auto", batch_size: int = 10, allow_llamaparse: bool = False, replace_text: bool = True, fresh: bool = False, ceiling: Policy = "local") -> dict[str, Any]:
     load_dotenv()
-    manifest_path = prepare_queue(pdf_path, prediction_path, output_dir)
+    manifest_path = prepare_queue(pdf_path, prediction_path, output_dir, ceiling=ceiling)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if fresh:
         for task in manifest["tasks"]:
@@ -434,7 +446,7 @@ def run(pdf_path: Path, prediction_path: Path, output_dir: Path, mode: str = "au
     manifest["provider_errors"] = provider_errors
     manifest["unresolved"] = [task["id"] for task in manifest["tasks"] if task["status"] != "accepted"]
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
-    return {"manifest": str(manifest_path), "accepted": len(results), "unresolved": manifest["unresolved"], "providers_attempted": [provider.name for provider in providers], "provider_errors": provider_errors}
+    return {"manifest": str(manifest_path), "accepted": len(results), "unresolved": manifest["unresolved"], "providers_attempted": [provider.name for provider in providers], "provider_errors": provider_errors, "withheld": manifest["withheld"]}
 
 
 def main() -> None:
@@ -447,8 +459,9 @@ def main() -> None:
     parser.add_argument("--allow-llamaparse", action="store_true", help="Permit the final fast-tier LlamaParse fallback for unresolved crops.")
     parser.add_argument("--keep-native", action="store_true", help="Store vision text under rtl.vision without replacing block.text.")
     parser.add_argument("--fresh", action="store_true")
+    parser.add_argument("--policy", choices=get_args(Policy), default="local", help="how far crops may travel; the providers are third parties, so nothing is sent unless this is third_party")
     args = parser.parse_args()
-    print(json.dumps(run(args.pdf, args.prediction, args.output_dir, args.mode, args.batch_size, args.allow_llamaparse, not args.keep_native, args.fresh), ensure_ascii=False, indent=2))
+    print(json.dumps(run(args.pdf, args.prediction, args.output_dir, args.mode, args.batch_size, args.allow_llamaparse, not args.keep_native, args.fresh, args.policy), ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":

@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import random
 import re
 import statistics
@@ -24,8 +25,8 @@ from typing import Any
 import fitz
 import jiwer
 
-from specter.ingest_pdfs import classify_pdf
-from specter.specter_parser import SpecterParser
+from docintel.pipeline import classify_pdf
+from docintel.engines.native import SpecterParser
 
 
 GOLD_PATH = Path("artifacts/gold/final_review_corrections_v2.json")
@@ -224,7 +225,7 @@ def evaluate(limit: int | None = None, include_scanned: bool = True,
             # produces instead of what the digital route fails to.
             routes[path] = classify_pdf(path)["mode"]
             if routes[path] != "digital" and include_scanned:
-                from specter.ingest_pdfs import parse_pdf
+                from docintel.pipeline import parse_pdf
 
                 # Routed through the same entry point production uses, so a
                 # mixed document keeps the native text of its digital pages
@@ -322,8 +323,9 @@ def render(report: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-SC_ROOT = Path(r"D:\Shamoil Data\specter_data\SC")
-IHC_ROOT = Path(r"D:\Shamoil Data\specter_data\IHC")
+# Where the corpora live on this machine; override per machine rather than edit.
+SC_ROOT = Path(os.getenv("SPECTER_SC_ROOT", r"D:\Shamoil Data\specter_data\SC"))
+IHC_ROOT = Path(os.getenv("SPECTER_IHC_ROOT", r"D:\Shamoil Data\specter_data\IHC"))
 
 
 def evaluate_label_metadata(root: Path, limit: int | None = None, include_scanned: bool = False,
@@ -340,7 +342,7 @@ def evaluate_label_metadata(root: Path, limit: int | None = None, include_scanne
     and ``counsel_coverage`` report how often anything was found, not whether
     it was right, because nothing here can say.
     """
-    from specter.courts import (IHC_ORDER, matches_case_number, matches_judge,
+    from docintel.legal.courts import (IHC_ORDER, matches_case_number, matches_judge,
                                 matches_name, path_labels, same_date)
 
     engine = SpecterParser(rtl_mode="raw")
@@ -365,7 +367,7 @@ def evaluate_label_metadata(root: Path, limit: int | None = None, include_scanne
             if mode == "digital":
                 result = engine.parse(pdf, None)
             else:
-                from specter.ingest_pdfs import parse_pdf
+                from docintel.pipeline import parse_pdf
 
                 result = parse_pdf(pdf, Path(scratch.name), rtl_mode="raw")
         except Exception as error:  # one bad PDF must not end a 790-document run

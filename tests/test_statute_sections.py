@@ -5,7 +5,7 @@ Every contamination pinned here was found in a real section of the Penal Code.
 
 import unittest
 
-from specter.statute_sections import _short_form, build, section_bodies
+from docintel.legal.statute_sections import _short_form, build, section_bodies
 
 
 def block(block_id, text, kind="text", page=1):

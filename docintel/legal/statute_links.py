@@ -1,6 +1,6 @@
 """Joining a statute a judgment names to the statute the corpus holds.
 
-``specter/specter_parser.py`` reads the statutes a judgment relies on as the
+``docintel.engines.native.py`` reads the statutes a judgment relies on as the
 page names them. This module answers the next question -- *do we hold that
 statute* -- and, just as importantly, says why not when the answer is no.
 

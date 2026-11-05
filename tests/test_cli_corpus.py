@@ -14,8 +14,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from specter.ingest_pdfs import output_stems, _parse_one, expand_paths, main, write_metadata
-from specter.specter_parser import _md_link
+from docintel.pipeline import output_stems, _parse_one, expand_paths, main, write_metadata
+from docintel.engines.native import _md_link
 
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLE = ROOT / "data" / "pdfs" / "2021LHC9943.pdf"      # 2 pages, digital: fast
@@ -153,7 +153,7 @@ class WorkerJobTests(unittest.TestCase):
         # sequential and pooled paths must agree on that -- an exception
         # crossing a process boundary would kill the pool.
         row, failure = _parse_one((Path("does_not_exist.pdf"), Path("artifacts/unused"),
-                                   "auto", "raw", 2.0, "grayscale", 0.45, "does_not_exist", False))
+                                   "auto", "raw", 2.0, "grayscale", 0.45, "does_not_exist", False, None))
         self.assertIsNone(row)
         self.assertIn("error", failure)
         self.assertIn("does_not_exist.pdf", failure["pdf"])

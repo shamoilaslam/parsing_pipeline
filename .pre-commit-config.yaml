@@ -1,0 +1,29 @@
+# pip install -e ".[dev]" && pre-commit install
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=2048"]
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+  - repo: local
+    hooks:
+      # Scoped to new code; widened as legacy modules move into docintel/.
+      - id: ruff
+        name: ruff
+        entry: python -m ruff check
+        language: system
+        types: [python]
+        files: ^(eval|docintel)/
+      - id: mypy
+        name: mypy
+        entry: python -m mypy
+        language: system
+        types: [python]
+        pass_filenames: false

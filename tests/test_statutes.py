@@ -1,8 +1,8 @@
 import unittest
 from pathlib import Path
 
-from specter.specter_parser import _carry_footnote_run, _classify
-from specter.statutes import (
+from docintel.engines.native import _carry_footnote_run, _classify
+from docintel.legal.statutes import (
     _heading_line,
     _heading_title,
     _roman_to_int,

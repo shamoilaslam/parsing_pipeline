@@ -11,8 +11,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from specter.courts import normalise_named_date, path_labels
-from specter.ingest_pdfs import apply_document_kind, apply_path_labels
+from docintel.legal.courts import normalise_named_date, path_labels
+from docintel.legal.enricher import apply_document_kind, apply_path_labels
 
 
 SIDECAR = {

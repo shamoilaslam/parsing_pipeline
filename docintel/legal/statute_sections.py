@@ -32,8 +32,8 @@ from pathlib import Path
 from collections import Counter
 from typing import Any, Iterable
 
-from specter.specter_parser import AMENDMENT_NOTE_RE
-from specter.statutes import _heading_title, detect_structure, extract_statute_metadata
+from docintel.engines.native import AMENDMENT_NOTE_RE
+from docintel.legal.statutes import _heading_title, detect_structure, extract_statute_metadata
 
 # A section ends where the next piece of structure begins.  A chapter or part
 # heading is a boundary as much as the next section is.

@@ -30,21 +30,20 @@ import cv2
 import fitz
 import numpy as np
 
-from specter.specter_parser import (
+from docintel.engines.hints import LegalHints
+from docintel.legal.hints import LEGAL_HINTS
+from docintel.engines.native import (
     DATE_RE,
     _area,
     _bbox,
     _clean,
-    _cover_fields_from_blocks,
-    _cover_fields_from_table,
-    _cover_metadata,
-    _extract_metadata,
     _metadata_provenance,
     _is_page_number,
     _is_rtl,
     _reading_order,
     _script,
     _table_html,
+    metadata_from_pages,
     write_result,
 )
 
@@ -294,10 +293,12 @@ class ScannedParser:
         preprocess_variant: str = "grayscale",
         retry_threshold: float = 0.45,
         save_page_images: bool = False,
+        hints: LegalHints = LEGAL_HINTS,
     ):
         from rapidocr_onnxruntime import RapidOCR
 
         self.render_scale = render_scale
+        self.hints = hints
         self.use_urdu_router = use_urdu_router
         # The rendered page is OCR input, not output.  Saved, it was 63% of a
         # corpus run's bytes and nothing read it back -- ``specter inspect``
@@ -314,7 +315,7 @@ class ScannedParser:
         self.urdu_ocr = None
         if use_urdu_router:
             try:
-                from specter.urdu_ocr import RapidArabicOCR
+                from docintel.engines.urdu_ocr import RapidArabicOCR
 
                 self.urdu_ocr = RapidArabicOCR(urdu_model_dir)
             except (FileNotFoundError, ImportError, RuntimeError):
@@ -727,19 +728,9 @@ class ScannedParser:
 
             # Metadata comes from the OCR text and the OCR page structure --
             # a scanned document has no native text layer to read it from.
-            # ``_cover_fields_from_*`` need only type/text/bbox, all of which
-            # OCR blocks carry, so the digital route's structure-first
-            # extraction is reused rather than duplicated.
-            cover_fields: list[dict[str, Any]] = []
-            for page in pages:
-                for table_block in [item for item in page["blocks"] if item["type"] == "table"]:
-                    cover_fields.extend({**field, "page": page["page_number"]} for field in _cover_fields_from_table(table_block))
-                cover_fields.extend({**field, "page": page["page_number"]} for field in _cover_fields_from_blocks(page["blocks"]))
-            metadata = _extract_metadata("\n".join(body_text_parts), dict(doc.metadata or {}))
-            structured = _cover_metadata(cover_fields, [])
-            metadata["counsel"] = structured["counsel"]
-            if structured.get("hearing_date"):
-                metadata["hearing_date"] = structured["hearing_date"]
+            metadata, cover_fields = metadata_from_pages(
+                pages, "\n".join(body_text_parts), dict(doc.metadata or {}), self.hints
+            )
 
             document_order = 0
             for page in pages:

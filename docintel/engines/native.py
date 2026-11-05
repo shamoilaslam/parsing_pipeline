@@ -21,8 +21,9 @@ import re
 import statistics
 from datetime import date
 
-from specter.citations import find_citations
-from specter.courts import canonical_name, court_id, sits_in_benches
+from docintel.engines.hints import LegalHints
+from docintel.legal.courts import canonical_name, court_id
+from docintel.legal.hints import LEGAL_HINTS
 from urllib.parse import quote
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -72,7 +73,7 @@ CASE_RE = re.compile(
     r"(?:\s*of\s*\d{4})?)"
 )
 DATE_RE = re.compile(r"\b(?:\d{1,2}[./-]\d{1,2}[./-]\d{2,4}|\d{1,2}\s+[A-Za-z]+\s+\d{4})\b")
-# Citations live in ``specter/citations.py``.  The pattern that used to be
+# Citations live in ``docintel.legal.citations.py``.  The pattern that used to be
 # here required the reporter *before* the year -- "PLD 2015 SC 123" -- and
 # Pakistan writes the year first, so it found none of the 17 authorities in
 # the judgment it was first tested against.
@@ -1087,7 +1088,7 @@ def _bench_judges(head_lines: list[str]) -> list[str]:
     return names
 
 
-# Court naming lives in the registry (``specter/courts.py``) so that adding a
+# Court naming lives in the registry (``docintel.legal.courts.py``) so that adding a
 # court is a config entry rather than an edit here.  Both fields are kept: the
 # verbatim name for quoting, a canonical id for querying -- a corpus that
 # stores only what the page says ends up with one court under several
@@ -1117,7 +1118,7 @@ def _iso_date(value: str | None) -> str | None:
         return None
 
 
-def _extract_metadata(text: str, pdf_metadata: dict[str, Any]) -> dict[str, Any]:
+def _extract_metadata(text: str, pdf_metadata: dict[str, Any], hints: LegalHints = LEGAL_HINTS) -> dict[str, Any]:
     head = text[:12000]
     dates = DATE_RE.findall(head)
     # Preferring a match from the first 25 lines -- the caption, where a
@@ -1127,7 +1128,7 @@ def _extract_metadata(text: str, pdf_metadata: dict[str, Any]) -> dict[str, Any]
     # caption naming a different case from the folder it was filed in; that is
     # the corpus disagreeing with itself, and ``label_check`` reports it.
     case_match = CASE_RE.search(head)
-    citations = sorted({citation["id"] for citation in find_citations(text)})
+    citations = sorted({citation["id"] for citation in hints.find_citations(text)})
     section_numbers: set[str] = set()
     for match in re.finditer(r"(?i)\b(?:sections?|s\.)\s+([^.;\n]{1,100})", text):
         section_numbers.update(re.findall(r"\b\d{1,4}(?:-[A-Za-z])?(?:\([^)]+\))?", match.group(1)))
@@ -1151,7 +1152,7 @@ def _extract_metadata(text: str, pdf_metadata: dict[str, Any]) -> dict[str, Any]
     # body prose about "the learned Bench", as this court's own -- wrong on all
     # 14 Supreme Court documents in a 120-document sample.
     bench = (next((line.strip() for line in head.splitlines() if _is_bench_heading(line)), None)
-             if sits_in_benches(_normalise_court(court)) else None)
+             if hints.sits_in_benches(hints.canonical_court(court)) else None)
     # "NAME, J.-" at LHC and SC; "NAME, J:-" at IHC.  Requiring the period lost
     # the author on every IHC judgment that writes the colon.
     judge_matches = re.findall(r"(?i)([A-Z][A-Za-z .'-]{3,60}),\s*J\s*[.:]", text)
@@ -1204,8 +1205,8 @@ def _extract_metadata(text: str, pdf_metadata: dict[str, Any]) -> dict[str, Any]
             petitioner, respondent = left, right
             break
     return {
-        "court": _normalise_court(court),
-        "court_id": _court_id(_normalise_court(court)),
+        "court": hints.canonical_court(court),
+        "court_id": hints.court_id(hints.canonical_court(court)),
         "bench": bench,
         "case_number": _clean(case_match.group(1)) if case_match else None,
         "decision_date": decision_value,
@@ -1463,6 +1464,28 @@ def _locate_value(target: str, pages: list[dict[str, Any]]) -> dict[str, Any] | 
     return None
 
 
+def metadata_from_pages(
+    pages: list[dict[str, Any]], body_text: str, pdf_metadata: dict[str, Any], hints: LegalHints = LEGAL_HINTS
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Case metadata and cover fields for pages that carry no native text layer.
+
+    ``_cover_fields_from_*`` need only type/text/bbox, all of which OCR and
+    model-read blocks carry, so the digital route's structure-first extraction
+    is reused rather than duplicated.
+    """
+    cover_fields: list[dict[str, Any]] = []
+    for page in pages:
+        for table_block in [item for item in page["blocks"] if item["type"] == "table"]:
+            cover_fields.extend({**field, "page": page["page_number"]} for field in _cover_fields_from_table(table_block))
+        cover_fields.extend({**field, "page": page["page_number"]} for field in _cover_fields_from_blocks(page["blocks"]))
+    metadata = _extract_metadata(body_text, pdf_metadata, hints)
+    structured = _cover_metadata(cover_fields, [])
+    metadata["counsel"] = structured["counsel"]
+    if structured.get("hearing_date"):
+        metadata["hearing_date"] = structured["hearing_date"]
+    return metadata, cover_fields
+
+
 def _metadata_provenance(metadata: dict[str, Any], pages: list[dict[str, Any]]) -> dict[str, Any]:
     """Attach a verified source region to every extracted metadata field."""
     provenance: dict[str, Any] = {}
@@ -1508,7 +1531,7 @@ def _md_link(path: str) -> str:
 
 def _attach_diagnostics(result: dict[str, Any]) -> dict[str, Any]:
     """Embed validator output in the canonical document without changing content."""
-    from specter.validate_document import validate
+    from docintel.validate import validate
 
     report = validate(result)
     scores = [float(score) for score in report["quality_profile"].values()]
@@ -1524,12 +1547,14 @@ def _attach_diagnostics(result: dict[str, Any]) -> dict[str, Any]:
 
 
 class SpecterParser:
-    def __init__(self, rtl_mode: str = "image", image_scale: float = 2.0, urdu_ocr: Any = None):
+    def __init__(self, rtl_mode: str = "image", image_scale: float = 2.0, urdu_ocr: Any = None,
+                 hints: LegalHints = LEGAL_HINTS):
         if rtl_mode not in {"raw", "image", "both"}:
             raise ValueError("rtl_mode must be raw, image, or both")
         self.rtl_mode = rtl_mode
         self.image_scale = image_scale
         self.urdu_ocr = urdu_ocr
+        self.hints = hints
 
     def parse(self, pdf_path: str | Path, output_dir: str | Path | None = None,
               stem: str | None = None) -> dict[str, Any]:
@@ -1771,7 +1796,7 @@ class SpecterParser:
             digital_pages = sum(page["extraction"] == "digital" for page in pages)
             mode = "digital" if digital_pages == len(pages) else ("mixed" if digital_pages else "scanned_or_image_only")
             scores = [page["confidence"] for page in pages if page["blocks"]]
-            metadata = _extract_metadata(body_text, dict(doc.metadata or {}))
+            metadata = _extract_metadata(body_text, dict(doc.metadata or {}), self.hints)
             order_dates = [
                 {**block["order_date"], "page": page["page_number"]}
                 for page in pages
@@ -1867,7 +1892,7 @@ def main() -> None:
 
     urdu_ocr = None
     if args.urdu_ocr != "none":
-        from specter.urdu_ocr import build_urdu_ocr
+        from docintel.engines.urdu_ocr import build_urdu_ocr
         urdu_ocr = build_urdu_ocr(args.urdu_ocr, args.urdu_model_dir, args.urdu_model_id)
     engine = SpecterParser(rtl_mode=args.rtl_mode, urdu_ocr=urdu_ocr)
     summary = []

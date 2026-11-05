@@ -6,7 +6,7 @@ Every name here is one a judgment in the corpus actually printed.
 import unittest
 from pathlib import Path
 
-from specter.statute_links import (
+from docintel.legal.statute_links import (
     FEDERAL,
     Statute,
     _words,
