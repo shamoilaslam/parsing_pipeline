@@ -153,7 +153,7 @@ class WorkerJobTests(unittest.TestCase):
         # sequential and pooled paths must agree on that -- an exception
         # crossing a process boundary would kill the pool.
         row, failure = _parse_one((Path("does_not_exist.pdf"), Path("artifacts/unused"),
-                                   "auto", "raw", 2.0, "grayscale", 0.45, "does_not_exist", False))
+                                   "auto", "raw", 2.0, "grayscale", 0.45, "does_not_exist", False, None))
         self.assertIsNone(row)
         self.assertIn("error", failure)
         self.assertIn("does_not_exist.pdf", failure["pdf"])

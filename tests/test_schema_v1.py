@@ -21,7 +21,7 @@ class SpecterV1ContractTests(unittest.TestCase):
         cls._tmp = tempfile.TemporaryDirectory()
         out = Path(cls._tmp.name)
         # The CLI's own path, so the document carries everything enrichment adds.
-        row, failure = _parse_one((SAMPLE, out, "auto", "image", 2.0, "grayscale", 0.45, None, False))
+        row, failure = _parse_one((SAMPLE, out, "auto", "image", 2.0, "grayscale", 0.45, None, False, None))
         assert failure is None, failure
         cls.result = json.loads((out / f"{SAMPLE.stem}.json").read_text(encoding="utf-8"))
 

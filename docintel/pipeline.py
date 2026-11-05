@@ -31,43 +31,20 @@ import fitz
 from docintel.enrich import Enricher
 from docintel.legal.enricher import LegalEnricher
 from docintel.schema.v2 import upgrade
+from docintel.engines.base import Engine
 from docintel.engines.local import NativeEngine, OcrEngine
-from docintel.engines.scanned import _dominant_page_image
-from docintel.engines.native import PUA_CHAR_RE, write_result
+from docintel.engines.native import write_result
+from docintel.engines.nemotron_engine import NemotronEngine, log_transport
+from docintel.router import route
+from docintel.triage import profile_page
 
 
 # Run, in order, on every parsed document before it is written.
 ENRICHERS: tuple[Enricher, ...] = (LegalEnricher(),)
 
-# A text layer this far into the private-use area is a legacy InPage/Nastaleeq
-# encoding: it renders correctly on screen but extracts as unusable codepoints,
-# so the page has no readable text even though it technically has text.
-PUA_TEXT_RATIO = 0.5
-
-
 def _page_needs_ocr(page: fitz.Page) -> bool:
-    """True when a page's own text layer cannot be read.
-
-    Asking this per page rather than per document is what stops a scanned page
-    inside an otherwise digital PDF from being emitted empty.
-
-    Two independent signals, either of which is enough:
-
-    * A page-sized image is authoritative evidence of a scan even when the page
-      also carries text -- that text is some other scanner's OCR, and trusting
-      it over our own was measured to be worse.
-    * A page whose own text is missing, or is almost entirely private-use
-      glyphs, has nothing readable to extract regardless of what images it has.
-      A partial image, or none at all, still leaves the page blank; the scanned
-      parser drops genuinely empty pages itself.
-    """
-    if _dominant_page_image(page):
-        return True
-    text = page.get_text("text").strip()
-    if not text:
-        return True
-    solid = [character for character in text if not character.isspace()]
-    return bool(solid) and len(PUA_CHAR_RE.findall(text)) / len(solid) >= PUA_TEXT_RATIO
+    """True when a page's own text layer cannot be read (see ``docintel.router``)."""
+    return route(profile_page(page)).route != "native"
 
 
 def classify_pdf(pdf: Path) -> dict[str, object]:
@@ -127,19 +104,29 @@ def _merge_native_pages(scanned: dict[str, object], digital: dict[str, object], 
 
 def parse_pdf(pdf: Path, out: Path, engine: str = "auto", rtl_mode: str = "image", render_scale: float = 2.0,
               preprocess_variant: str = "grayscale", retry_threshold: float = 0.45,
-              stem: str | None = None, save_page_images: bool = False) -> dict[str, object]:
-    """Route one PDF to the engine that can read it, per page where they differ."""
+              stem: str | None = None, save_page_images: bool = False,
+              nemotron_work: Path | None = None) -> dict[str, object]:
+    """Route one PDF to the engine that can read it, per page where they differ.
+
+    ``engine="nemotron"`` reads the scan pages with Nemotron Parse from the model
+    output a GPU session left in ``nemotron_work`` instead of with local OCR.
+    """
     route = classify_pdf(pdf)
     selected = engine if engine != "auto" else ("scanned" if route["mode"] != "digital" else "digital")
     if selected == "digital":
         result = NativeEngine(rtl_mode=rtl_mode).parse(pdf, out, stem=stem)
     else:
-        # OCR only the pages that need it.  A mixed document's readable pages
+        if selected == "nemotron":
+            if nemotron_work is None:
+                raise ValueError("engine 'nemotron' needs nemotron_work: the folder holding the GPU session's raw.jsonl")
+            scan_engine: Engine = NemotronEngine(log_transport(nemotron_work))
+        else:
+            scan_engine = OcrEngine(render_scale=render_scale, preprocess_variant=preprocess_variant,
+                                    retry_threshold=retry_threshold, save_page_images=save_page_images)
+        # Read only the pages that need it.  A mixed document's readable pages
         # are taken from the digital parse below, so OCR-ing them costs ~30s
         # each and the result is thrown away.
-        result = OcrEngine(render_scale=render_scale, preprocess_variant=preprocess_variant,
-                           retry_threshold=retry_threshold,
-                           save_page_images=save_page_images).parse(pdf, out, pages=route["scan_pages"], stem=stem)
+        result = scan_engine.parse(pdf, out, pages=route["scan_pages"], stem=stem)
         if route["native_pages"]:
             result = _merge_native_pages(result, NativeEngine(rtl_mode=rtl_mode).parse(pdf, out, stem=stem),
                                          route["native_pages"])
@@ -240,11 +227,11 @@ def _parse_one(job: tuple) -> tuple[dict[str, object] | None, dict[str, object] 
     this process or in a worker pool without the two paths diverging.  One
     unreadable PDF must never end a 30,000-document run.
     """
-    pdf, out, engine, rtl_mode, render_scale, preprocess_variant, retry_threshold, stem, page_images = job
+    pdf, out, engine, rtl_mode, render_scale, preprocess_variant, retry_threshold, stem, page_images, nemotron_work = job
     try:
         result = parse_pdf(pdf, out, engine=engine, rtl_mode=rtl_mode, render_scale=render_scale,
                            preprocess_variant=preprocess_variant, retry_threshold=retry_threshold,
-                           stem=stem, save_page_images=page_images)
+                           stem=stem, save_page_images=page_images, nemotron_work=nemotron_work)
         for enricher in ENRICHERS:
             enricher.enrich(result, pdf)
         upgrade(result, pdf)
@@ -259,7 +246,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Parse a folder of legal PDFs into Specter JSON, Markdown, and metadata.")
     parser.add_argument("pdf", nargs="+", type=Path, help="PDF files, glob patterns, or folders")
     parser.add_argument("--out", type=Path, default=Path("artifacts/run"))
-    parser.add_argument("--engine", choices=["auto", "digital", "scanned"], default="auto")
+    parser.add_argument("--engine", choices=["auto", "digital", "scanned", "nemotron"], default="auto")
+    parser.add_argument("--nemotron-work", type=Path, help="folder holding the GPU session's raw.jsonl; required by --engine nemotron")
     parser.add_argument("--rtl-mode", choices=["raw", "image", "both"], default="image")
     parser.add_argument("--render-scale", type=float, default=2.0)
     parser.add_argument("--preprocess-variant", choices=["clahe", "grayscale", "otsu", "adaptive", "sauvola", "deskew_clahe"], default="grayscale")
@@ -296,7 +284,7 @@ def main() -> None:
                 documents.append({"pdf": str(pdf), "stem": stem, "status": "SKIPPED_EXISTING"})
             continue
         jobs.append((pdf, args.out, args.engine, args.rtl_mode, args.render_scale,
-                     args.preprocess_variant, args.retry_threshold, stem, args.page_images))
+                     args.preprocess_variant, args.retry_threshold, stem, args.page_images, args.nemotron_work))
 
     # Documents are independent, so the only shared state is the output folder
     # and each job writes files named after its own stem.  Collision and

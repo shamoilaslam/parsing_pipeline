@@ -1464,6 +1464,28 @@ def _locate_value(target: str, pages: list[dict[str, Any]]) -> dict[str, Any] | 
     return None
 
 
+def metadata_from_pages(
+    pages: list[dict[str, Any]], body_text: str, pdf_metadata: dict[str, Any], hints: LegalHints = LEGAL_HINTS
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Case metadata and cover fields for pages that carry no native text layer.
+
+    ``_cover_fields_from_*`` need only type/text/bbox, all of which OCR and
+    model-read blocks carry, so the digital route's structure-first extraction
+    is reused rather than duplicated.
+    """
+    cover_fields: list[dict[str, Any]] = []
+    for page in pages:
+        for table_block in [item for item in page["blocks"] if item["type"] == "table"]:
+            cover_fields.extend({**field, "page": page["page_number"]} for field in _cover_fields_from_table(table_block))
+        cover_fields.extend({**field, "page": page["page_number"]} for field in _cover_fields_from_blocks(page["blocks"]))
+    metadata = _extract_metadata(body_text, pdf_metadata, hints)
+    structured = _cover_metadata(cover_fields, [])
+    metadata["counsel"] = structured["counsel"]
+    if structured.get("hearing_date"):
+        metadata["hearing_date"] = structured["hearing_date"]
+    return metadata, cover_fields
+
+
 def _metadata_provenance(metadata: dict[str, Any], pages: list[dict[str, Any]]) -> dict[str, Any]:
     """Attach a verified source region to every extracted metadata field."""
     provenance: dict[str, Any] = {}

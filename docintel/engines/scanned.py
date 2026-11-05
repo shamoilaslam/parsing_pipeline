@@ -37,16 +37,13 @@ from docintel.engines.native import (
     _area,
     _bbox,
     _clean,
-    _cover_fields_from_blocks,
-    _cover_fields_from_table,
-    _cover_metadata,
-    _extract_metadata,
     _metadata_provenance,
     _is_page_number,
     _is_rtl,
     _reading_order,
     _script,
     _table_html,
+    metadata_from_pages,
     write_result,
 )
 
@@ -731,19 +728,9 @@ class ScannedParser:
 
             # Metadata comes from the OCR text and the OCR page structure --
             # a scanned document has no native text layer to read it from.
-            # ``_cover_fields_from_*`` need only type/text/bbox, all of which
-            # OCR blocks carry, so the digital route's structure-first
-            # extraction is reused rather than duplicated.
-            cover_fields: list[dict[str, Any]] = []
-            for page in pages:
-                for table_block in [item for item in page["blocks"] if item["type"] == "table"]:
-                    cover_fields.extend({**field, "page": page["page_number"]} for field in _cover_fields_from_table(table_block))
-                cover_fields.extend({**field, "page": page["page_number"]} for field in _cover_fields_from_blocks(page["blocks"]))
-            metadata = _extract_metadata("\n".join(body_text_parts), dict(doc.metadata or {}), self.hints)
-            structured = _cover_metadata(cover_fields, [])
-            metadata["counsel"] = structured["counsel"]
-            if structured.get("hearing_date"):
-                metadata["hearing_date"] = structured["hearing_date"]
+            metadata, cover_fields = metadata_from_pages(
+                pages, "\n".join(body_text_parts), dict(doc.metadata or {}), self.hints
+            )
 
             document_order = 0
             for page in pages:

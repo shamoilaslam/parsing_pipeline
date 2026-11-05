@@ -19,7 +19,7 @@ class SpecterV2Tests(unittest.TestCase):
     def setUpClass(cls):
         cls._tmp = tempfile.TemporaryDirectory()
         out = Path(cls._tmp.name)
-        row, failure = _parse_one((SAMPLE, out, "auto", "image", 2.0, "grayscale", 0.45, None, False))
+        row, failure = _parse_one((SAMPLE, out, "auto", "image", 2.0, "grayscale", 0.45, None, False, None))
         assert failure is None, failure
         cls.result = json.loads((out / f"{SAMPLE.stem}.json").read_text(encoding="utf-8"))
         cls.metadata = json.loads((out / "metadata" / f"{SAMPLE.stem}.json").read_text(encoding="utf-8"))
