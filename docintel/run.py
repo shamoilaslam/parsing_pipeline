@@ -4,8 +4,10 @@
 
 Parsed output goes to ``/path/to/pdfs_parsed`` (override with ``--out``): per
 document ``<stem>.json``, ``<stem>.md`` and ``metadata/<stem>.json``, plus
-``manifest.json`` and a ``report.json`` summary.  Sub-folders are included and
-an interrupted run is resumed, not restarted.
+``manifest.json``, a ``report.json`` summary, ``document_types.json`` and, for each
+judgment, order or act, Akoma Ntoso-style JSON in ``akn/<stem>.json``.  Images and
+Word files are converted first.  Sub-folders are included and an interrupted run is
+resumed, not restarted.
 """
 
 from __future__ import annotations
@@ -17,6 +19,9 @@ import sys
 from pathlib import Path
 
 from docintel import pipeline, report
+from docintel.akn.build import write_akn
+from docintel.ingest import normalize_folder
+from docintel.understand.classify import classify_folder
 
 
 def main() -> int:
@@ -33,8 +38,10 @@ def main() -> int:
         parser.error(f"{args.folder} is not a folder")
     out = args.out or args.folder.with_name(f"{args.folder.name}_parsed")
 
+    normalized, ingest_failures = normalize_folder(args.folder, out / "_normalized")
     argv = [
         str(args.folder),
+        *([str(normalized)] if normalized else []),
         "--out",
         str(out),
         "--recursive",
@@ -54,12 +61,19 @@ def main() -> int:
     finally:
         sys.argv = saved
 
+    if ingest_failures:
+        (out / "ingest_failures.json").write_text(
+            json.dumps(ingest_failures, ensure_ascii=False, indent=2), encoding="utf-8"
+        )
     manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
+    types = classify_folder(out)
+    (out / "document_types.json").write_text(json.dumps(types, ensure_ascii=False, indent=2), encoding="utf-8")
+    write_akn(out, types)
     summary = report.summarise(report.load(out), manifest)
     (out / "report.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     print(report.render(summary))
     print(f"\nparsed folder: {out}")
-    return 1 if manifest["failed"] else 0
+    return 1 if manifest["failed"] or ingest_failures else 0
 
 
 if __name__ == "__main__":

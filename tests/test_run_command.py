@@ -29,7 +29,8 @@ def run(monkeypatch, *argv):
 def test_pointing_at_a_folder_writes_a_parsed_folder_beside_it(corpus, monkeypatch):
     assert run(monkeypatch, corpus) == 0
     parsed = corpus.parent / "judgments_parsed"
-    assert sorted(path.name for path in parsed.glob("*.json")) == ["a.json", "b.json", "manifest.json", "report.json"]
+    expected = ["a.json", "b.json", "document_types.json", "manifest.json", "report.json"]
+    assert sorted(path.name for path in parsed.glob("*.json")) == expected
     assert sorted(path.name for path in (parsed / "metadata").glob("*.json")) == ["a.json", "b.json"]
     assert json.loads((parsed / "manifest.json").read_text(encoding="utf-8"))["parsed"] == 2
 
@@ -68,3 +69,36 @@ def test_the_docintel_command_dispatches_run(corpus, monkeypatch):
     monkeypatch.setattr(sys, "argv", ["docintel", "run", str(corpus), "--workers", "1"])
     docintel()
     assert (corpus.parent / "judgments_parsed" / "report.json").exists()
+
+
+def test_photos_are_parsed_and_an_unconvertible_word_file_is_reported_without_stopping_the_run(corpus, monkeypatch):
+    from PIL import Image
+
+    Image.new("L", (1200, 1600), 235).save(corpus / "photo.png")
+    (corpus / "nda.docx").write_bytes(b"not a real docx")
+    assert run(monkeypatch, corpus, "--workers", "1") == 1  # the Word file could not be read
+    parsed = corpus.parent / "judgments_parsed"
+    manifest = json.loads((parsed / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["parsed"] == 3  # a.pdf, 2024/b.pdf and photo.png
+    assert (parsed / "photo.png.json").exists()
+    failures = json.loads((parsed / "ingest_failures.json").read_text(encoding="utf-8"))
+    assert [failure["file"] for failure in failures] == [str(corpus / "nda.docx")]
+
+
+def test_run_records_what_kind_of_document_each_file_is(corpus, monkeypatch):
+    run(monkeypatch, corpus, "--workers", "1")
+    types = json.loads((corpus.parent / "judgments_parsed" / "document_types.json").read_text(encoding="utf-8"))
+    assert sorted(types) == ["a", "b"]
+    assert types["a"]["kind"] == "order"  # the sample (2021LHC9943) is a Lahore High Court order sheet
+    assert 0 < types["a"]["confidence"] <= 1
+    assert types["a"]["reasons"]
+
+
+def test_run_writes_akoma_ntoso_json_for_every_court_document(corpus, monkeypatch):
+    run(monkeypatch, corpus, "--workers", "1")
+    akn = json.loads((corpus.parent / "judgments_parsed" / "akn" / "a.json").read_text(encoding="utf-8"))
+    assert akn["type"] == "judgment"
+    identification = akn["meta"]["identification"]
+    assert identification["FRBRManifestation"]["sourceName"] == "a.pdf"
+    assert identification["FRBRWork"]["this"].startswith("/akn/pk/judgment/")
+    assert akn["judgment"]["judgmentBody"]  # paragraphs, each with its source block

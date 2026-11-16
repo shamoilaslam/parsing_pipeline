@@ -1433,6 +1433,28 @@ none. *Open:* the 22 PDFs in the snapshot corpus contain no scanned ruled
 table, so the snapshot did not move and this step is covered by unit tests
 only. A scanned table in the snapshot corpus would close that.
 
+### An order sheet's ISO date follows its date; Nemotron 3.5 measured on one page
+
+An ORDER SHEET states its date in the form body, and the metadata step copied
+that date into `decision_date` (and the cover's hearing date into `hearing_date`)
+without setting `decision_date_iso` / `hearing_date_iso`. Three of the 16
+digital sample judgments had a date and no ISO form, and an ECLI-style id and a
+dated Akoma Ntoso URI are built from the ISO form. The ISO form is now set
+wherever the date is. **The byte snapshot moved on exactly three documents**
+(2021LHC9943, 2024LHC1690, 2025LHC5084), all order sheets, and only in
+`document.metadata` and `document.metadata_provenance`; the other 19 are
+identical. The baseline was re-recorded in the same change.
+
+Measured on one page (2021LHC9943 p1, rendered at 1.5x, against the human gold
+text): **Nemotron 3.5 Parse CER 0.016 / WER 0.016; the local RapidOCR route
+CER 0.074 / WER 0.125**, on the same image. One page is a small sample, and the
+model took about 15 minutes on this 4-core CPU against about a minute for
+RapidOCR. Nemotron's boxes on that page type are within 4 pt of the PDF's own text
+boxes. *Urdu:* on a printed Nastaliq paragraph the model returned letter-reversed
+words with wrong letters, and read a second paragraph as a picture; the model card
+does not list Urdu. *Open:* GPU speed is not measured; more than one English page
+is not measured.
+
 ## Open items
 
 Tracked here rather than closed by assertion.

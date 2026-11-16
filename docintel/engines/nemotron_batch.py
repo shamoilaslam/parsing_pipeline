@@ -49,7 +49,6 @@ def ingest(
         build_page(
             raw_by_page[job["page_number"]],
             page_number=job["page_number"],
-            image_size=job["image_size"],
             page_size=job["page_size"],
         )
         for job in jobs

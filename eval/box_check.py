@@ -44,9 +44,7 @@ def check_pdf(pdf: Path, raw_by_page: dict[int, str], jobs: list[dict[str, Any]]
         number = job["page_number"]
         if number not in raw_by_page:
             continue
-        predicted = build_page(
-            raw_by_page[number], page_number=number, image_size=job["image_size"], page_size=job["page_size"]
-        )["blocks"]
+        predicted = build_page(raw_by_page[number], page_number=number, page_size=job["page_size"])["blocks"]
         rows.append({"page_number": number, **asdict(evaluate_page(predicted, native[number]))})
     return rows
 

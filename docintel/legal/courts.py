@@ -35,6 +35,8 @@ from typing import Any
 class Court:
     court_id: str
     name: str
+    # The court's code in ECLI-style identifiers (ECLI:PK:<code>:<year>:<ordinal>).
+    ecli_code: str = ""
     spellings: tuple[str, ...] = ()
     path_pattern: re.Pattern[str] | None = None
     # Which path component the pattern reads.  Most corpora state the case in
@@ -135,16 +137,16 @@ def _ihc_sidecar(data: dict[str, Any]) -> dict[str, Any]:
 
 COURTS: tuple[Court, ...] = (
     Court(
-        court_id="supreme_court_pakistan",
+        court_id="supreme_court_pakistan", ecli_code="SC",
         name="SUPREME COURT OF PAKISTAN",
         path_pattern=SC_PATH,
         judge_from_folder=True,
     ),
-    Court(court_id="federal_shariat_court", name="FEDERAL SHARIAT COURT"),
-    Court(court_id="lahore_high_court", name="LAHORE HIGH COURT", path_pattern=LHC_PATH,
+    Court(court_id="federal_shariat_court", ecli_code="FSC", name="FEDERAL SHARIAT COURT"),
+    Court(court_id="lahore_high_court", ecli_code="LHC", name="LAHORE HIGH COURT", path_pattern=LHC_PATH,
           has_benches=True),
     Court(
-        court_id="islamabad_high_court",
+        court_id="islamabad_high_court", ecli_code="IHC",
         name="ISLAMABAD HIGH COURT",
         path_pattern=IHC_PATH,
         path_from="parent",
@@ -152,10 +154,10 @@ COURTS: tuple[Court, ...] = (
         sidecar="meta.json",
         case_number_format="{case_type}-{case_number}-{year}",
     ),
-    Court(court_id="sindh_high_court", name="SINDH HIGH COURT", spellings=("HIGH COURT OF SINDH",),
+    Court(court_id="sindh_high_court", ecli_code="SHC", name="SINDH HIGH COURT", spellings=("HIGH COURT OF SINDH",),
           has_benches=True),
-    Court(court_id="peshawar_high_court", name="PESHAWAR HIGH COURT", has_benches=True),
-    Court(court_id="balochistan_high_court", name="BALOCHISTAN HIGH COURT", has_benches=True),
+    Court(court_id="peshawar_high_court", ecli_code="PHC", name="PESHAWAR HIGH COURT", has_benches=True),
+    Court(court_id="balochistan_high_court", ecli_code="BHC", name="BALOCHISTAN HIGH COURT", has_benches=True),
 )
 
 # "Mr. Justice X" at SC, "Former Honourable Chief Justice Mr. Justice X" at IHC.

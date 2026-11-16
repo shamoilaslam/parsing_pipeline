@@ -36,7 +36,7 @@ def test_the_engine_returns_a_valid_specter_result_and_declares_its_policy(tmp_p
     result = engine.parse(make_pdf(tmp_path / "scan.pdf"), tmp_path / "out")
     SpecterV1.model_validate(result)
     assert result["document"]["page_count"] == 2
-    assert result["document"]["engine"] == "nemotron-parse-v1.2"
+    assert result["document"]["engine"] == "nemotron-3.5-parse"
 
 
 def test_pages_the_transport_has_no_output_for_are_reported_not_emitted_empty(tmp_path):

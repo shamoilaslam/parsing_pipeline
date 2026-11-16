@@ -1,9 +1,11 @@
-"""Read the output of NVIDIA Nemotron Parse into page blocks.
+"""Read the output of NVIDIA Nemotron 3.5 Parse into page blocks.
 
 The model returns one string per page image: for each region, its top-left
-corner, its text, its bottom-right corner and its class.  This module only
-interprets that string; running the model is somewhere else, so the format can
-be tested without a GPU.
+corner, its text, its bottom-right corner and its class.  Coordinates are
+fractions of the page image, so a box in PDF points is a fraction times the page
+size (checked against a real page: within 4 pt of the PDF's own text box).  This
+module only interprets that string; running the model is somewhere else, so the
+format can be tested without a GPU.
 """
 
 from __future__ import annotations
@@ -15,14 +17,11 @@ from docintel.engines.native import _is_rtl, _script
 
 Block = dict[str, Any]
 
-SOURCE = "nemotron-parse-v1.2"
-
-# The model reads a fixed canvas; coordinates in its output are fractions of it.
-CANVAS_W, CANVAS_H = 1664, 2048
+SOURCE = "nemotron-3.5-parse"
 
 _NUMBER = r"(\d+(?:\.\d+)?)"
+# A region cut off by the token limit has no closing class tag and is not matched.
 _REGION = re.compile(rf"<x_{_NUMBER}><y_{_NUMBER}>(.*?)<x_{_NUMBER}><y_{_NUMBER}><class_([^>]+)>", re.DOTALL)
-
 
 # Nemotron's layout classes onto specter block types.  A class with no entry
 # (Picture, Formula, Caption, ...) is read as text and keeps its class name in
@@ -39,33 +38,11 @@ _BLOCK_TYPE = {
 }
 
 
-def _letterbox(image_size: tuple[int, int]) -> tuple[float, float, int, int]:
-    """Where the image sits on the model's canvas: its size there and its padding.
-
-    The model shrinks an image to fit (height first, then width) and never
-    enlarges it, then centres it with floor-division padding.
-    """
-    width, height = image_size
-    if height > CANVAS_H:
-        width, height = int(CANVAS_H * width / height), CANVAS_H
-    if width > CANVAS_W:
-        width, height = CANVAS_W, int(CANVAS_W * height / width)
-    return width, height, (CANVAS_W - width) // 2, (CANVAS_H - height) // 2
-
-
-def parse_output(raw: str, *, image_size: tuple[int, int], page_size: tuple[float, float]) -> list[Block]:
-    placed_w, placed_h, pad_left, pad_top = _letterbox(image_size)
+def parse_output(raw: str, *, page_size: tuple[float, float]) -> list[Block]:
     page_w, page_h = page_size
-
-    def point_x(fraction: str) -> float:
-        return (float(fraction) * CANVAS_W - pad_left) / placed_w * page_w
-
-    def point_y(fraction: str) -> float:
-        return (float(fraction) * CANVAS_H - pad_top) / placed_h * page_h
-
     blocks = []
     for order, (x1, y1, text, x2, y2, layout_class) in enumerate(_REGION.findall(raw)):
-        bbox = [point_x(x1), point_y(y1), point_x(x2), point_y(y2)]
+        bbox = [float(x1) * page_w, float(y1) * page_h, float(x2) * page_w, float(y2) * page_h]
         blocks.append(
             {
                 "type": _BLOCK_TYPE.get(layout_class, "text"),
@@ -78,12 +55,10 @@ def parse_output(raw: str, *, image_size: tuple[int, int], page_size: tuple[floa
     return blocks
 
 
-def build_page(
-    raw: str, *, page_number: int, image_size: tuple[int, int], page_size: tuple[float, float]
-) -> dict[str, Any]:
+def build_page(raw: str, *, page_number: int, page_size: tuple[float, float]) -> dict[str, Any]:
     """One ``specter.v1`` page from the model's output for that page's image."""
     blocks = []
-    for region in parse_output(raw, image_size=image_size, page_size=page_size):
+    for region in parse_output(raw, page_size=page_size):
         text = region["text"]
         has_rtl = any(_is_rtl(char) for char in text)
         blocks.append(

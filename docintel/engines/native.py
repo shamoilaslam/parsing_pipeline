@@ -1810,11 +1810,14 @@ class SpecterParser:
             # regex can only guess from among every date on the page.
             if structured.get("hearing_date"):
                 metadata["hearing_date"] = structured["hearing_date"]
+                metadata["hearing_date_iso"] = _iso_date(structured["hearing_date"])
             # An ORDER SHEET states its date in the form body rather than in
             # the "decided on" phrasing the regex looks for, so it fills the
-            # gap only where the regex found nothing.
+            # gap only where the regex found nothing.  The ISO form travels
+            # with the date: an identifier is built from it.
             if not metadata.get("decision_date") and structured.get("order_date"):
                 metadata["decision_date"] = structured["order_date"]
+                metadata["decision_date_iso"] = _iso_date(structured["order_date"])
             result = {
                 "schema_version": "specter.v1",
                 "document": {

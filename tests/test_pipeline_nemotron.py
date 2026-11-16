@@ -33,7 +33,7 @@ def test_a_scan_page_is_read_by_the_model_and_a_readable_page_stays_native(tmp_p
     first, second = result["pages"]
     assert "Digital page one." in first["blocks"][0]["text"]
     assert second["blocks"][0]["text"] == SCAN_TEXT
-    assert second["blocks"][0]["source"] == "nemotron-parse-v1.2"
+    assert second["blocks"][0]["source"] == "nemotron-3.5-parse"
     assert result["document"]["extraction_mode"] == "mixed_native_and_ocr"
     assert result["document"]["router"]["selected"] == "nemotron"
 
@@ -57,7 +57,7 @@ def test_the_command_line_parses_a_corpus_with_the_nemotron_engine(tmp_path, mon
     monkeypatch.setattr(sys, "argv", argv)
     main()
     written = json.loads((out / "mixed.json").read_text(encoding="utf-8"))
-    assert written["pages"][1]["blocks"][0]["source"] == "nemotron-parse-v1.2"
+    assert written["pages"][1]["blocks"][0]["source"] == "nemotron-3.5-parse"
 
 
 def test_the_nemotron_engine_refuses_to_run_without_a_work_folder(tmp_path):

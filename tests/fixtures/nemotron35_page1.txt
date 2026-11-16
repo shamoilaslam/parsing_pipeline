@@ -1,0 +1,14 @@
+</s><s><predict_bbox><predict_classes><output_markdown><predict_text_in_pic><x_0.2646><y_0.1016>**_Form No: HCJD/C-121_**<x_0.4902><y_0.1125><class_Page-header>
+
+<x_0.3271><y_0.1172>**ORDER SHEET**
+**IN THE LAHORE HIGH COURT, LAHORE**
+**JUDICIAL DEPARTMENT**<x_0.8105><y_0.1641><class_Title>
+
+<x_0.416><y_0.1836>Civil Revision No.21823 of 2024<x_0.7227><y_0.1945><class_Text>
+
+<x_0.3154><y_0.2156>_Muhammad Azam_
+_Versus_
+_Province of the Punjab through District Collector & others_<x_0.8223><y_0.2594><class_Text>
+
+<x_0.2354><y_0.2766>\begin{tabular}{ccc}
+S. No. of order/ Proceeding&Date of order/ Proceeding&Order with signature of Judge, and</s>

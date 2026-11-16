@@ -20,15 +20,9 @@ def make_pdf(path):
 
 
 def tokens(bbox, text="x", layout_class="Text"):
-    """Model output for a region at ``bbox`` (points) on an A4 page rendered at 2x.
-
-    The 1190x1684 image sits centred on the model's 1664x2048 canvas, padded 237
-    left and 182 above, so a canvas fraction is (2 * points + padding) / canvas.
-    """
+    """Model output for a region at ``bbox`` (points) on an A4 page (595x842): coordinates are page fractions."""
     x1, y1, x2, y2 = bbox
-    fx = lambda value: (2 * value + 237) / 1664  # noqa: E731
-    fy = lambda value: (2 * value + 182) / 2048  # noqa: E731
-    return f"<x_{fx(x1)}><y_{fy(y1)}>{text}<x_{fx(x2)}><y_{fy(y2)}><class_{layout_class}>"
+    return f"<x_{x1 / 595}><y_{y1 / 842}>{text}<x_{x2 / 595}><y_{y2 / 842}><class_{layout_class}>"
 
 
 def test_a_box_where_the_text_is_scores_a_perfect_match(tmp_path):
