@@ -14,5 +14,8 @@ NOT_DOCUMENTS = {"manifest.json", "report.json", "document_types.json", "ingest_
 def documents(parsed: Path) -> Iterator[tuple[str, dict[str, Any]]]:
     """Each parsed document as ``(output stem, payload)``, in name order."""
     for path in sorted(parsed.glob("*.json")):
-        if path.name not in NOT_DOCUMENTS:
-            yield path.stem, json.loads(path.read_text(encoding="utf-8"))
+        if path.name in NOT_DOCUMENTS:
+            continue
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        if "pages" in payload and "document" in payload:  # not a score, a key or another run's note
+            yield path.stem, payload

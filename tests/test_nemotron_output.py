@@ -94,3 +94,32 @@ def test_urdu_text_is_marked_rtl_so_the_urdu_stage_will_pick_it_up():
 def test_page_markdown_joins_the_blocks_in_order():
     raw = "<x_0.1><y_0.1>One<x_0.5><y_0.2><class_Text><x_0.1><y_0.3>Two<x_0.5><y_0.4><class_Text>"
     assert build(raw)["markdown"] == "One\n\nTwo"
+
+
+def test_an_urdu_region_is_kept_but_flagged_because_the_model_cannot_read_urdu():
+    page = build_page("<x_0.1><y_0.1>یہ ایک جملہ ہے<x_0.9><y_0.2><class_Text>", page_number=1, page_size=(600, 800))
+    [block] = page["blocks"]
+    assert block["contains_rtl"] and block["needs_review"]
+    assert "urdu_unreliable_for_engine" in block["confidence"]["reasons"]
+
+
+def test_an_english_region_is_not_flagged():
+    [block] = build_page("<x_0.1><y_0.1>Dear Sir<x_0.9><y_0.2><class_Text>", page_number=1, page_size=(600, 800))["blocks"]
+    assert not block.get("needs_review")
+
+
+def test_regions_carry_a_computed_quality_and_the_page_their_character_weighted_mean():
+    raw = (
+        "<x_0.1><y_0.1>The petition is dismissed for the reasons recorded above in this order.<x_0.9><y_0.2><class_Text>"
+        "<x_0.1><y_0.3>the the the the the the<x_0.9><y_0.4><class_Text>"
+    )
+    page = build_page(raw, page_number=1, page_size=(600, 800))
+    good, looping = page["blocks"]
+    assert good["confidence"]["score"] > 0.8 and "engine_reports_no_confidence" in good["confidence"]["reasons"]
+    assert looping["confidence"]["score"] < 0.6 and "repeated_tokens" in looping["confidence"]["reasons"]
+    assert looping["confidence"]["score"] < page["confidence"] < good["confidence"]["score"]
+
+
+def test_an_urdu_region_never_scores_above_the_floor_for_unreadable_text():
+    [block] = build_page("<x_0.1><y_0.1>یہ ایک جملہ ہے<x_0.9><y_0.2><class_Text>", page_number=1, page_size=(600, 800))["blocks"]
+    assert block["confidence"]["score"] <= 0.2

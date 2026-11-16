@@ -102,3 +102,14 @@ def test_run_writes_akoma_ntoso_json_for_every_court_document(corpus, monkeypatc
     assert identification["FRBRManifestation"]["sourceName"] == "a.pdf"
     assert identification["FRBRWork"]["this"].startswith("/akn/pk/judgment/")
     assert akn["judgment"]["judgmentBody"]  # paragraphs, each with its source block
+
+
+
+def test_run_writes_the_fact_intelligence_layer_without_changing_the_research_files(corpus, monkeypatch):
+    run(monkeypatch, corpus, "--workers", "1", "--urdu-policy", "local")
+    parsed = corpus.parent / "judgments_parsed"
+    written = json.loads((parsed / "facts" / "a" / "a.json").read_text(encoding="utf-8"))
+    first = written["pages"][0]
+    assert first["source"] == "text_layer" and first["text"] and first["blocks"][0]["bbox"][2] > 0
+    assert (parsed / "facts" / "a" / first["image"]).exists()
+    assert json.loads((parsed / "a.json").read_text(encoding="utf-8"))["pages"][0]["blocks"]  # research layer intact

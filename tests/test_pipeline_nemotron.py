@@ -63,3 +63,24 @@ def test_the_command_line_parses_a_corpus_with_the_nemotron_engine(tmp_path, mon
 def test_the_nemotron_engine_refuses_to_run_without_a_work_folder(tmp_path):
     with pytest.raises(ValueError, match="nemotron_work"):
         parse_pdf(mixed_pdf(tmp_path / "mixed.pdf"), tmp_path / "out", engine="nemotron")
+
+
+def test_a_live_model_reads_the_scan_pages_when_one_is_named(tmp_path, monkeypatch):
+    import docintel.pipeline as pipeline
+
+    monkeypatch.setattr(pipeline, "_model_reader", lambda model: (lambda image_path: RAW))
+    result = parse_pdf(mixed_pdf(tmp_path / "mixed.pdf"), tmp_path / "out", nemotron_model="any-model")
+    assert result["pages"][1]["blocks"][0]["source"] == "nemotron-3.5-parse"
+    assert result["document"]["router"]["selected"] == "nemotron"
+
+
+def test_a_model_failure_falls_back_to_local_ocr_and_says_so(tmp_path, monkeypatch):
+    import docintel.pipeline as pipeline
+
+    def broken(image_path):
+        raise RuntimeError("out of memory")
+
+    monkeypatch.setattr(pipeline, "_model_reader", lambda model: broken)
+    result = parse_pdf(mixed_pdf(tmp_path / "mixed.pdf"), tmp_path / "out", nemotron_model="any-model")
+    assert result["document"]["router"]["selected"] == "scanned"
+    assert any("nemotron_failed: out of memory" in warning for warning in result["document"]["warnings"])

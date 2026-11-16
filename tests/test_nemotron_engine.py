@@ -85,3 +85,30 @@ def test_only_the_requested_pages_are_read_and_the_rest_are_left_for_the_native_
     assert (first["extraction"], first["blocks"]) == ("native_text_pending", [])
     assert second["extraction"] == "scanned" and second["blocks"]
     assert result["document"]["stats"]["blocks"] == len(second["blocks"])
+
+
+def test_a_live_transport_reads_each_page_once_and_resumes_from_its_log(tmp_path):
+    from docintel.engines.nemotron_engine import live_transport
+
+    reads = []
+
+    def read_page(image_path):
+        reads.append(image_path.name)
+        return RAW
+
+    pdf = make_pdf(tmp_path / "scan.pdf")
+    engine = NemotronEngine(live_transport(tmp_path / "work", read_page))
+    engine.parse(pdf, tmp_path / "out")
+    assert len(reads) == 2
+    NemotronEngine(live_transport(tmp_path / "work", read_page)).parse(pdf, tmp_path / "out")
+    assert len(reads) == 2  # the second run is served from the log
+
+
+def test_documents_sharing_a_page_number_do_not_share_model_output(tmp_path):
+    from docintel.engines.nemotron_engine import live_transport
+
+    transport = live_transport(tmp_path / "work", lambda image_path: f"<x_0.1><y_0.1>{image_path.stem}<x_0.9><y_0.2><class_Text>")
+    first = NemotronEngine(transport).parse(make_pdf(tmp_path / "a.pdf", 1), tmp_path / "out")
+    second = NemotronEngine(transport).parse(make_pdf(tmp_path / "b.pdf", 1), tmp_path / "out")
+    assert first["pages"][0]["blocks"][0]["text"] == "a_p1"
+    assert second["pages"][0]["blocks"][0]["text"] == "b_p1"

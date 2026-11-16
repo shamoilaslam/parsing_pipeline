@@ -55,6 +55,28 @@ def _read_page(model, processor, device: str, model_id: str, image_path: Path) -
     return processor.batch_decode(output, skip_special_tokens=False)[0]
 
 
+def page_reader(model_id: str = MODEL):
+    """``image path -> raw model output``, loading the model on first use and keeping it."""
+    loaded = []
+
+    def read(image_path: Path) -> str:
+        if not loaded:
+            loaded.append(_load_model(model_id))
+        model, processor, device = loaded[0]
+        return _read_page(model, processor, device, model_id, image_path)
+
+    return read
+
+
+def default_model() -> str | None:
+    """The model to use when none is named: only worth it on a GPU (about 15 minutes a page on a CPU)."""
+    try:
+        import torch
+    except ImportError:
+        return None
+    return MODEL if torch.cuda.is_available() else None
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("pdf", type=Path)

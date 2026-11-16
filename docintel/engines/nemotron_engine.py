@@ -7,6 +7,7 @@ pages it is asked about.  Rendering, parsing and document assembly happen here.
 
 from __future__ import annotations
 
+import hashlib
 import tempfile
 from collections.abc import Callable
 from pathlib import Path
@@ -16,7 +17,7 @@ import fitz
 
 from docintel.engines.base import Policy
 from docintel.engines.native import _metadata_provenance, metadata_from_pages
-from docintel.engines.nemotron_batch import ingest, load_raw, render_jobs
+from docintel.engines.nemotron_batch import append_raw, ingest, load_raw, render_jobs
 from docintel.engines.nemotron_parse import SOURCE
 
 Transport = Callable[[Path, list[dict[str, Any]]], dict[int, str]]
@@ -25,6 +26,26 @@ Transport = Callable[[Path, list[dict[str, Any]]], dict[int, str]]
 def log_transport(work: Path) -> Transport:
     """Serve the raw output a GPU session left in ``<work>/raw.jsonl``."""
     return lambda pdf, jobs: load_raw(work / "raw.jsonl")
+
+
+def live_transport(work: Path, read_page: Callable[[Path], str]) -> Transport:
+    """Run the model now, once per page, keeping each document's output in its own log.
+
+    ``read_page`` turns a page image into the model's raw output.  A page already
+    in the document's log is not read again, so an interrupted run resumes.
+    """
+
+    def transport(pdf: Path, jobs: list[dict[str, Any]]) -> dict[int, str]:
+        work.mkdir(parents=True, exist_ok=True)
+        digest = hashlib.sha1(str(Path(pdf).resolve()).encode("utf-8", "replace")).hexdigest()[:8]
+        log = work / f"{Path(pdf).stem}_{digest}.jsonl"
+        done = load_raw(log)
+        for job in jobs:
+            if job["page_number"] not in done:
+                append_raw(log, job["page_number"], read_page(Path(job["image_path"])))
+        return load_raw(log)
+
+    return transport
 
 
 class PagesPending(RuntimeError):

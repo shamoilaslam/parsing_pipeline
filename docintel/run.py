@@ -5,7 +5,8 @@
 Parsed output goes to ``/path/to/pdfs_parsed`` (override with ``--out``): per
 document ``<stem>.json``, ``<stem>.md`` and ``metadata/<stem>.json``, plus
 ``manifest.json``, a ``report.json`` summary, ``document_types.json`` and, for each
-judgment, order or act, Akoma Ntoso-style JSON in ``akn/<stem>.json``.  Images and
+judgment, order or act, Akoma Ntoso-style JSON in ``akn/<stem>.json``, and for the fact-intelligence
+pipeline ``facts/<stem>/<stem>.json`` with the page images.  Images and
 Word files are converted first.  Sub-folders are included and an interrupted run is
 resumed, not restarted.
 """
@@ -20,8 +21,10 @@ from pathlib import Path
 
 from docintel import pipeline, report
 from docintel.akn.build import write_akn
+from docintel.facts import write_folder
+from docintel.engines.nemotron_gpu import default_model
 from docintel.ingest import normalize_folder
-from docintel.understand.classify import classify_folder
+from docintel.understand.segment import classify_folder
 
 
 def main() -> int:
@@ -32,6 +35,12 @@ def main() -> int:
     parser.add_argument("--engine", choices=["auto", "digital", "scanned", "nemotron"], default="auto")
     parser.add_argument(
         "--nemotron-work", type=Path, help="folder holding the GPU session's raw.jsonl; for --engine nemotron"
+    )
+    parser.add_argument("--nemotron-model", help="Nemotron Parse hub id or folder; default: the hub model when a GPU is present")
+    parser.add_argument(
+        "--urdu-policy", choices=["local", "third_party"], default="third_party",
+        help="how far Urdu crops may travel for the fact-intelligence layer: third_party sends them to Gemini, then "
+        "LlamaParse (pages the sensitivity check flags stay local); local sends nothing and leaves Urdu illegible",
     )
     args = parser.parse_args()
     if not args.folder.is_dir():
@@ -54,6 +63,9 @@ def main() -> int:
     ]
     if args.nemotron_work:
         argv += ["--nemotron-work", str(args.nemotron_work)]
+    model = args.nemotron_model or default_model()
+    if model:
+        argv += ["--nemotron-model", model]
     saved = sys.argv
     sys.argv = ["docintel parse", *argv]
     try:
@@ -69,6 +81,7 @@ def main() -> int:
     types = classify_folder(out)
     (out / "document_types.json").write_text(json.dumps(types, ensure_ascii=False, indent=2), encoding="utf-8")
     write_akn(out, types)
+    write_folder(out, out / "facts", urdu_ceiling=args.urdu_policy)
     summary = report.summarise(report.load(out), manifest)
     (out / "report.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     print(report.render(summary))

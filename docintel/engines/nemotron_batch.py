@@ -34,6 +34,7 @@ def render_jobs(pdf: Path, pages: list[int], out_dir: Path) -> list[dict[str, An
                 {
                     "page_number": page_number,
                     "image": image,
+                    "image_path": str(out_dir / image),
                     "image_size": (pixmap.width, pixmap.height),
                     "page_size": (float(page.rect.width), float(page.rect.height)),
                 }

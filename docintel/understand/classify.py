@@ -10,10 +10,6 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from pathlib import Path
-from typing import Any
-
-from docintel.parsed import documents
 
 # How much of the start of a document counts as its title area.
 HEAD_CHARS = 400
@@ -42,11 +38,17 @@ CUES: dict[str, dict[str, re.Pattern[str]]] = {
         # The form's own column headings: "Date of order/ Proceedings".
         "form_columns": re.compile(r"(?i)date\s+of\s+order"),
         "adjourned": re.compile(r"(?i)\badjourned\b"),
+        # An authority's decision on an application: a grant or a rejection.
+        "grant_of": re.compile(r"(?i)\bgrant\s+of\b|\bdecision\s+(?:rejecting|on)\b|\bis\s+pleased\s+to\s+grant\b"),
     },
     "pleading": {
-        "petition_or_plaint": re.compile(r"(?i)writ\s+petition|\bplaint\b|written\s+statement"),
+        "petition_or_plaint": re.compile(
+            r"(?i)writ\s+petition|\bplaint\b|written\s+statement|\bmemorial\b|request\s+for\s+arbitration"
+            r"|post-?\s?hearing\s+brief|\bpetition\s+(?:under|for|no)\b"
+        ),
         "sheweth": re.compile(r"(?i)respectfully\s+(?:sheweth|submitted)"),
         "prayer": re.compile(r"(?i)\bprayer\b|it\s+is\s+(?:most\s+)?(?:respectfully\s+)?prayed"),
+        "claimant_respondent": re.compile(r"(?i)\bclaimants?\b.*\brespondents?\b|\brespondents?\b.*\bclaimants?\b", re.DOTALL),
     },
     "affidavit": {
         "affidavit": re.compile(r"(?i)\baffidavit\b"),
@@ -54,7 +56,8 @@ CUES: dict[str, dict[str, re.Pattern[str]]] = {
         "deponent": re.compile(r"(?i)\bdeponent\b"),
     },
     "witness_statement": {
-        "statement_of_witness": re.compile(r"(?i)statement\s+of\s+(?:the\s+)?witness"),
+        "statement_of_witness": re.compile(r"(?i)statement\s+of\s+(?:the\s+)?witness|\bwitness\s+statement\b"),
+        "statement_of_truth": re.compile(r"(?i)statement\s+of\s+truth"),
         "section_161": re.compile(r"(?i)section\s+161|u/s\.?\s*161"),
         "prosecution_witness": re.compile(r"\bP\.?W\.?-?\s?\d+"),
     },
@@ -75,6 +78,38 @@ CUES: dict[str, dict[str, re.Pattern[str]]] = {
         "hereinafter": re.compile(r"(?i)hereinafter"),
         "whereas": re.compile(r"\bWHEREAS\b"),
         "confidential_information": re.compile(r"(?i)confidential\s+information"),
+        "addendum": re.compile(r"(?i)\baddendum\b"),
+    },
+    "letter": {
+        "salutation": re.compile(r"(?i)\bdear\s+(?:sirs?|madam|mr|ms|mrs)\b"),
+        "valediction": re.compile(r"(?i)\byours\s+(?:faithfully|sincerely|truly)\b"),
+        "reference": re.compile(r"(?i)\b(?:our\s+)?ref(?:erence)?\s*[:.]"),
+    },
+    "notice": {
+        "notification": re.compile(r"(?i)\bnotification\b|\bnotice\s+of\b"),
+        "in_exercise": re.compile(r"(?i)in\s+exercise\s+of\s+the\s+powers"),
+    },
+    "application": {
+        "application_for": re.compile(r"(?i)\bapplication\s+for\b"),
+        "applicant": re.compile(r"(?i)\bthe\s+applicant\b"),
+    },
+    "minutes": {
+        "minutes_of": re.compile(r"(?i)\bminutes\s+of\b|\bboard\s+minutes\b|\bcabinet\s+minutes\b"),
+        "resolved": re.compile(r"\bRESOLVED\b|(?i:\bresolved\s+that\b)"),
+        "present": re.compile(r"(?i)\bin\s+attendance\b|\bpresent\s*:"),
+    },
+    "ledger": {
+        "ledger": re.compile(r"(?i)\bledger\b|\bschedule\s+of\s+(?:costs|payments)\b|\bcosts\s+schedule\b"),
+        "debit_credit": re.compile(r"(?is)\bdebit\b.*\bcredit\b|\bbalance\b"),
+        "total": re.compile(r"(?im)^\s*total\b"),
+    },
+    "report": {
+        "report_extract": re.compile(r"(?i)\b(?:study|report)\s+extract\b|\bextract\s+(?:from|of)\b|feasibility\s+study"),
+        "executive_summary": re.compile(r"(?i)executive\s+summary|\bvaluation\b|discounted\s+cash\s+flow"),
+    },
+    "email": {
+        "from_to": re.compile(r"(?im)^\s*from\s*:.*\n\s*(?:to|sent)\s*:"),
+        "subject": re.compile(r"(?im)^\s*subject\s*:"),
     },
 }
 
@@ -106,21 +141,3 @@ def classify(text: str) -> Classification:
         return Classification("unknown", 0.0, ())
     runner_up = scored[1][0]
     return Classification(kind, top_score / (top_score + runner_up), tuple(reasons))
-
-
-# Pages read for the call: a document names itself near its start.
-PAGES_READ = 2
-
-
-def classify_folder(parsed: Path) -> dict[str, dict[str, Any]]:
-    """The kind of every document in a parsed folder, keyed by output stem."""
-    types = {}
-    for stem, document in documents(parsed):
-        text = "\n".join(block["text"] for page in document["pages"][:PAGES_READ] for block in page["blocks"])
-        result = classify(text)
-        types[stem] = {
-            "kind": result.kind,
-            "confidence": round(result.confidence, 3),
-            "reasons": list(result.reasons),
-        }
-    return types

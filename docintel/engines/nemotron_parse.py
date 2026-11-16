@@ -14,6 +14,7 @@ import re
 from typing import Any
 
 from docintel.engines.native import _is_rtl, _script
+from docintel.quality import text_quality
 
 Block = dict[str, Any]
 
@@ -55,6 +56,25 @@ def parse_output(raw: str, *, page_size: tuple[float, float]) -> list[Block]:
     return blocks
 
 
+URDU_QUALITY_CAP = 0.2  # measured: the model's Urdu is letter-reversed
+
+
+def _confidence(text: str, has_rtl: bool) -> dict[str, Any]:
+    score, reasons = text_quality(text)
+    reasons = ["engine_reports_no_confidence", *reasons]
+    if has_rtl:
+        score = min(score, URDU_QUALITY_CAP)
+        reasons.append("urdu_unreliable_for_engine")
+    return {"score": score, "reasons": reasons}
+
+
+def _page_confidence(blocks: list[dict[str, Any]]) -> float:
+    weight = sum(len(block["text"]) for block in blocks)
+    if not weight:
+        return 0.0
+    return round(sum(block["confidence"]["score"] * len(block["text"]) for block in blocks) / weight, 3)
+
+
 def build_page(raw: str, *, page_number: int, page_size: tuple[float, float]) -> dict[str, Any]:
     """One ``specter.v1`` page from the model's output for that page's image."""
     blocks = []
@@ -69,8 +89,11 @@ def build_page(raw: str, *, page_number: int, page_size: tuple[float, float]) ->
                 "language": _script(text),
                 "source": SOURCE,
                 "contains_rtl": has_rtl,
-                # The model reports no confidence; 0.0 says so rather than claiming certainty.
-                "confidence": {"score": 0.0, "reasons": ["engine_reports_no_confidence"]},
+                # The model reports no confidence, so the score is computed from the text and says so.
+                "confidence": _confidence(text, has_rtl),
+                # Measured: its Urdu comes back letter-reversed.  The region and box are
+                # right; the text is a placeholder until the Urdu stage reads the crop.
+                "needs_review": has_rtl,
                 "rtl": {"contains_rtl": has_rtl, "text_status": "logical_model"},
             }
         )
@@ -81,6 +104,6 @@ def build_page(raw: str, *, page_number: int, page_size: tuple[float, float]) ->
         "rotation": 0,
         "blocks": blocks,
         "markdown": "\n\n".join(block["markdown"] for block in blocks if block["markdown"].strip()),
-        "confidence": 0.0,
+        "confidence": _page_confidence(blocks),
         "extraction": "scanned",
     }

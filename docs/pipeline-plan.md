@@ -21,6 +21,20 @@ Status key: **built** = in the repo and tested. **untested** = code exists, neve
 **Field shape (target for every metadata field):** `{value, quote, page, bbox, confidence, source: rule|model}`.
 A model-produced value is accepted only if its `quote` appears verbatim in the page text.
 
+## 1b. Two output layers
+
+- **Legal research layer** (unchanged): `<stem>.json`, `<stem>.md`, `metadata/`, `akn/`, `document_types.json`.
+- **Fact-intelligence layer** (`facts/<stem>/<stem>.json` + `pages/NNNN.png`, written by `docintel/facts.py`):
+  per page `source` (`text_layer`|`ocr`, with `engine`), text in reading order without headers/footers,
+  blocks with boxes as page fractions `[x,y,w,h]`, `language` shares, `quality {score, ocr_confidence, flags}`,
+  `printed_page_number`, header/footer text, per-page `status`. Rules: never invent text (Urdu no engine can
+  read is an `illegible` block with its box), no correction (model markdown removed, nothing else), parsed
+  files are never modified. Urdu goes to Gemini then LlamaParse on a copy (`--urdu-policy`, default
+  `third_party`; pages flagged sensitive stay local).
+- Not built yet for this layer: `source: mixed` (stamps/pasted scans on digital pages), `handwriting`/`stamp`/
+  `signature` blocks, most quality flags (only `blank`, `skewed`, `urdu_unread`), `lines[]`, email/docx metadata,
+  per-page model failure (a model failure still falls back per document), `seconds`.
+
 ## 2. What was measured
 
 **Nemotron 3.5 Parse, on this CPU (no GPU).**

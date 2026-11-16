@@ -114,3 +114,71 @@ For the reasons stated above, this petition is allowed and bail is granted."""
 
 def test_a_real_order_sheet_is_an_order_not_a_judgment():
     assert classify(REAL_ORDER_SHEET).kind == "order"
+
+
+LETTER = """BHP MINERALS Commercial Projects Division  Reference: BM/PAR/93/041
+16 September 1993
+To: The Managing Director, Balochistan Development Authority
+Dear Sir,
+We refer to the discussions between the parties concerning the proposed joint venture.
+Yours faithfully, Director"""
+
+NOTICE = """GOVERNMENT OF BALOCHISTAN
+NOTIFICATION
+No. SO(M)/12/93. In exercise of the powers conferred by rule 5, the Government is pleased to relax rule 12."""
+
+APPLICATION = """APPLICATION FOR EXPLORATION LICENCE EL-5
+The applicant hereby applies for the grant of an exploration licence over the area described in Schedule A."""
+
+LICENCE_ORDER = """GRANT OF EXPLORATION LICENCE EL-5
+The Government is pleased to grant an exploration licence to the licensee for a period of three years."""
+
+MINUTES = """MINUTES OF THE BOARD MEETING
+Present: Mr A (Chairman), Mr B. In attendance: Company Secretary.
+RESOLVED that the novation of the agreement be approved."""
+
+LEDGER = """EXPLORATION EXPENDITURE LEDGER
+Date  Particulars  Debit  Credit  Balance
+12.03.2004  Licence fee  50,000  -  50,000
+Total  1,250,000"""
+
+REPORT = """FEASIBILITY STUDY EXTRACT
+Executive summary. The valuation of the project applies a discounted cash flow methodology."""
+
+EMAIL = """From: A <a@x.com>
+To: B <b@y.com>
+Sent: 12 March 2024 10:14
+Subject: Quantum hearing coordination"""
+
+CONTRACT = """JOINT VENTURE AGREEMENT
+This Agreement is made between the Parties hereinafter referred to as the Operator and the Partner."""
+
+ADDENDUM = """ADDENDUM NO. 1 TO THE AGREEMENT
+The parties hereby amend clause 4 of the Agreement hereinafter defined."""
+
+WITNESS_STATEMENT = """NINTH WITNESS STATEMENT OF TIMOTHY CLARKE
+I, Timothy Clarke, make this statement and confirm that it is true. Statement of truth."""
+
+MEMORIAL = """CLAIMANT'S MEMORIAL ON DAMAGES
+The Claimant submits the following Memorial. Request for relief: the Respondent is to pay damages."""
+
+
+@pytest.mark.parametrize(
+    ("text", "kind"),
+    [
+        (LETTER, "letter"),
+        (NOTICE, "notice"),
+        (APPLICATION, "application"),
+        (LICENCE_ORDER, "order"),
+        (MINUTES, "minutes"),
+        (LEDGER, "ledger"),
+        (REPORT, "report"),
+        (EMAIL, "email"),
+        (CONTRACT, "contract"),
+        (ADDENDUM, "contract"),
+        (WITNESS_STATEMENT, "witness_statement"),
+        (MEMORIAL, "pleading"),
+    ],
+)
+def test_other_documents_in_a_case_file_are_recognised(text, kind):
+    assert classify(text).kind == kind

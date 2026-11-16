@@ -20,6 +20,7 @@ keep each page from the one that can read it.
 from __future__ import annotations
 
 import argparse
+import functools
 import hashlib
 import json
 import re
@@ -34,7 +35,8 @@ from docintel.schema.v2 import upgrade
 from docintel.engines.base import Engine
 from docintel.engines.local import NativeEngine, OcrEngine
 from docintel.engines.native import write_result
-from docintel.engines.nemotron_engine import NemotronEngine, log_transport
+from docintel.engines.nemotron_engine import NemotronEngine, live_transport, log_transport
+from docintel.engines.nemotron_gpu import page_reader
 from docintel.router import route
 from docintel.triage import profile_page
 
@@ -102,31 +104,59 @@ def _merge_native_pages(scanned: dict[str, object], digital: dict[str, object], 
     return scanned
 
 
+@functools.cache
+def _model_reader(model: str):
+    """One loaded model per process, shared by every document it reads."""
+    return page_reader(model)
+
+
+def _scan_engine(engine: str, out: Path, nemotron_work: Path | None, nemotron_model: str | None,
+                 ocr: dict[str, object]) -> Engine:
+    """Nemotron when it can run (a model to run, or output a GPU session left), local OCR otherwise."""
+    if nemotron_model:
+        return NemotronEngine(live_transport(nemotron_work or out / "_nemotron", _model_reader(nemotron_model)))
+    if engine == "nemotron":
+        if nemotron_work is None:
+            raise ValueError("engine 'nemotron' needs nemotron_work (the folder holding the GPU session's raw.jsonl) "
+                             "or nemotron_model")
+        return NemotronEngine(log_transport(nemotron_work))
+    return OcrEngine(**ocr)
+
+
 def parse_pdf(pdf: Path, out: Path, engine: str = "auto", rtl_mode: str = "image", render_scale: float = 2.0,
               preprocess_variant: str = "grayscale", retry_threshold: float = 0.45,
               stem: str | None = None, save_page_images: bool = False,
-              nemotron_work: Path | None = None) -> dict[str, object]:
+              nemotron_work: Path | None = None, nemotron_model: str | None = None) -> dict[str, object]:
     """Route one PDF to the engine that can read it, per page where they differ.
 
-    ``engine="nemotron"`` reads the scan pages with Nemotron Parse from the model
-    output a GPU session left in ``nemotron_work`` instead of with local OCR.
+    Pages with a readable text layer are read natively.  The other pages go to
+    Nemotron Parse, which finds the regions, their types and boxes and reads them
+    in one pass: live when ``nemotron_model`` is given, or from the output a GPU
+    session left in ``nemotron_work``.  Without either, they go to local OCR, and
+    so does a document the model failed on.
     """
     route = classify_pdf(pdf)
     selected = engine if engine != "auto" else ("scanned" if route["mode"] != "digital" else "digital")
     if selected == "digital":
         result = NativeEngine(rtl_mode=rtl_mode).parse(pdf, out, stem=stem)
     else:
-        if selected == "nemotron":
-            if nemotron_work is None:
-                raise ValueError("engine 'nemotron' needs nemotron_work: the folder holding the GPU session's raw.jsonl")
-            scan_engine: Engine = NemotronEngine(log_transport(nemotron_work))
-        else:
-            scan_engine = OcrEngine(render_scale=render_scale, preprocess_variant=preprocess_variant,
-                                    retry_threshold=retry_threshold, save_page_images=save_page_images)
+        ocr = dict(render_scale=render_scale, preprocess_variant=preprocess_variant,
+                   retry_threshold=retry_threshold, save_page_images=save_page_images)
+        scan_engine = _scan_engine(engine, out, nemotron_work, nemotron_model, ocr)
         # Read only the pages that need it.  A mixed document's readable pages
         # are taken from the digital parse below, so OCR-ing them costs ~30s
         # each and the result is thrown away.
-        result = scan_engine.parse(pdf, out, pages=route["scan_pages"], stem=stem)
+        try:
+            result = scan_engine.parse(pdf, out, pages=route["scan_pages"], stem=stem)
+        except Exception as error:  # a model failure must not lose the document
+            if not isinstance(scan_engine, NemotronEngine) or engine == "nemotron":
+                raise
+            result = OcrEngine(**ocr).parse(pdf, out, pages=route["scan_pages"], stem=stem)
+            result["document"].setdefault("warnings", []).append(f"nemotron_failed: {error}")
+            selected = "scanned"
+        else:
+            if isinstance(scan_engine, NemotronEngine):
+                selected = "nemotron"
         if route["native_pages"]:
             result = _merge_native_pages(result, NativeEngine(rtl_mode=rtl_mode).parse(pdf, out, stem=stem),
                                          route["native_pages"])
@@ -227,11 +257,13 @@ def _parse_one(job: tuple) -> tuple[dict[str, object] | None, dict[str, object] 
     this process or in a worker pool without the two paths diverging.  One
     unreadable PDF must never end a 30,000-document run.
     """
-    pdf, out, engine, rtl_mode, render_scale, preprocess_variant, retry_threshold, stem, page_images, nemotron_work = job
+    pdf, out, engine, rtl_mode, render_scale, preprocess_variant, retry_threshold, stem, page_images, nemotron = job
+    nemotron_work, nemotron_model = nemotron or (None, None)
     try:
         result = parse_pdf(pdf, out, engine=engine, rtl_mode=rtl_mode, render_scale=render_scale,
                            preprocess_variant=preprocess_variant, retry_threshold=retry_threshold,
-                           stem=stem, save_page_images=page_images, nemotron_work=nemotron_work)
+                           stem=stem, save_page_images=page_images, nemotron_work=nemotron_work,
+                           nemotron_model=nemotron_model)
         for enricher in ENRICHERS:
             enricher.enrich(result, pdf)
         upgrade(result, pdf)
@@ -247,7 +279,8 @@ def main() -> None:
     parser.add_argument("pdf", nargs="+", type=Path, help="PDF files, glob patterns, or folders")
     parser.add_argument("--out", type=Path, default=Path("artifacts/run"))
     parser.add_argument("--engine", choices=["auto", "digital", "scanned", "nemotron"], default="auto")
-    parser.add_argument("--nemotron-work", type=Path, help="folder holding the GPU session's raw.jsonl; required by --engine nemotron")
+    parser.add_argument("--nemotron-work", type=Path, help="folder holding the GPU session's raw.jsonl (for --engine nemotron), or where a live run keeps its model output")
+    parser.add_argument("--nemotron-model", help="read scan pages with Nemotron Parse now, on this machine: a hub id or a local folder")
     parser.add_argument("--rtl-mode", choices=["raw", "image", "both"], default="image")
     parser.add_argument("--render-scale", type=float, default=2.0)
     parser.add_argument("--preprocess-variant", choices=["clahe", "grayscale", "otsu", "adaptive", "sauvola", "deskew_clahe"], default="grayscale")
@@ -258,6 +291,8 @@ def main() -> None:
     parser.add_argument("--page-images", action="store_true", help="also keep the rendered page image of every scanned page; it is OCR input, nothing reads it back, and it was 63%% of a corpus run's bytes -- `specter inspect` re-renders from the source PDF instead")
     parser.add_argument("--workers", type=int, default=1, help="parse this many documents in parallel; documents are independent, so this scales close to linearly")
     args = parser.parse_args()
+    if args.nemotron_model:
+        args.workers = 1  # one model on one GPU: documents are read in turn
     pdfs = expand_paths(args.pdf, args.recursive)
     if not pdfs:
         parser.error("No PDF files found")
@@ -284,7 +319,8 @@ def main() -> None:
                 documents.append({"pdf": str(pdf), "stem": stem, "status": "SKIPPED_EXISTING"})
             continue
         jobs.append((pdf, args.out, args.engine, args.rtl_mode, args.render_scale,
-                     args.preprocess_variant, args.retry_threshold, stem, args.page_images, args.nemotron_work))
+                     args.preprocess_variant, args.retry_threshold, stem, args.page_images,
+                     (args.nemotron_work, args.nemotron_model) if args.nemotron_work or args.nemotron_model else None))
 
     # Documents are independent, so the only shared state is the output folder
     # and each job writes files named after its own stem.  Collision and
