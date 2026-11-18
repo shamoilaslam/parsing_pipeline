@@ -211,3 +211,11 @@ def test_a_latex_table_the_model_wrote_becomes_rows_with_its_escapes_removed():
         ["Party", "Initial Percentage Interest"],
         ["Balochistan Development Authority", "50%"],
     ]
+
+
+def test_a_stamp_is_its_own_block_and_page_flag_and_stays_out_of_the_body_text():
+    stamp = block("RECEIVED 06 OCT 1993", type="stamp", order=1, source="nemotron-3.5-parse")
+    [out] = facts(page([block("The body text.", source="nemotron-3.5-parse"), stamp], extraction="scanned"))["pages"]
+    assert [b["type"] for b in out["blocks"]] == ["paragraph", "stamp"]
+    assert out["blocks"][1]["text"] == "RECEIVED 06 OCT 1993"
+    assert out["text"] == "The body text." and "stamp" in out["quality"]["flags"]

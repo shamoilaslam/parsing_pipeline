@@ -26,7 +26,9 @@ from docintel.parsed import documents
 PARSER = "docintel"
 PAGE_IMAGE_ZOOM = 1.5
 SKEW_FLAG_DEGREES = 1.0
-BLOCK_TYPES = {"heading": "heading", "list": "list_item", "footnote": "footnote", "table": "table"}
+BLOCK_TYPES = {"heading": "heading", "list": "list_item", "footnote": "footnote", "table": "table", "stamp": "stamp"}
+# Blocks that are part of the page but not of its body text.
+APART = {"stamp"}
 PRINTED_NUMBER = (re.compile(r"(?i)\bpage\s+(\d{1,4})\b"), re.compile(r"(?i)page\s*(\d{1,4})\s*$"),re.compile(r"^\W*(\d{1,4})\W*$"), re.compile(r"^\s*(\d{1,3})\s+[A-Za-z]"))
 BOLD = re.compile(r"\*\*(.+?)\*\*|__(.+?)__", re.DOTALL)
 HEADING_MARK = re.compile(r"(?m)^#{1,6}\s+")
@@ -131,10 +133,12 @@ def _page(page: dict[str, Any], image: str | None) -> dict[str, Any]:
     score = round(sum(block["confidence"] * len(_body_text(block)) for block in read) / weight, 3) if weight else 0.0
 
     flags = []
-    if not blocks:
+    if not any(block["type"] not in APART for block in blocks):
         flags.append("blank")
     if any(block["type"] == "illegible" for block in blocks):
         flags.append("urdu_unread")
+    if any(block["type"] == "stamp" for block in blocks):
+        flags.append("stamp")
     skew = ((page.get("scan") or {}).get("preprocessing") or {}).get("estimated_skew_degrees") or 0.0
     if abs(skew) > SKEW_FLAG_DEGREES:
         flags.append("skewed")
@@ -146,7 +150,9 @@ def _page(page: dict[str, Any], image: str | None) -> dict[str, Any]:
         "quality": {"score": score, "ocr_confidence": score if from_ocr and read else None, "flags": flags},
         "printed_page_number": _printed_number(edge["footer"], edge["header"]),
         "header_text": edge["header"], "footer_text": edge["footer"],
-        "text": "\n\n".join(text for block in blocks if (text := _body_text(block).strip())),
+        "text": "\n\n".join(
+            text for block in blocks if block["type"] not in APART and (text := _body_text(block).strip())
+        ),
         "blocks": blocks,
     }
 

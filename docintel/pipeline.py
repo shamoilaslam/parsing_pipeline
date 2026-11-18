@@ -114,7 +114,8 @@ def _scan_engine(engine: str, out: Path, nemotron_work: Path | None, nemotron_mo
                  ocr: dict[str, object]) -> Engine:
     """Nemotron when it can run (a model to run, or output a GPU session left), local OCR otherwise."""
     if nemotron_model:
-        return NemotronEngine(live_transport(nemotron_work or out / "_nemotron", _model_reader(nemotron_model)))
+        reader = _model_reader(nemotron_model)
+        return NemotronEngine(live_transport(nemotron_work or out / "_nemotron", reader), stamp_reader=reader)
     if engine == "nemotron":
         if nemotron_work is None:
             raise ValueError("engine 'nemotron' needs nemotron_work (the folder holding the GPU session's raw.jsonl) "

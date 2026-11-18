@@ -13,12 +13,14 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
+import cv2
 import fitz
 
 from docintel.engines.base import Policy
 from docintel.engines.native import _metadata_provenance, metadata_from_pages
 from docintel.engines.nemotron_batch import append_raw, ingest, load_raw, render_jobs
-from docintel.engines.nemotron_parse import SOURCE
+from docintel.engines.nemotron_parse import SOURCE, add_stamps, parse_output
+from docintel.stamps import find_stamps, isolate_ink
 
 Transport = Callable[[Path, list[dict[str, Any]]], dict[int, str]]
 
@@ -74,8 +76,25 @@ class NemotronEngine:
     name = "nemotron-parse"
     policy: Policy = "self_hosted"
 
-    def __init__(self, transport: Transport) -> None:
+    def __init__(self, transport: Transport, stamp_reader: Callable[[Path], str] | None = None) -> None:
         self._transport = transport
+        self._stamp_reader = stamp_reader
+
+    def _read_stamps(self, page: dict[str, Any], job: dict[str, Any]) -> None:
+        """Re-read each red stamp on its own: its text is no part of the body, and it gets a box of its own."""
+        image = cv2.imread(job["image_path"])
+        if image is None or self._stamp_reader is None:
+            return
+        scale_x, scale_y = job["page_size"][0] / image.shape[1], job["page_size"][1] / image.shape[0]
+        stamps = []
+        for index, (x0, y0, x1, y1) in enumerate(find_stamps(image)):
+            crop = Path(job["image_path"]).with_name(f"{Path(job['image_path']).stem}_s{index}.png")
+            isolated = isolate_ink(image[y0:y1, x0:x1])
+            cv2.imwrite(str(crop), isolated)
+            regions = parse_output(self._stamp_reader(crop), page_size=(isolated.shape[1], isolated.shape[0]))
+            text = " ".join(region["text"].strip() for region in regions if region["text"].strip())
+            stamps.append((text, [x0 * scale_x, y0 * scale_y, x1 * scale_x, y1 * scale_y]))
+        add_stamps(page, stamps)
 
     def parse(
         self, pdf: Path, output_dir: Path | None, *, stem: str | None = None, pages: list[int] | None = None
@@ -86,6 +105,8 @@ class NemotronEngine:
             read, pending = ingest(jobs, self._transport(pdf, jobs))
             if pending:
                 raise PagesPending([job["page_number"] for job in pending])
+            for page in read:
+                self._read_stamps(page, next(job for job in jobs if job["page_number"] == page["page_number"]))
             by_number = {page["page_number"]: page for page in read}
             document_pages = [by_number.get(page.number + 1) or _unread_page(page) for page in doc]
             pdf_metadata = dict(doc.metadata or {})

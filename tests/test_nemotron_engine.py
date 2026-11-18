@@ -112,3 +112,36 @@ def test_documents_sharing_a_page_number_do_not_share_model_output(tmp_path):
     second = NemotronEngine(transport).parse(make_pdf(tmp_path / "b.pdf", 1), tmp_path / "out")
     assert first["pages"][0]["blocks"][0]["text"] == "a_p1"
     assert second["pages"][0]["blocks"][0]["text"] == "b_p1"
+
+
+STAMP_RAW = "<x_0.05><y_0.2>RECEIVED<x_0.9><y_0.5><class_Text><x_0.05><y_0.55>06 OCT 1993<x_0.9><y_0.9><class_Text>"
+
+
+def stamped_pdf(path):
+    doc = fitz.open()
+    page = doc.new_page(width=600, height=800)
+    page.draw_rect(fitz.Rect(330, 40, 570, 120), color=(0.8, 0.1, 0.1), fill=(0.8, 0.1, 0.1))
+    doc.save(path)
+    return path
+
+
+def test_a_red_stamp_is_read_on_its_own_and_kept_apart_from_the_body(tmp_path):
+    seen = []
+
+    def read_stamp(image_path):
+        seen.append(image_path.name)
+        return STAMP_RAW
+
+    result = NemotronEngine(serving(), stamp_reader=read_stamp).parse(stamped_pdf(tmp_path / "s.pdf"), tmp_path / "out")
+    blocks = result["pages"][0]["blocks"]
+    [stamp] = [block for block in blocks if block["type"] == "stamp"]
+    assert stamp["text"] == "RECEIVED 06 OCT 1993"
+    x0, y0, x1, y1 = stamp["bbox"]
+    assert x0 <= 330 and y0 <= 40 and x1 >= 570 and y1 >= 120 and x1 - x0 < 300  # page points, around the stamp
+    assert any(block["type"] != "stamp" for block in blocks) and len(seen) == 1
+    assert "RECEIVED" not in result["pages"][0]["markdown"]
+
+
+def test_without_a_stamp_reader_no_stamps_are_added(tmp_path):
+    result = NemotronEngine(serving()).parse(stamped_pdf(tmp_path / "s.pdf"), tmp_path / "out")
+    assert all(block["type"] != "stamp" for block in result["pages"][0]["blocks"])

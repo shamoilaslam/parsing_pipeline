@@ -75,35 +75,47 @@ def _page_confidence(blocks: list[dict[str, Any]]) -> float:
     return round(sum(block["confidence"]["score"] * len(block["text"]) for block in blocks) / weight, 3)
 
 
+def _block(region: dict[str, Any], block_id: str) -> Block:
+    text = region["text"]
+    has_rtl = any(_is_rtl(char) for char in text)
+    return {
+        **region,
+        "id": block_id,
+        "markdown": text,
+        "language": _script(text),
+        "source": SOURCE,
+        "contains_rtl": has_rtl,
+        # The model reports no confidence, so the score is computed from the text and says so.
+        "confidence": _confidence(text, has_rtl),
+        # Measured: its Urdu comes back letter-reversed.  The region and box are
+        # right; the text is a placeholder until the Urdu stage reads the crop.
+        "needs_review": has_rtl,
+        "rtl": {"contains_rtl": has_rtl, "text_status": "logical_model"},
+    }
+
+
 def build_page(raw: str, *, page_number: int, page_size: tuple[float, float]) -> dict[str, Any]:
     """One ``specter.v1`` page from the model's output for that page's image."""
-    blocks = []
-    for region in parse_output(raw, page_size=page_size):
-        text = region["text"]
-        has_rtl = any(_is_rtl(char) for char in text)
-        blocks.append(
-            {
-                **region,
-                "id": f"p{page_number}_b{region['reading_order']}",
-                "markdown": text,
-                "language": _script(text),
-                "source": SOURCE,
-                "contains_rtl": has_rtl,
-                # The model reports no confidence, so the score is computed from the text and says so.
-                "confidence": _confidence(text, has_rtl),
-                # Measured: its Urdu comes back letter-reversed.  The region and box are
-                # right; the text is a placeholder until the Urdu stage reads the crop.
-                "needs_review": has_rtl,
-                "rtl": {"contains_rtl": has_rtl, "text_status": "logical_model"},
-            }
-        )
+    blocks = [
+        _block(region, f"p{page_number}_b{region['reading_order']}")
+        for region in parse_output(raw, page_size=page_size)
+    ]
     return {
         "page_number": page_number,
         "width": page_size[0],
         "height": page_size[1],
         "rotation": 0,
         "blocks": blocks,
-        "markdown": "\n\n".join(block["markdown"] for block in blocks if block["markdown"].strip()),
+        "markdown": (chr(10) * 2).join(block["markdown"] for block in blocks if block["markdown"].strip()),
         "confidence": _page_confidence(blocks),
         "extraction": "scanned",
     }
+
+
+def add_stamps(page: dict[str, Any], stamps: list[tuple[str, list[float]]]) -> None:
+    """Add each stamp, read on its own, as a ``stamp`` block.  It is not part of the page's body text."""
+    first = len(page["blocks"])
+    for index, (text, bbox) in enumerate(stamps):
+        region = {"type": "stamp", "layout_class": "Stamp", "text": text, "bbox": bbox, "reading_order": first + index}
+        page["blocks"].append(_block(region, f"p{page['page_number']}_s{index}"))
+    page["confidence"] = _page_confidence(page["blocks"])
