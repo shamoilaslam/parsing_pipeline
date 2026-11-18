@@ -112,10 +112,19 @@ def build_page(raw: str, *, page_number: int, page_size: tuple[float, float]) ->
     }
 
 
-def add_stamps(page: dict[str, Any], stamps: list[tuple[str, list[float]]]) -> None:
-    """Add each stamp, read on its own, as a ``stamp`` block.  It is not part of the page's body text."""
+HANDWRITING_QUALITY_CAP = 0.5  # pen writing read by a model trained on print: never trusted as print is
+
+
+def add_marks(page: dict[str, Any], marks: list[tuple[str, str, list[float]]]) -> None:
+    """Add each stamp or pen note, read on its own, as a block of that type.  None is part of the body text."""
     first = len(page["blocks"])
-    for index, (text, bbox) in enumerate(stamps):
-        region = {"type": "stamp", "layout_class": "Stamp", "text": text, "bbox": bbox, "reading_order": first + index}
-        page["blocks"].append(_block(region, f"p{page['page_number']}_s{index}"))
+    for index, (kind, text, bbox) in enumerate(marks):
+        region = {"type": kind, "layout_class": kind.capitalize(), "text": text, "bbox": bbox, "reading_order": first + index}
+        block = _block(region, f"p{page['page_number']}_{kind[0]}{index}")
+        if kind == "handwriting":
+            block["confidence"] = {
+                "score": min(block["confidence"]["score"], HANDWRITING_QUALITY_CAP),
+                "reasons": [*block["confidence"]["reasons"], "handwriting_unreliable"],
+            }
+        page["blocks"].append(block)
     page["confidence"] = _page_confidence(page["blocks"])

@@ -219,3 +219,10 @@ def test_a_stamp_is_its_own_block_and_page_flag_and_stays_out_of_the_body_text()
     assert [b["type"] for b in out["blocks"]] == ["paragraph", "stamp"]
     assert out["blocks"][1]["text"] == "RECEIVED 06 OCT 1993"
     assert out["text"] == "The body text." and "stamp" in out["quality"]["flags"]
+
+
+def test_handwriting_is_its_own_block_with_a_flag_and_stays_out_of_the_body_text():
+    note = block("check with Khalid", type="handwriting", order=1, source="nemotron-3.5-parse", score=0.41)
+    [out] = facts(page([block("The body text.", source="nemotron-3.5-parse"), note], extraction="scanned"))["pages"]
+    assert out["blocks"][1]["type"] == "handwriting" and out["blocks"][1]["confidence"] == 0.41
+    assert out["text"] == "The body text." and "handwriting" in out["quality"]["flags"]

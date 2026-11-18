@@ -132,7 +132,7 @@ def test_a_red_stamp_is_read_on_its_own_and_kept_apart_from_the_body(tmp_path):
         seen.append(image_path.name)
         return STAMP_RAW
 
-    result = NemotronEngine(serving(), stamp_reader=read_stamp).parse(stamped_pdf(tmp_path / "s.pdf"), tmp_path / "out")
+    result = NemotronEngine(serving(), mark_reader=read_stamp).parse(stamped_pdf(tmp_path / "s.pdf"), tmp_path / "out")
     blocks = result["pages"][0]["blocks"]
     [stamp] = [block for block in blocks if block["type"] == "stamp"]
     assert stamp["text"] == "RECEIVED 06 OCT 1993"
@@ -142,6 +142,28 @@ def test_a_red_stamp_is_read_on_its_own_and_kept_apart_from_the_body(tmp_path):
     assert "RECEIVED" not in result["pages"][0]["markdown"]
 
 
-def test_without_a_stamp_reader_no_stamps_are_added(tmp_path):
+def test_without_a_mark_reader_no_stamps_are_added(tmp_path):
     result = NemotronEngine(serving()).parse(stamped_pdf(tmp_path / "s.pdf"), tmp_path / "out")
     assert all(block["type"] != "stamp" for block in result["pages"][0]["blocks"])
+
+
+def noted_pdf(path):
+    """A page with a blue pen note drawn as strokes, as handwriting is."""
+    doc = fitz.open()
+    page = doc.new_page(width=600, height=800)
+    for row in range(3):
+        y = 400 + row * 6
+        page.draw_polyline([(100, y), (160, y - 14), (220, y + 4), (280, y - 14), (340, y + 4), (400, y - 10)],
+                           color=(0.1, 0.25, 0.8), width=2)
+    doc.save(path)
+    return path
+
+
+def test_pen_handwriting_is_read_on_its_own_as_a_handwriting_block_with_low_confidence(tmp_path):
+    result = NemotronEngine(serving(), mark_reader=lambda image_path: "<x_0.1><y_0.1>check with Khalid<x_0.9><y_0.9><class_Text>").parse(
+        noted_pdf(tmp_path / "n.pdf"), tmp_path / "out"
+    )
+    [note] = [block for block in result["pages"][0]["blocks"] if block["type"] == "handwriting"]
+    assert note["text"] == "check with Khalid"
+    assert note["confidence"]["score"] <= 0.5 and "handwriting_unreliable" in note["confidence"]["reasons"]
+    assert note["bbox"][0] <= 100 and note["bbox"][2] >= 400

@@ -3,7 +3,7 @@
 import cv2
 import numpy as np
 
-from docintel.stamps import find_stamps
+from docintel.marks import find_stamps
 
 
 def page(width=800, height=1000):
@@ -52,7 +52,7 @@ def test_two_stamps_come_back_top_to_bottom():
 
 
 def test_isolating_a_stamp_keeps_its_ink_and_drops_the_print_under_it():
-    from docintel.stamps import isolate_ink
+    from docintel.marks import isolate_ink
 
     image = page()
     print_lines(image)
@@ -66,3 +66,45 @@ def test_isolating_a_stamp_keeps_its_ink_and_drops_the_print_under_it():
     printed = page()
     print_lines(printed)
     assert (cv2.cvtColor(isolate_ink(printed[60:170, 60:400]), cv2.COLOR_BGR2GRAY) < 128).sum() == 0
+
+
+# --- handwriting: pen ink (blue) in thin strokes -----------------------------------------------------------
+
+PEN = (200, 60, 30)  # BGR blue
+
+
+def note(image, origin=(120, 400)):
+    cv2.putText(image, "see cl. 4 - check with Khalid", origin, cv2.FONT_HERSHEY_SCRIPT_SIMPLEX, 1.1, PEN, 2)
+
+
+def test_a_blue_pen_note_over_black_print_is_found_as_one_box():
+    from docintel.marks import find_handwriting
+
+    image = page()
+    print_lines(image)
+    note(image)
+    [(x0, y0, x1, y1)] = find_handwriting(image)
+    assert x0 <= 125 and x1 >= 440 and y0 <= 380 and y1 >= 405 and y1 - y0 < 120
+
+
+def test_black_print_a_red_stamp_and_a_blue_glare_are_not_handwriting():
+    from docintel.marks import find_handwriting
+
+    image = page()
+    print_lines(image)
+    stamp(image)
+    cv2.fillPoly(image, [np.array([[0, 0], [260, 0], [0, 300]])], (190, 90, 120))  # a smooth blob, as lens glare is
+    assert find_handwriting(image) == []
+
+
+def test_pen_ink_is_isolated_apart_from_red_ink():
+    from docintel.marks import isolate_ink
+
+    image = page()
+    print_lines(image)
+    note(image)
+    stamp(image)
+    blue = isolate_ink(image[360:430, 100:560], "blue")
+    red = isolate_ink(image[360:430, 100:560], "red")
+    assert (cv2.cvtColor(blue, cv2.COLOR_BGR2GRAY) < 128).sum() > 300
+    assert (cv2.cvtColor(red, cv2.COLOR_BGR2GRAY) < 128).sum() == 0
