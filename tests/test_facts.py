@@ -226,3 +226,18 @@ def test_handwriting_is_its_own_block_with_a_flag_and_stays_out_of_the_body_text
     [out] = facts(page([block("The body text.", source="nemotron-3.5-parse"), note], extraction="scanned"))["pages"]
     assert out["blocks"][1]["type"] == "handwriting" and out["blocks"][1]["confidence"] == 0.41
     assert out["text"] == "The body text." and "handwriting" in out["quality"]["flags"]
+
+
+def test_ink_no_block_accounted_for_is_an_illegible_block_with_its_own_page_flag():
+    unread = block("", type="illegible", order=1, source="nemotron-3.5-parse", score=0.0, reasons=["unaccounted_ink"])
+    [out] = facts(page([block("Body.", source="nemotron-3.5-parse"), unread], extraction="scanned"))["pages"]
+    assert [b["type"] for b in out["blocks"]] == ["paragraph", "illegible"]
+    assert out["blocks"][1]["text"] == "" and "unaccounted_ink" in out["quality"]["flags"]
+    assert "urdu_unread" not in out["quality"]["flags"]
+
+
+def test_text_recovered_from_a_second_look_is_ordinary_body_text():
+    recovered = block("The Manager shall keep the books.", order=1, source="nemotron-3.5-parse", score=0.9,
+                      reasons=["recovered_from_unaccounted_ink"])
+    [out] = facts(page([block("First.", source="nemotron-3.5-parse"), recovered], extraction="scanned"))["pages"]
+    assert out["text"] == "First.\n\nThe Manager shall keep the books."

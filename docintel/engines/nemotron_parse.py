@@ -128,3 +128,36 @@ def add_marks(page: dict[str, Any], marks: list[tuple[str, str, list[float]]]) -
             }
         page["blocks"].append(block)
     page["confidence"] = _page_confidence(page["blocks"])
+
+
+RECOVERED_MIN_QUALITY = 0.7
+RECOVERED_MIN_CHARS = 12
+MARK_TYPES = {"stamp", "handwriting"}
+
+
+def add_unaccounted(page: dict[str, Any], items: list[tuple[str, list[float]]]) -> None:
+    """Add what a second look found in ink no block accounted for.
+
+    Text read well enough becomes a paragraph, placed by its position among the others.  Anything
+    else is an ``illegible`` block with no text: the page says something is there, and never guesses.
+    """
+    for index, (text, bbox) in enumerate(items):
+        score, reasons = text_quality(text)
+        readable = len(text.strip()) >= RECOVERED_MIN_CHARS and score >= RECOVERED_MIN_QUALITY
+        kind = "text" if readable else "illegible"
+        region = {"type": kind, "layout_class": "Recovered" if readable else "Unaccounted", "text": text if readable else "",
+                  "bbox": bbox, "reading_order": 0}
+        block = _block(region, f"p{page['page_number']}_r{index}")
+        block["confidence"] = {
+            "score": score if readable else 0.0,
+            "reasons": ["engine_reports_no_confidence", "recovered_from_unaccounted_ink" if readable else "unaccounted_ink", *reasons],
+        }
+        body = sorted((b for b in page["blocks"] if b["type"] not in MARK_TYPES), key=lambda b: b["reading_order"])
+        marks = [b for b in page["blocks"] if b["type"] in MARK_TYPES]
+        # After the last block that starts above it, whatever order the model gave the others in.
+        position = 1 + max((i for i, b in enumerate(body) if b["bbox"][1] < bbox[1]), default=-1)
+        body.insert(position, block)
+        page["blocks"] = [*body, *marks]
+        for order, each in enumerate(page["blocks"]):
+            each["reading_order"] = order
+    page["confidence"] = _page_confidence(page["blocks"])

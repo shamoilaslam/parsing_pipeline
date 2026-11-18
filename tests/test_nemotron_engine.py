@@ -167,3 +167,56 @@ def test_pen_handwriting_is_read_on_its_own_as_a_handwriting_block_with_low_conf
     assert note["text"] == "check with Khalid"
     assert note["confidence"]["score"] <= 0.5 and "handwriting_unreliable" in note["confidence"]["reasons"]
     assert note["bbox"][0] <= 100 and note["bbox"][2] >= 400
+
+
+def page_with_text_the_model_skipped(path):
+    """The model's output covers the top of the page; more text sits lower down that it left out."""
+    doc = fitz.open()
+    page = doc.new_page(width=600, height=800)
+    for row in range(4):
+        page.insert_text((80, 560 + row * 22), "The Manager shall maintain separate and proper books and accounts.", fontsize=11)
+    doc.save(path)
+    return path
+
+
+SKIPPED = "<x_0.1><y_0.05>Covered text at the top.<x_0.9><y_0.2><class_Text>"
+
+
+def test_text_the_model_skipped_is_read_from_the_page_and_put_in_reading_order(tmp_path):
+    reader = lambda image_path: "<x_0.0><y_0.0>The Manager shall maintain separate and proper books.<x_1.0><y_1.0><class_Text>"
+    result = NemotronEngine(serving(SKIPPED), mark_reader=reader).parse(page_with_text_the_model_skipped(tmp_path / "g.pdf"), tmp_path / "out")
+    blocks = sorted(result["pages"][0]["blocks"], key=lambda block: block["reading_order"])
+    assert [block["text"] for block in blocks][0] == "Covered text at the top."
+    recovered = blocks[1]
+    assert recovered["text"].startswith("The Manager shall maintain") and recovered["type"] == "text"
+    assert "recovered_from_unaccounted_ink" in recovered["confidence"]["reasons"] and recovered["bbox"][1] > 400
+
+
+def test_unaccounted_ink_that_cannot_be_read_is_an_illegible_block_not_guessed_text(tmp_path):
+    result = NemotronEngine(serving(SKIPPED), mark_reader=lambda image_path: "").parse(
+        page_with_text_the_model_skipped(tmp_path / "g.pdf"), tmp_path / "out"
+    )
+    illegible = [block for block in result["pages"][0]["blocks"] if block["type"] == "illegible"]
+    assert illegible and all(block["text"] == "" and "unaccounted_ink" in block["confidence"]["reasons"] for block in illegible)
+
+
+def test_a_page_the_model_covered_fully_gets_nothing_added(tmp_path):
+    blocks = NemotronEngine(serving(), mark_reader=lambda image_path: "x").parse(make_pdf(tmp_path / "e.pdf"), tmp_path / "out")["pages"][0]["blocks"]
+    assert [block["type"] for block in blocks] == ["text"]
+
+
+def test_recovered_text_goes_after_the_last_block_above_it_even_when_the_models_own_order_is_not_top_to_bottom():
+    from docintel.engines.nemotron_parse import add_unaccounted, build_page
+
+    raw = (
+        "<x_0.1><y_0.05>Top.<x_0.9><y_0.1><class_Text>"
+        "<x_0.1><y_0.9>Footer page 2<x_0.9><y_0.95><class_Page-footer>"
+        "<x_0.1><y_0.6>Late paragraph the model put last.<x_0.9><y_0.65><class_Text>"
+    )
+    page = build_page(raw, page_number=1, page_size=(600, 800))
+    add_unaccounted(page, [("The recovered paragraph is read from the page.", [60.0, 560.0, 540.0, 600.0])])
+    ordered = [block["text"] for block in sorted(page["blocks"], key=lambda block: block["reading_order"])]
+    assert ordered.index("The recovered paragraph is read from the page.") > ordered.index("Late paragraph the model put last.") - 1
+    assert ordered[0] == "Top."
+    # the recovered block (y=560) sits below the late paragraph (y=480), so it follows it
+    assert ordered.index("The recovered paragraph is read from the page.") == ordered.index("Late paragraph the model put last.") + 1

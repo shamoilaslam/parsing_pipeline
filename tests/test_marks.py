@@ -108,3 +108,33 @@ def test_pen_ink_is_isolated_apart_from_red_ink():
     red = isolate_ink(image[360:430, 100:560], "red")
     assert (cv2.cvtColor(blue, cv2.COLOR_BGR2GRAY) < 128).sum() > 300
     assert (cv2.cvtColor(red, cv2.COLOR_BGR2GRAY) < 128).sum() == 0
+
+
+# --- ink no block accounts for -------------------------------------------------------------------------------
+
+
+def lines_of_text(image, top, rows=4):
+    for row in range(rows):
+        cv2.putText(image, "Black printed text on a line of the page", (150, top + row * 40), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (30, 30, 30), 2)
+
+
+def test_text_that_no_block_covers_is_found_and_text_a_block_covers_is_not():
+    from docintel.marks import find_unaccounted
+
+    image = page()
+    lines_of_text(image, 300)
+    lines_of_text(image, 600)
+    found = find_unaccounted(image, covered=[(100, 270, 700, 460)])
+    assert found and all(y0 >= 540 and y1 <= 780 for _, y0, _, y1 in found)
+    assert min(x0 for x0, *_ in found) <= 160 and max(x1 for _, _, x1, _ in found) >= 500
+
+
+def test_a_rule_a_solid_blob_a_corner_shadow_and_an_edge_band_are_not_content():
+    from docintel.marks import find_unaccounted
+
+    image = page()
+    cv2.line(image, (120, 200), (120, 900), (30, 30, 30), 5)  # a margin rule
+    cv2.rectangle(image, (300, 500), (420, 600), (30, 30, 30), -1)  # a solid blob
+    cv2.fillPoly(image, [np.array([[0, 0], [90, 0], [0, 140]])], (60, 60, 60))  # corner shadow
+    cv2.rectangle(image, (745, 0), (800, 1000), (50, 50, 50), -1)  # dark band at the edge
+    assert find_unaccounted(image, covered=[]) == []

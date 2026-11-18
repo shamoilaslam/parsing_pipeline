@@ -18,6 +18,13 @@ PAD_FRACTION = 0.01
 BLUE_HUE = (100, 135)  # OpenCV hue: pen ink
 MAX_STROKE = 0.012  # of page width: thicker colour is a blob (glare, a logo), not a pen stroke
 MIN_INK_PIXELS = 150
+INK_CONTRAST = 55  # how much darker than the paper local to it a pixel must be to be ink
+EDGE_ZONE = 0.12  # of page width: left, right and top strips hold shadows and bands, not content
+MAX_ELONGATION = 8  # a region this much taller than wide is a rule or a band; wide and thinner than a text line, a rule
+MIN_LINE_HEIGHT = 0.014  # of page width: a line of print is at least this tall
+MAX_DENSITY = 0.55  # more solid than this is a blob, not writing
+MIN_UNACCOUNTED_AREA = 0.0008
+COVER_PAD = 0.012
 MAX_NOTE_AREA = 0.15
 
 
@@ -75,3 +82,39 @@ def isolate_ink(crop: np.ndarray, kind: str = "red") -> np.ndarray:
     ink = cv2.dilate(ink.astype(np.uint8), np.ones((2, 2), np.uint8))
     gray = np.where(ink > 0, 0, 255).astype(np.uint8)
     return cv2.resize(cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR), None, fx=ENLARGE, fy=ENLARGE, interpolation=cv2.INTER_CUBIC)
+
+
+def find_unaccounted(image: np.ndarray, covered: list[tuple[int, int, int, int]]) -> list[tuple[int, int, int, int]]:
+    """Ink on the page that none of the ``covered`` boxes (every block read, stamps and notes too) accounts for.
+
+    The safety net under the colour rules: whatever the layout model left out, text it skipped or a
+    mark of a kind nobody has met, shows up here.  Rules, solid blobs and shadows at the page edge
+    are not content and are left out.
+    """
+    height, width = image.shape[:2]
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    paper = cv2.medianBlur(gray, 51)
+    ink = ((paper.astype(np.int16) - gray.astype(np.int16)) > INK_CONTRAST).astype(np.uint8)
+    pad = int(width * COVER_PAD)
+    for x0, y0, x1, y1 in covered:
+        ink[max(0, y0 - pad) : y1 + pad, max(0, x0 - pad) : x1 + pad] = 0
+    ink = cv2.morphologyEx(ink, cv2.MORPH_OPEN, np.ones((2, 2), np.uint8))
+    size = max(3, int(width * 0.015))
+    merged = cv2.morphologyEx(ink * 255, cv2.MORPH_CLOSE, np.ones((size, size), np.uint8))
+    contours, _ = cv2.findContours(merged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    edge = int(width * EDGE_ZONE)
+    boxes = []
+    for contour in contours:
+        x, y, w, h = cv2.boundingRect(contour)
+        ink_pixels = int(ink[y : y + h, x : x + w].sum())
+        in_strip = x + w <= edge or x >= width - edge or y + h <= edge
+        if (
+            (w * h) / (width * height) >= MIN_UNACCOUNTED_AREA
+            and ink_pixels >= MIN_INK_PIXELS - 30
+            and h <= MAX_ELONGATION * w
+            and not (w > MAX_ELONGATION * h and h < width * MIN_LINE_HEIGHT)
+            and ink_pixels / (w * h) <= MAX_DENSITY
+            and not in_strip
+        ):
+            boxes.append((x, y, x + w, y + h))
+    return sorted(boxes, key=lambda box: (box[1], box[0]))

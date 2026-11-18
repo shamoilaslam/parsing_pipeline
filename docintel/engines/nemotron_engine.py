@@ -19,8 +19,8 @@ import fitz
 from docintel.engines.base import Policy
 from docintel.engines.native import _metadata_provenance, metadata_from_pages
 from docintel.engines.nemotron_batch import append_raw, ingest, load_raw, render_jobs
-from docintel.engines.nemotron_parse import SOURCE, add_marks, parse_output
-from docintel.marks import find_handwriting, find_stamps, isolate_ink
+from docintel.engines.nemotron_parse import SOURCE, add_marks, add_unaccounted, parse_output
+from docintel.marks import find_handwriting, find_stamps, find_unaccounted, isolate_ink
 
 Transport = Callable[[Path, list[dict[str, Any]]], dict[int, str]]
 
@@ -96,6 +96,22 @@ class NemotronEngine:
                 text = " ".join(region["text"].strip() for region in regions if region["text"].strip())
                 marks.append((kind, text, [x0 * scale_x, y0 * scale_y, x1 * scale_x, y1 * scale_y]))
         add_marks(page, marks)
+        self._read_unaccounted(page, job, image, (scale_x, scale_y))
+
+    def _read_unaccounted(self, page: dict[str, Any], job: dict[str, Any], image: Any, scale: tuple[float, float]) -> None:
+        """Look again at ink no block covers: text the model skipped is read from the page, the rest is flagged."""
+        covered = [
+            (int(x0 / scale[0]), int(y0 / scale[1]), int(x1 / scale[0]), int(y1 / scale[1]))
+            for x0, y0, x1, y1 in (block["bbox"] for block in page["blocks"])
+        ]
+        found = []
+        for index, (x0, y0, x1, y1) in enumerate(find_unaccounted(image, covered)):
+            crop = Path(job["image_path"]).with_name(f"{Path(job['image_path']).stem}_r{index}.png")
+            cv2.imwrite(str(crop), image[y0:y1, x0:x1])
+            regions = parse_output(self._mark_reader(crop), page_size=(x1 - x0, y1 - y0))
+            text = " ".join(region["text"].strip() for region in regions if region["text"].strip())
+            found.append((text, [x0 * scale[0], y0 * scale[1], x1 * scale[0], y1 * scale[1]]))
+        add_unaccounted(page, found)
 
     def parse(
         self, pdf: Path, output_dir: Path | None, *, stem: str | None = None, pages: list[int] | None = None

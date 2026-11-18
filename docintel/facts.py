@@ -27,7 +27,7 @@ PARSER = "docintel"
 PAGE_IMAGE_ZOOM = 1.5
 SKEW_FLAG_DEGREES = 1.0
 BLOCK_TYPES = {"heading": "heading", "list": "list_item", "footnote": "footnote", "table": "table", "stamp": "stamp",
-               "handwriting": "handwriting"}
+               "handwriting": "handwriting", "illegible": "illegible"}
 # Blocks that are part of the page but not of its body text.
 APART = {"stamp", "handwriting"}
 PRINTED_NUMBER = (re.compile(r"(?i)\bpage\s+(\d{1,4})\b"), re.compile(r"(?i)page\s*(\d{1,4})\s*$"),re.compile(r"^\W*(\d{1,4})\W*$"), re.compile(r"^\s*(\d{1,3})\s+[A-Za-z]"))
@@ -89,7 +89,7 @@ def _block(block: dict[str, Any], order: int, page: dict[str, Any], from_ocr: bo
     score = round(float((block.get("confidence") or {}).get("score", 0.0)), 3)
     base = {"id": block.get("id"), "order": order, "bbox": box, "confidence": score,
             "language": block.get("language", "unknown")}
-    if _unread_urdu(block):
+    if _unread_urdu(block) or block.get("type") == "illegible":
         return {**base, "type": "illegible", "text": "", "confidence": 0.0}
     kind = BLOCK_TYPES.get(block.get("type"), "paragraph")
     text = _clean(block["text"], from_ocr)
@@ -136,8 +136,10 @@ def _page(page: dict[str, Any], image: str | None) -> dict[str, Any]:
     flags = []
     if not any(block["type"] not in APART for block in blocks):
         flags.append("blank")
-    if any(block["type"] == "illegible" for block in blocks):
+    if any(_unread_urdu(block) for block in body):
         flags.append("urdu_unread")
+    if any(block.get("type") == "illegible" for block in body):
+        flags.append("unaccounted_ink")
     flags += [kind for kind in ("stamp", "handwriting") if any(block["type"] == kind for block in blocks)]
     skew = ((page.get("scan") or {}).get("preprocessing") or {}).get("estimated_skew_degrees") or 0.0
     if abs(skew) > SKEW_FLAG_DEGREES:
