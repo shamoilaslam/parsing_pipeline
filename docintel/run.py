@@ -83,7 +83,7 @@ def main() -> int:
     (out / "document_types.json").write_text(json.dumps(types, ensure_ascii=False, indent=2), encoding="utf-8")
     retract_non_court(out, types)
     write_akn(out, types)
-    write_folder(out, out / "facts", urdu_ceiling=args.urdu_policy)
+    write_folder(out, out / "facts", urdu_ceiling=args.urdu_policy, mark_reader=pipeline.model_reader(model) if model else None)
     summary = report.summarise(report.load(out), manifest)
     (out / "report.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     print(report.render(summary))

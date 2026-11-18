@@ -13,14 +13,13 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
-import cv2
 import fitz
 
 from docintel.engines.base import Policy
 from docintel.engines.native import _metadata_provenance, metadata_from_pages
 from docintel.engines.nemotron_batch import append_raw, ingest, load_raw, render_jobs
-from docintel.engines.nemotron_parse import SOURCE, add_marks, add_unaccounted, parse_output
-from docintel.marks import find_handwriting, find_stamps, find_unaccounted, isolate_ink, near_signature
+from docintel.engines.marks_pass import read_marks
+from docintel.engines.nemotron_parse import SOURCE
 
 Transport = Callable[[Path, list[dict[str, Any]]], dict[int, str]]
 
@@ -80,43 +79,6 @@ class NemotronEngine:
         self._transport = transport
         self._mark_reader = mark_reader
 
-    def _read_marks(self, page: dict[str, Any], job: dict[str, Any]) -> None:
-        """Re-read each stamp and pen note on its own: its text is no part of the body, and it gets its own block."""
-        image = cv2.imread(job["image_path"])
-        if image is None or self._mark_reader is None:
-            return
-        scale_x, scale_y = job["page_size"][0] / image.shape[1], job["page_size"][1] / image.shape[0]
-        marks = []
-        for kind, ink, find in (("stamp", "red", find_stamps), ("handwriting", "blue", find_handwriting)):
-            for index, (x0, y0, x1, y1) in enumerate(find(image)):
-                crop = Path(job["image_path"]).with_name(f"{Path(job['image_path']).stem}_{kind[0]}{index}.png")
-                isolated = isolate_ink(image[y0:y1, x0:x1], ink)
-                cv2.imwrite(str(crop), isolated)
-                regions = parse_output(self._mark_reader(crop), page_size=(isolated.shape[1], isolated.shape[0]))
-                text = " ".join(region["text"].strip() for region in regions if region["text"].strip())
-                marks.append((kind, text, [x0 * scale_x, y0 * scale_y, x1 * scale_x, y1 * scale_y]))
-        add_marks(page, marks)
-        self._read_unaccounted(page, job, image, (scale_x, scale_y))
-
-    def _read_unaccounted(self, page: dict[str, Any], job: dict[str, Any], image: Any, scale: tuple[float, float]) -> None:
-        """Look again at ink no block covers: text the model skipped is read from the page, the rest is flagged."""
-        covered = [
-            (int(x0 / scale[0]), int(y0 / scale[1]), int(x1 / scale[0]), int(y1 / scale[1]))
-            for x0, y0, x1, y1 in (block["bbox"] for block in page["blocks"])
-        ]
-        labels = [
-            ((int(b["bbox"][0] / scale[0]), int(b["bbox"][1] / scale[1]), int(b["bbox"][2] / scale[0]), int(b["bbox"][3] / scale[1])), b["text"])
-            for b in page["blocks"]
-        ]
-        found = []
-        for index, (x0, y0, x1, y1) in enumerate(find_unaccounted(image, covered)):
-            crop = Path(job["image_path"]).with_name(f"{Path(job['image_path']).stem}_r{index}.png")
-            cv2.imwrite(str(crop), image[y0:y1, x0:x1])
-            regions = parse_output(self._mark_reader(crop), page_size=(x1 - x0, y1 - y0))
-            text = " ".join(region["text"].strip() for region in regions if region["text"].strip())
-            found.append((text, [x0 * scale[0], y0 * scale[1], x1 * scale[0], y1 * scale[1]], near_signature(image, (x0, y0, x1, y1), labels)))
-        add_unaccounted(page, found)
-
     def parse(
         self, pdf: Path, output_dir: Path | None, *, stem: str | None = None, pages: list[int] | None = None
     ) -> dict[str, Any]:
@@ -127,7 +89,8 @@ class NemotronEngine:
             if pending:
                 raise PagesPending([job["page_number"] for job in pending])
             for page in read:
-                self._read_marks(page, next(job for job in jobs if job["page_number"] == page["page_number"]))
+                if self._mark_reader is not None:
+                    read_marks(page, next(job for job in jobs if job["page_number"] == page["page_number"]), self._mark_reader)
             by_number = {page["page_number"]: page for page in read}
             document_pages = [by_number.get(page.number + 1) or _unread_page(page) for page in doc]
             pdf_metadata = dict(doc.metadata or {})

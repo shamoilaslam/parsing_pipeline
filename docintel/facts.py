@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import re
+import tempfile
 import unicodedata
 from pathlib import Path
 from typing import Any
@@ -21,13 +22,17 @@ import fitz
 
 from docintel import __version__
 from docintel.engines.base import Policy
+from docintel.engines.marks_pass import MarkReader, read_marks
 from docintel.parsed import documents
 
 PARSER = "docintel"
+SECOND_LOOK_ZOOM = 2.0
 PAGE_IMAGE_ZOOM = 1.5
 SKEW_FLAG_DEGREES = 1.0
 BLOCK_TYPES = {"heading": "heading", "list": "list_item", "footnote": "footnote", "table": "table", "stamp": "stamp",
                "handwriting": "handwriting", "illegible": "illegible", "signature": "signature"}
+# Sources that are the PDF's own text layer; any other source is a model or an OCR engine reading pixels.
+TEXT_LAYER_SOURCES = {"pymupdf-native", "pymupdf-find_tables"}
 # Blocks that are part of the page but not of its body text.
 APART = {"stamp", "handwriting", "signature"}
 PRINTED_NUMBER = (re.compile(r"(?i)\bpage\s+(\d{1,4})\b"), re.compile(r"(?i)page\s*(\d{1,4})\s*$"),re.compile(r"^\W*(\d{1,4})\W*$"), re.compile(r"^\s*(\d{1,3})\s+[A-Za-z]"))
@@ -116,7 +121,6 @@ def _body_text(block: dict[str, Any]) -> str:
 
 def _page(page: dict[str, Any], image: str | None) -> dict[str, Any]:
     extraction = page.get("extraction")
-    from_ocr = extraction != "digital"
     out: dict[str, Any] = {
         "page": page["page_number"], "width": page["width"], "height": page["height"], "unit": "pt",
         "rotation": page.get("rotation", 0), "image": image,
@@ -128,7 +132,12 @@ def _page(page: dict[str, Any], image: str | None) -> dict[str, Any]:
     ordered = sorted(page["blocks"], key=lambda block: block.get("reading_order", 0))
     edge = {kind: " ".join(block["text"] for block in ordered if block.get("type") == kind) for kind in ("header", "footer")}
     body = [block for block in ordered if block.get("type") not in ("header", "footer")]
-    blocks = [_block(block, order, page, from_ocr) for order, block in enumerate(body)]
+    def from_ocr(block: dict[str, Any]) -> bool:
+        return block["source"] not in TEXT_LAYER_SOURCES if block.get("source") else extraction != "digital"
+
+    blocks = [_block(block, order, page, from_ocr(block)) for order, block in enumerate(body)]
+    ocr_blocks = [block for block in body if from_ocr(block)]
+    kind = "mixed" if ocr_blocks and len(ocr_blocks) < len(body) else "ocr" if ocr_blocks or extraction != "digital" else "text_layer"
     read = [block for block in blocks if block["type"] != "illegible" and _body_text(block).strip()]
     weight = sum(len(_body_text(block)) for block in read)
     score = round(sum(block["confidence"] * len(_body_text(block)) for block in read) / weight, 3) if weight else 0.0
@@ -144,12 +153,12 @@ def _page(page: dict[str, Any], image: str | None) -> dict[str, Any]:
     skew = ((page.get("scan") or {}).get("preprocessing") or {}).get("estimated_skew_degrees") or 0.0
     if abs(skew) > SKEW_FLAG_DEGREES:
         flags.append("skewed")
-    engine = next((block.get("source") for block in ordered if block.get("source")), None) if from_ocr else None
+    engine = next((block["source"] for block in ocr_blocks if block.get("source")), None)
     return {
-        **out, "status": "ok", "source": "ocr" if from_ocr else "text_layer",
+        **out, "status": "ok", "source": kind,
         **({"engine": engine} if engine else {}),
         "language": _shares(blocks),
-        "quality": {"score": score, "ocr_confidence": score if from_ocr and read else None, "flags": flags},
+        "quality": {"score": score, "ocr_confidence": score if kind == "ocr" and read else None, "flags": flags},
         "printed_page_number": _printed_number(edge["footer"], edge["header"]),
         "header_text": edge["header"], "footer_text": edge["footer"],
         "text": "\n\n".join(
@@ -178,7 +187,19 @@ def facts_file(result: dict[str, Any], *, pdf: Path | None = None, folder: Path 
     }
 
 
-def write_folder(parsed: Path, out: Path, *, urdu_ceiling: Policy = "local") -> list[Path]:
+def _second_look(document: dict[str, Any], pdf: Path, reader: MarkReader) -> None:
+    """Stamps, notes and pasted scans on digital pages: only pages that carry an image are looked at."""
+    with fitz.open(pdf) as source, tempfile.TemporaryDirectory() as scratch:
+        for page in document["pages"]:
+            source_page = source[page["page_number"] - 1]
+            if page.get("extraction") != "digital" or not source_page.get_images(full=True):
+                continue
+            path = Path(scratch) / f"p{page['page_number']}.png"
+            source_page.get_pixmap(matrix=fitz.Matrix(SECOND_LOOK_ZOOM, SECOND_LOOK_ZOOM)).save(path)
+            read_marks(page, {"image_path": str(path), "page_size": (source_page.rect.width, source_page.rect.height)}, reader)
+
+
+def write_folder(parsed: Path, out: Path, *, urdu_ceiling: Policy = "local", mark_reader: MarkReader | None = None) -> list[Path]:
     """One ``<stem>/<stem>.json`` plus ``pages/`` images per parsed file, built from the parsed folder.
 
     The parsed files are read, never changed: Urdu crops go to the vision route (Gemini, then
@@ -199,6 +220,8 @@ def write_folder(parsed: Path, out: Path, *, urdu_ceiling: Policy = "local") -> 
             copy.write_text(json.dumps(document, ensure_ascii=False), encoding="utf-8")
             urdu_vision.run(pdf, copy, work, ceiling=urdu_ceiling, allow_llamaparse=True)
             document = json.loads(copy.read_text(encoding="utf-8"))
+        if mark_reader:
+            _second_look(document, pdf, mark_reader)
         path = folder / f"{stem}.json"
         path.write_text(json.dumps(facts_file(document, pdf=pdf, folder=folder), ensure_ascii=False, indent=1), encoding="utf-8")
         written.append(path)

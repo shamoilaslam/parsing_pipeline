@@ -249,3 +249,60 @@ def test_a_signature_is_its_own_block_with_a_flag_and_no_text_in_the_body():
     assert [b["type"] for b in out["blocks"]] == ["paragraph", "signature"]
     assert out["blocks"][1]["text"] == "" and "signature" in out["quality"]["flags"]
     assert out["text"] == "For and on behalf of the Authority. Signature:"
+
+
+def test_a_digital_page_with_a_stamp_the_model_read_is_mixed_and_names_the_engine_for_the_ocr_part():
+    stamp = block("RECEIVED 06 OCT 1993", type="stamp", order=1, source="nemotron-3.5-parse")
+    digital, mixed = facts(page([block("Text layer words.")]), page([block("Text layer words."), stamp], number=2))["pages"]
+    assert digital["source"] == "text_layer" and "engine" not in digital
+    assert mixed["source"] == "mixed" and mixed["engine"] == "nemotron-3.5-parse"
+    assert mixed["text"] == "Text layer words."
+
+
+def test_markdown_is_stripped_only_from_what_a_model_read_not_from_the_text_layer():
+    native = block("A **real** asterisk pair in the document")
+    read = block("**Dear Sir**", order=1, source="nemotron-3.5-parse")
+    [out] = facts(page([native, read]))["pages"]
+    assert [b["text"] for b in out["blocks"]] == ["A **real** asterisk pair in the document", "Dear Sir"]
+
+
+def test_the_folder_writer_gives_a_digital_page_with_an_image_the_second_look_and_leaves_plain_pages_alone(tmp_path):
+    import json
+
+    import cv2
+    import numpy as np
+
+    from docintel.facts import write_folder
+
+    pdf = tmp_path / "in.pdf"
+    doc = fitz.open()
+    with_image = doc.new_page(width=600, height=800)
+    with_image.insert_text((60, 100), "Digital text layer on the page.", fontsize=11)
+    red = np.full((90, 260, 3), 255, np.uint8)
+    cv2.rectangle(red, (4, 4), (255, 85), (40, 40, 200), -1)
+    png = tmp_path / "stamp.png"
+    cv2.imwrite(str(png), red)
+    with_image.insert_image(fitz.Rect(300, 40, 560, 130), filename=str(png))
+    plain = doc.new_page(width=600, height=800)
+    plain.insert_text((60, 100), "Another digital page.", fontsize=11)
+    doc.save(pdf)
+    parsed = tmp_path / "parsed"
+    parsed.mkdir()
+    pages = [
+        page([block("Digital text layer on the page.", bbox=(60, 90, 250, 104))]),
+        page([block("Another digital page.", bbox=(60, 90, 200, 104))], number=2),
+    ]
+    payload = result(*pages)
+    payload["document"]["source_file"] = str(pdf)
+    (parsed / "in.json").write_text(json.dumps(payload), encoding="utf-8")
+    seen = []
+
+    def reader(image_path):
+        seen.append(image_path.name)
+        return "<x_0.0><y_0.0>RECEIVED<x_1.0><y_1.0><class_Text>"
+
+    write_folder(parsed, tmp_path / "facts", urdu_ceiling="local", mark_reader=reader)
+    written = json.loads((tmp_path / "facts" / "in" / "in.json").read_text(encoding="utf-8"))
+    first, second = written["pages"]
+    assert first["source"] == "mixed" and any(b["type"] == "stamp" and b["text"] == "RECEIVED" for b in first["blocks"])
+    assert second["source"] == "text_layer" and len(seen) == 1

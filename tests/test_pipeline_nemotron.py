@@ -68,7 +68,7 @@ def test_the_nemotron_engine_refuses_to_run_without_a_work_folder(tmp_path):
 def test_a_live_model_reads_the_scan_pages_when_one_is_named(tmp_path, monkeypatch):
     import docintel.pipeline as pipeline
 
-    monkeypatch.setattr(pipeline, "_model_reader", lambda model: (lambda image_path: RAW))
+    monkeypatch.setattr(pipeline, "model_reader", lambda model: (lambda image_path: RAW))
     result = parse_pdf(mixed_pdf(tmp_path / "mixed.pdf"), tmp_path / "out", nemotron_model="any-model")
     assert result["pages"][1]["blocks"][0]["source"] == "nemotron-3.5-parse"
     assert result["document"]["router"]["selected"] == "nemotron"
@@ -80,7 +80,7 @@ def test_a_model_failure_falls_back_to_local_ocr_and_says_so(tmp_path, monkeypat
     def broken(image_path):
         raise RuntimeError("out of memory")
 
-    monkeypatch.setattr(pipeline, "_model_reader", lambda model: broken)
+    monkeypatch.setattr(pipeline, "model_reader", lambda model: broken)
     result = parse_pdf(mixed_pdf(tmp_path / "mixed.pdf"), tmp_path / "out", nemotron_model="any-model")
     assert result["document"]["router"]["selected"] == "scanned"
     assert any("nemotron_failed: out of memory" in warning for warning in result["document"]["warnings"])
