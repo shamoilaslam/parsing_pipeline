@@ -169,3 +169,29 @@ def test_ink_with_no_line_and_no_cue_is_not_a_signature_context():
     image = page()
     scribble(image)
     assert not near_signature(image, (295, 540, 510, 625), labels=[((120, 100, 290, 130), "ARTICLE 4 - ACCOUNTS")])
+
+
+def test_a_red_tinted_glare_at_the_page_edge_is_not_a_stamp():
+    image = page()
+    print_lines(image)
+    stamp(image)
+    cv2.fillPoly(image, [np.array([[0, 0], [150, 0], [0, 190]])], (110, 110, 200))  # smooth reddish corner glare
+    cv2.circle(image, (790, 400), 30, (90, 90, 205), -1)  # a solid reddish patch at the edge
+    assert len(find_stamps(image)) == 1
+
+
+def test_a_few_thin_red_strokes_are_not_enough_to_be_a_stamp():
+    image = page()
+    cv2.putText(image, "ok", (300, 500), cv2.FONT_HERSHEY_SIMPLEX, 1.0, (60, 60, 200), 3)
+    assert find_stamps(image) == []
+
+
+def test_reddish_texture_beyond_the_paper_at_the_image_edge_is_not_a_stamp():
+    image = page()
+    rng = np.random.default_rng(1)
+    strip = image[0:200, 700:800]
+    noise = rng.integers(0, 2, strip.shape[:2]).astype(bool)
+    strip[noise] = (50, 60, 190)  # a speckled red-brown surface that runs off the edge of the photo
+    stamp(image, (300, 400, 640, 510))
+    boxes = find_stamps(image)
+    assert len(boxes) == 1 and boxes[0][0] < 400

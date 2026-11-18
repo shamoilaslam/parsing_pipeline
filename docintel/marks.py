@@ -20,6 +20,7 @@ PAD_FRACTION = 0.01
 BLUE_HUE = (100, 135)  # OpenCV hue: pen ink
 MAX_STROKE = 0.012  # of page width: thicker colour is a blob (glare, a logo), not a pen stroke
 MIN_INK_PIXELS = 150
+MIN_STAMP_INK = 0.0025  # of the page's area in stamp strokes: a real stamp measured 0.0041, glare at most 0.0020
 INK_CONTRAST = 55  # how much darker than the paper local to it a pixel must be to be ink
 EDGE_ZONE = 0.12  # of page width: left, right and top strips hold shadows and bands, not content
 MAX_ELONGATION = 8  # a region this much taller than wide is a rule or a band; wide and thinner than a text line, a rule
@@ -36,18 +37,30 @@ def _ink(image: np.ndarray, kind: str, saturation_min: int, value_min: int) -> n
     return in_hue & (saturation >= saturation_min) & (value >= value_min)
 
 
+def _thin(ink: np.ndarray, width: int) -> np.ndarray:
+    """Only the strokes: colour in thicker blobs (glare, a tinted patch) is taken out."""
+    stroke = max(3, int(width * MAX_STROKE))
+    blobs = cv2.morphologyEx(ink, cv2.MORPH_OPEN, np.ones((stroke, stroke), np.uint8))
+    return ink & (1 - cv2.dilate(blobs, np.ones((3, 3), np.uint8)))
+
+
 def find_stamps(image: np.ndarray) -> list[tuple[int, int, int, int]]:
     """Boxes ``(x0, y0, x1, y1)`` in pixels, top to bottom, of each red-inked stamp."""
     height, width = image.shape[:2]
-    ink = _ink(image, "red", SATURATION_MIN, VALUE_MIN)
+    ink = _thin(_ink(image, "red", SATURATION_MIN, VALUE_MIN).astype(np.uint8), width)
     size = max(3, int(width * MERGE_FRACTION))
-    merged = cv2.morphologyEx(ink.astype(np.uint8) * 255, cv2.MORPH_CLOSE, np.ones((size, size), np.uint8))
+    merged = cv2.morphologyEx(ink * 255, cv2.MORPH_CLOSE, np.ones((size, size), np.uint8))
     contours, _ = cv2.findContours(merged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     pad = int(width * PAD_FRACTION)
     boxes = []
     for contour in contours:
         x, y, w, h = cv2.boundingRect(contour)
-        if MIN_AREA <= (w * h) / (width * height) <= MAX_AREA:
+        on_the_page = x > 0 and y > 0 and x + w < width and y + h < height  # a surface running off the photo's edge is not paper
+        if (
+            on_the_page
+            and MIN_AREA <= (w * h) / (width * height) <= MAX_AREA
+            and ink[y : y + h, x : x + w].sum() >= MIN_STAMP_INK * width * height
+        ):
             boxes.append((max(0, x - pad), max(0, y - pad), min(width, x + w + pad), min(height, y + h + pad)))
     return sorted(boxes, key=lambda box: (box[1], box[0]))
 
@@ -60,9 +73,7 @@ def find_handwriting(image: np.ndarray) -> list[tuple[int, int, int, int]]:
     """Boxes of pen writing: blue ink in thin strokes, words on a line merged into one note."""
     height, width = image.shape[:2]
     ink = _ink(image, "blue", SATURATION_MIN + 10, VALUE_MIN - 30).astype(np.uint8)
-    stroke = max(3, int(width * MAX_STROKE))
-    blobs = cv2.morphologyEx(ink, cv2.MORPH_OPEN, np.ones((stroke, stroke), np.uint8))
-    thin = ink & (1 - cv2.dilate(blobs, np.ones((3, 3), np.uint8)))
+    thin = _thin(ink, width)
     merged = cv2.morphologyEx(thin * 255, cv2.MORPH_CLOSE, np.ones((max(3, int(width * 0.012)), max(3, int(width * 0.03))), np.uint8))
     contours, _ = cv2.findContours(merged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     pad = int(width * PAD_FRACTION)
