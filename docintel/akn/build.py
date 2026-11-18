@@ -212,6 +212,18 @@ def to_akn(payload: dict[str, Any]) -> dict[str, Any]:
 
 
 COURT_KINDS = {"judgment", "order"}
+# A court document names its court at the top.  A licence that merely mentions one does not.
+COURT_HEADING = re.compile(
+    r"(?i)^\s*(?:in\s+the\s+)?(?:[A-Za-z.,'-]+\s+){0,4}?"
+    r"(?:high\s+court|supreme\s+court|sessions\s+judge|court\s+of|tribunal|judicial\s+department)\b"
+)
+HEADING_BLOCKS = 4
+
+
+def names_a_court(payload: dict[str, Any]) -> bool:
+    """Does the page open with a court's name (a heading), not merely mention one?"""
+    first = payload["pages"][0]["blocks"][:HEADING_BLOCKS] if payload.get("pages") else []
+    return any(COURT_HEADING.match(block["text"]) for block in first)
 
 
 def write_akn(parsed: Path, types: dict[str, dict[str, Any]]) -> list[str]:
@@ -223,7 +235,7 @@ def write_akn(parsed: Path, types: dict[str, dict[str, Any]]) -> list[str]:
     written = []
     for stem, payload in documents(parsed):
         is_act = payload["document"].get("document_kind") == "statute"
-        if not is_act and types.get(stem, {}).get("kind") not in COURT_KINDS:
+        if not is_act and not (types.get(stem, {}).get("kind") in COURT_KINDS and names_a_court(payload)):
             continue
         target = parsed / "akn" / f"{stem}.json"
         target.parent.mkdir(exist_ok=True)

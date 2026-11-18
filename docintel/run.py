@@ -24,6 +24,7 @@ from docintel.akn.build import write_akn
 from docintel.facts import write_folder
 from docintel.engines.nemotron_gpu import default_model
 from docintel.ingest import normalize_folder
+from docintel.understand.retract import retract_non_court
 from docintel.understand.segment import classify_folder
 
 
@@ -80,6 +81,7 @@ def main() -> int:
     manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
     types = classify_folder(out)
     (out / "document_types.json").write_text(json.dumps(types, ensure_ascii=False, indent=2), encoding="utf-8")
+    retract_non_court(out, types)
     write_akn(out, types)
     write_folder(out, out / "facts", urdu_ceiling=args.urdu_policy)
     summary = report.summarise(report.load(out), manifest)

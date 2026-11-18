@@ -38,7 +38,7 @@ def test_a_parsed_folder_lists_the_documents_inside_each_file(tmp_path):
     from docintel.understand.segment import classify_folder
 
     pages = [{"blocks": [{"text": text}]} for text in (LETTER_1, LETTER_2, MINUTES_1)]
-    (tmp_path / "bundle.json").write_text(json.dumps({"pages": pages}), encoding="utf-8")
+    (tmp_path / "bundle.json").write_text(json.dumps({"document": {}, "pages": pages}), encoding="utf-8")
     entry = classify_folder(tmp_path)["bundle"]
     assert entry["kind"] == "letter"  # the file is named by its first document
     assert [(d["first_page"], d["last_page"], d["kind"]) for d in entry["documents"]] == [(1, 2, "letter"), (3, 3, "minutes")]
