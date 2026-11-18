@@ -45,8 +45,26 @@ def _clean(text: str, from_ocr: bool) -> str:
     return unicodedata.normalize("NFC", text) if any(ord(char) > 0x590 for char in text) else text
 
 
+LATEX_ROW_END = re.compile(r"\\\\\s*(?:\n|$)")
+LATEX_HEAD = re.compile(r"\\thead\{(.*?)\}", re.DOTALL)
+LATEX_ESCAPE = re.compile(r"\\([%&$#_])")
+
+
+def _latex_rows(text: str) -> list[list[dict[str, Any]]]:
+    """Rows of a ``tabular`` the model wrote as LaTeX: markup removed, the cell words untouched."""
+    body = re.sub(r"\\(?:begin|end)\{tabular\}(?:\{[^}]*\})?", "", text)
+    rows = []
+    for line in LATEX_ROW_END.split(body):
+        if line.strip():
+            cells = [LATEX_ESCAPE.sub(r"\1", LATEX_HEAD.sub(r"\1", cell)).strip() for cell in line.split("&")]
+            rows.append([{"text": cell, "bbox": []} for cell in cells])
+    return rows
+
+
 def _rows(text: str) -> list[list[dict[str, Any]]]:
-    lines = [line.strip() for line in text.splitlines() if "|" in line and not TABLE_SEPARATOR.match(line)]
+    if "\\begin{tabular}" in text:
+        return _latex_rows(text)
+    lines =[line.strip() for line in text.splitlines() if "|" in line and not TABLE_SEPARATOR.match(line)]
     return [[{"text": cell.strip(), "bbox": []} for cell in line.strip("|").split("|")] for line in lines]
 
 

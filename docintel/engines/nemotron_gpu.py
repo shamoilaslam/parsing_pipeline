@@ -1,4 +1,4 @@
-"""Run Nemotron 3.5 Parse over PDF pages, on a GPU (bfloat16) or, slowly, on the CPU (float32).
+"""Run Nemotron 3.5 Parse over PDF pages, on a GPU (bfloat16, or float16 on GPUs older than compute capability 8) or, slowly, on the CPU (float32).
 
     python -m docintel.engines.nemotron_gpu case.pdf --pages 1 2 3 --work work/
 
@@ -28,13 +28,19 @@ PROMPT = "</s><s><predict_bbox><predict_classes><output_markdown><predict_text_i
 MAX_NEW_TOKENS = 8744  # the card's default
 
 
+def choose_dtype(capability: tuple[int, int] | None) -> str:
+    """The card uses bfloat16 on a GPU.  Older GPUs (a Colab T4 is 7.5) only emulate it, at a crawl: use float16."""
+    if capability is None:
+        return "float32"  # the CPU
+    return "bfloat16" if capability[0] >= 8 else "float16"
+
+
 def _load_model(model_id: str):
     import torch
     from transformers import AutoModel, AutoProcessor
 
-    # As in the card's own script: bfloat16 on a GPU, float32 on the CPU.
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    dtype = torch.bfloat16 if device == "cuda" else torch.float32
+    dtype = getattr(torch, choose_dtype(torch.cuda.get_device_capability() if device == "cuda" else None))
     model = AutoModel.from_pretrained(model_id, trust_remote_code=True, dtype=dtype).to(device).eval()
     processor = AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
     return model, processor, device

@@ -196,3 +196,18 @@ def test_a_printed_page_number_leading_a_running_header_is_found():
 def test_a_page_number_glued_to_the_footer_words_by_ocr_is_still_found():
     [out] = facts(page([block("Body text"), block("Notarealrecord.Page12", type="footer", order=1)]))["pages"]
     assert out["printed_page_number"] == "12"
+
+
+def test_a_latex_table_the_model_wrote_becomes_rows_with_its_escapes_removed():
+    latex = (
+        "\\begin{tabular}{cc}\n"
+        "\\thead{Party} & \\thead{Initial Percentage Interest}\\\\\n"
+        "Balochistan Development Authority & 50\\%\\\\\n"
+        "\\end{tabular}"
+    )
+    [out] = facts(page([block(latex, type="table", source="nemotron-3.5-parse")], extraction="scanned"))["pages"]
+    [one] = out["blocks"]
+    assert [[cell["text"] for cell in row] for row in one["rows"]] == [
+        ["Party", "Initial Percentage Interest"],
+        ["Balochistan Development Authority", "50%"],
+    ]
