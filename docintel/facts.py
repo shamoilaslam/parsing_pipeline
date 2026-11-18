@@ -23,6 +23,7 @@ import fitz
 from docintel import __version__
 from docintel.engines.base import Policy
 from docintel.engines.marks_pass import MarkReader, read_marks
+from docintel.ingest.email import sidecar_path
 from docintel.parsed import documents
 
 PARSER = "docintel"
@@ -168,8 +169,11 @@ def _page(page: dict[str, Any], image: str | None) -> dict[str, Any]:
     }
 
 
+EMAIL_FIELDS = ("from", "to", "cc", "date", "subject", "attachments")
+
+
 def facts_file(result: dict[str, Any], *, pdf: Path | None = None, folder: Path | None = None,
-               seconds: float | None = None) -> dict[str, Any]:
+               seconds: float | None = None, email_meta: dict[str, Any] | None = None) -> dict[str, Any]:
     document = result["document"]
     images: dict[int, str] = {}
     if pdf and folder:
@@ -180,11 +184,17 @@ def facts_file(result: dict[str, Any], *, pdf: Path | None = None, folder: Path 
                 page.get_pixmap(matrix=fitz.Matrix(PAGE_IMAGE_ZOOM, PAGE_IMAGE_ZOOM)).save(folder / name)
                 images[page.number + 1] = name
     return {
-        "file": {"name": document.get("source_name"), "sha256": document.get("id"), "mime": "application/pdf",
+        "file": {"name": (document.get("source_name") or "").removesuffix(".pdf") if email_meta else document.get("source_name"),
+                 "sha256": document.get("id"), "mime": "message/rfc822" if email_meta else "application/pdf",
                  "pages": len(result["pages"]), "parser": PARSER, "parser_version": __version__, "seconds": seconds},
-        "metadata": {"email": None, "docx": None},
+        "metadata": {"email": {key: email_meta.get(key) for key in EMAIL_FIELDS} if email_meta else None, "docx": None},
         "pages": [_page(page, images.get(page["page_number"])) for page in result["pages"]],
     }
+
+
+def _email_meta(pdf: Path) -> dict[str, Any] | None:
+    sidecar = sidecar_path(pdf)
+    return json.loads(sidecar.read_text(encoding="utf-8")) if sidecar.exists() else None
 
 
 def _second_look(document: dict[str, Any], pdf: Path, reader: MarkReader) -> None:
@@ -223,6 +233,6 @@ def write_folder(parsed: Path, out: Path, *, urdu_ceiling: Policy = "local", mar
         if mark_reader:
             _second_look(document, pdf, mark_reader)
         path = folder / f"{stem}.json"
-        path.write_text(json.dumps(facts_file(document, pdf=pdf, folder=folder), ensure_ascii=False, indent=1), encoding="utf-8")
+        path.write_text(json.dumps(facts_file(document, pdf=pdf, folder=folder, email_meta=_email_meta(pdf)), ensure_ascii=False, indent=1), encoding="utf-8")
         written.append(path)
     return written

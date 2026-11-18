@@ -31,9 +31,15 @@ A model-produced value is accepted only if its `quote` appears verbatim in the p
   read is an `illegible` block with its box), no correction (model markdown removed, nothing else), parsed
   files are never modified. Urdu goes to Gemini then LlamaParse on a copy (`--urdu-policy`, default
   `third_party`; pages flagged sensitive stay local).
-- Not built yet for this layer: `source: mixed` (stamps/pasted scans on digital pages), `handwriting`/`stamp`/
-  `signature` blocks, most quality flags (only `blank`, `skewed`, `urdu_unread`), `lines[]`, email/docx metadata,
-  per-page model failure (a model failure still falls back per document), `seconds`.
+- Built since: stamps (red ink), pen handwriting (blue ink), signatures (ink over a signature line or beside a
+  signature cue), a safety net for ink no block accounts for (skipped text is re-read, the rest is `illegible`),
+  `source: mixed` (digital pages that carry images get the same second look), per-block markdown removal, LaTeX
+  tables as rows, e-mail (`.eml` to a PDF with headers kept as given, attachments as files of their own, `metadata.email`).
+- Not built: stamps in black or blue ink, handwriting in black pen or pencil, `lines[]` (Nemotron gives block boxes),
+  Word metadata (`metadata.docx`; LibreOffice is not installed here), per-page model failure (a model failure
+  still falls back per document), `seconds`, most quality flags (only `blank`, `skewed`, `urdu_unread`, `stamp`,
+  `handwriting`, `signature`, `unaccounted_ink`), `ocr_confidence` on mixed pages, non-Latin e-mail text is
+  drawn only if a system font can (otherwise it is left out and warned, the original body is kept in the sidecar).
 
 ## 2. What was measured
 

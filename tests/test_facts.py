@@ -306,3 +306,29 @@ def test_the_folder_writer_gives_a_digital_page_with_an_image_the_second_look_an
     first, second = written["pages"]
     assert first["source"] == "mixed" and any(b["type"] == "stamp" and b["text"] == "RECEIVED" for b in first["blocks"])
     assert second["source"] == "text_layer" and len(seen) == 1
+
+
+def test_an_email_file_carries_its_headers_and_attachments_in_metadata_email(tmp_path):
+    import json
+
+    from docintel.facts import write_folder
+    from docintel.ingest.email import sidecar_path
+
+    pdf = tmp_path / "mail.eml.pdf"
+    doc = fitz.open()
+    doc.new_page(width=600, height=800).insert_text((60, 100), "From: A", fontsize=11)
+    doc.save(pdf)
+    meta = {"from": "A <a@x.invalid>", "to": ["B <b@y.invalid>"], "cc": [], "date": "Mon, 21 May 2018 10:14:00 +0500",
+            "subject": "Hearing", "body_text": "Dear all", "warnings": [],
+            "attachments": [{"name": "e.pdf", "content_type": "application/pdf", "file": "mail.eml.attachments/e.pdf", "status": "read"}]}
+    sidecar_path(pdf).write_text(json.dumps(meta), encoding="utf-8")
+    parsed = tmp_path / "parsed"
+    parsed.mkdir()
+    payload = result(page([block("From: A", bbox=(60, 90, 140, 104))]))
+    payload["document"].update(source_file=str(pdf), source_name="mail.eml.pdf")
+    (parsed / "mail.eml.json").write_text(json.dumps(payload), encoding="utf-8")
+    write_folder(parsed, tmp_path / "facts", urdu_ceiling="local")
+    written = json.loads((tmp_path / "facts" / "mail.eml" / "mail.eml.json").read_text(encoding="utf-8"))
+    assert written["file"]["name"] == "mail.eml" and written["file"]["mime"] == "message/rfc822"
+    assert written["metadata"]["email"] == {k: meta[k] for k in ("from", "to", "cc", "date", "subject", "attachments")}
+    assert written["metadata"]["docx"] is None
