@@ -120,7 +120,10 @@ STAMP_RAW = "<x_0.05><y_0.2>RECEIVED<x_0.9><y_0.5><class_Text><x_0.05><y_0.55>06
 def stamped_pdf(path):
     doc = fitz.open()
     page = doc.new_page(width=600, height=800)
-    page.draw_rect(fitz.Rect(330, 40, 570, 120), color=(0.8, 0.1, 0.1), fill=(0.8, 0.1, 0.1))
+    # A stamp: an outline with lettering in red ink (a solid red block would be glare, not a stamp).
+    page.draw_rect(fitz.Rect(330, 40, 570, 120), color=(0.8, 0.1, 0.1), width=3)
+    page.insert_text((345, 80), "RECEIVED", fontsize=24, color=(0.8, 0.1, 0.1))
+    page.insert_text((345, 108), "06 OCT 1993", fontsize=18, color=(0.8, 0.1, 0.1))
     doc.save(path)
     return path
 

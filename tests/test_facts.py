@@ -279,7 +279,9 @@ def test_the_folder_writer_gives_a_digital_page_with_an_image_the_second_look_an
     with_image = doc.new_page(width=600, height=800)
     with_image.insert_text((60, 100), "Digital text layer on the page.", fontsize=11)
     red = np.full((90, 260, 3), 255, np.uint8)
-    cv2.rectangle(red, (4, 4), (255, 85), (40, 40, 200), -1)
+    cv2.rectangle(red, (4, 4), (255, 85), (40, 40, 200), 4)  # an outline with lettering, as a stamp is
+    cv2.putText(red, "RECEIVED", (14, 42), cv2.FONT_HERSHEY_SIMPLEX, 1.1, (40, 40, 200), 3)
+    cv2.putText(red, "06 OCT 1993", (14, 74), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (40, 40, 200), 3)
     png = tmp_path / "stamp.png"
     cv2.imwrite(str(png), red)
     with_image.insert_image(fitz.Rect(300, 40, 560, 130), filename=str(png))
