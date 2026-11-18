@@ -6,6 +6,8 @@ cue used, so a black or grey stamp, and handwriting in black pencil or pen, is n
 
 from __future__ import annotations
 
+import re
+
 import cv2
 import numpy as np
 
@@ -118,3 +120,34 @@ def find_unaccounted(image: np.ndarray, covered: list[tuple[int, int, int, int]]
         ):
             boxes.append((x, y, x + w, y + h))
     return sorted(boxes, key=lambda box: (box[1], box[0]))
+
+
+SIGNATURE_CUE = re.compile(
+    r"(?i)\bsignature\b|\bsigned\b|\bsd/|yours\s+(?:faithfully|sincerely|truly)|for\s+and\s+on\s+behalf"
+    r"|authori[sz]ed\s+(?:signatory|representative)|\bwitness(?:ed)?\b|\bdeponent\b"
+)
+CUE_REACH_X = 0.35  # of page width: how far from the ink a signature label may sit
+CUE_REACH_Y = 0.06  # of page height
+RULE_BELOW = 0.04  # of page height: where to look for the line a signature sits on
+RULE_COVER = 0.6  # of the ink's width the line must span
+
+
+def _has_rule_below(image: np.ndarray, box: tuple[int, int, int, int]) -> bool:
+    height, width = image.shape[:2]
+    x0, y0, x1, y1 = box
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    paper = cv2.medianBlur(gray, 51)
+    strip = ((paper.astype(np.int16) - gray.astype(np.int16)) > INK_CONTRAST)[y1 : y1 + int(height * RULE_BELOW), max(0, x0 - 20) : x1 + 20]
+    return bool(strip.size) and bool((strip.sum(axis=1) >= RULE_COVER * (x1 - x0)).any())
+
+
+def near_signature(image: np.ndarray, box: tuple[int, int, int, int], labels: list[tuple[tuple[int, int, int, int], str]]) -> bool:
+    """Is this ink where a signature goes: over a line it sits on, or beside a word such as "Signature"?"""
+    height, width = image.shape[:2]
+    x0, y0, x1, y1 = box
+    for (lx0, ly0, lx1, ly1), text in labels:
+        gap_x = max(lx0 - x1, x0 - lx1, 0)
+        gap_y = max(ly0 - y1, y0 - ly1, 0)
+        if SIGNATURE_CUE.search(text) and gap_x <= width * CUE_REACH_X and gap_y <= height * CUE_REACH_Y:
+            return True
+    return _has_rule_below(image, box)

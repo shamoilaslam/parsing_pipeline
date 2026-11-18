@@ -241,3 +241,11 @@ def test_text_recovered_from_a_second_look_is_ordinary_body_text():
                       reasons=["recovered_from_unaccounted_ink"])
     [out] = facts(page([block("First.", source="nemotron-3.5-parse"), recovered], extraction="scanned"))["pages"]
     assert out["text"] == "First.\n\nThe Manager shall keep the books."
+
+
+def test_a_signature_is_its_own_block_with_a_flag_and_no_text_in_the_body():
+    sign = block("", type="signature", order=1, source="nemotron-3.5-parse", score=0.0, reasons=["signature_ink"])
+    [out] = facts(page([block("For and on behalf of the Authority. Signature:", source="nemotron-3.5-parse"), sign], extraction="scanned"))["pages"]
+    assert [b["type"] for b in out["blocks"]] == ["paragraph", "signature"]
+    assert out["blocks"][1]["text"] == "" and "signature" in out["quality"]["flags"]
+    assert out["text"] == "For and on behalf of the Authority. Signature:"

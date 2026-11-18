@@ -214,9 +214,37 @@ def test_recovered_text_goes_after_the_last_block_above_it_even_when_the_models_
         "<x_0.1><y_0.6>Late paragraph the model put last.<x_0.9><y_0.65><class_Text>"
     )
     page = build_page(raw, page_number=1, page_size=(600, 800))
-    add_unaccounted(page, [("The recovered paragraph is read from the page.", [60.0, 560.0, 540.0, 600.0])])
+    add_unaccounted(page, [("The recovered paragraph is read from the page.", [60.0, 560.0, 540.0, 600.0], False)])
     ordered = [block["text"] for block in sorted(page["blocks"], key=lambda block: block["reading_order"])]
     assert ordered.index("The recovered paragraph is read from the page.") > ordered.index("Late paragraph the model put last.") - 1
     assert ordered[0] == "Top."
     # the recovered block (y=560) sits below the late paragraph (y=480), so it follows it
     assert ordered.index("The recovered paragraph is read from the page.") == ordered.index("Late paragraph the model put last.") + 1
+
+
+def signature_page(path, signed=True):
+    doc = fitz.open()
+    page = doc.new_page(width=600, height=800)
+    page.insert_text((60, 600), "Signature:", fontsize=11)
+    page.draw_line((130, 604), (330, 604), color=(0, 0, 0), width=1)
+    if signed:
+        page.draw_polyline([(140, 598), (160, 575), (178, 600), (200, 570), (220, 598), (250, 580), (290, 600)], color=(0.1, 0.1, 0.1), width=2.5)
+    doc.save(path)
+    return path
+
+
+SIG_COVERED = "<x_0.05><y_0.72><x_0.2><y_0.78>Signature:<class_Text>"
+SIGNATURE_LABEL = "<x_0.08><y_0.73>Signature:<x_0.2><y_0.76><class_Text>"
+
+
+def test_a_signature_over_the_signature_line_is_a_signature_block_with_no_text(tmp_path):
+    result = NemotronEngine(serving(SIGNATURE_LABEL), mark_reader=lambda image_path: "").parse(signature_page(tmp_path / "s.pdf"), tmp_path / "out")
+    [signature] = [block for block in result["pages"][0]["blocks"] if block["type"] == "signature"]
+    assert signature["text"] == "" and 130 <= signature["bbox"][0] <= 150 and signature["bbox"][2] >= 280
+
+
+def test_an_unsigned_signature_line_adds_nothing(tmp_path):
+    result = NemotronEngine(serving(SIGNATURE_LABEL), mark_reader=lambda image_path: "").parse(
+        signature_page(tmp_path / "u.pdf", signed=False), tmp_path / "out"
+    )
+    assert [block["type"] for block in result["pages"][0]["blocks"]] == ["text"]

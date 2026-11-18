@@ -27,9 +27,9 @@ PARSER = "docintel"
 PAGE_IMAGE_ZOOM = 1.5
 SKEW_FLAG_DEGREES = 1.0
 BLOCK_TYPES = {"heading": "heading", "list": "list_item", "footnote": "footnote", "table": "table", "stamp": "stamp",
-               "handwriting": "handwriting", "illegible": "illegible"}
+               "handwriting": "handwriting", "illegible": "illegible", "signature": "signature"}
 # Blocks that are part of the page but not of its body text.
-APART = {"stamp", "handwriting"}
+APART = {"stamp", "handwriting", "signature"}
 PRINTED_NUMBER = (re.compile(r"(?i)\bpage\s+(\d{1,4})\b"), re.compile(r"(?i)page\s*(\d{1,4})\s*$"),re.compile(r"^\W*(\d{1,4})\W*$"), re.compile(r"^\s*(\d{1,3})\s+[A-Za-z]"))
 BOLD = re.compile(r"\*\*(.+?)\*\*|__(.+?)__", re.DOTALL)
 HEADING_MARK = re.compile(r"(?m)^#{1,6}\s+")
@@ -140,7 +140,7 @@ def _page(page: dict[str, Any], image: str | None) -> dict[str, Any]:
         flags.append("urdu_unread")
     if any(block.get("type") == "illegible" for block in body):
         flags.append("unaccounted_ink")
-    flags += [kind for kind in ("stamp", "handwriting") if any(block["type"] == kind for block in blocks)]
+    flags += [kind for kind in ("stamp", "handwriting", "signature") if any(block["type"] == kind for block in blocks)]
     skew = ((page.get("scan") or {}).get("preprocessing") or {}).get("estimated_skew_degrees") or 0.0
     if abs(skew) > SKEW_FLAG_DEGREES:
         flags.append("skewed")

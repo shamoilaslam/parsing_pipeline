@@ -138,3 +138,34 @@ def test_a_rule_a_solid_blob_a_corner_shadow_and_an_edge_band_are_not_content():
     cv2.fillPoly(image, [np.array([[0, 0], [90, 0], [0, 140]])], (60, 60, 60))  # corner shadow
     cv2.rectangle(image, (745, 0), (800, 1000), (50, 50, 50), -1)  # dark band at the edge
     assert find_unaccounted(image, covered=[]) == []
+
+
+# --- signatures: ink beside a signature cue or over a signature line ----------------------------------------
+
+
+def scribble(image, origin=(300, 600)):
+    x, y = origin
+    pts = np.array([[x, y], [x + 30, y - 40], [x + 50, y + 10], [x + 90, y - 50], [x + 110, y + 5], [x + 160, y - 30], [x + 200, y]], np.int32)
+    cv2.polylines(image, [pts], False, (40, 30, 30), 3)
+    cv2.polylines(image, [pts + np.array([0, 12], np.int32)], False, (40, 30, 30), 3)
+
+
+def test_ink_over_a_signature_line_or_beside_the_word_signature_is_a_signature_context():
+    from docintel.marks import near_signature
+
+    over_a_line = page()
+    scribble(over_a_line)
+    cv2.line(over_a_line, (260, 640), (560, 640), (30, 30, 30), 2)
+    box = (295, 540, 510, 625)
+    assert near_signature(over_a_line, box, labels=[])
+    labelled = page()
+    scribble(labelled)
+    assert near_signature(labelled, box, labels=[((120, 590, 290, 620), "Signature:")])
+
+
+def test_ink_with_no_line_and_no_cue_is_not_a_signature_context():
+    from docintel.marks import near_signature
+
+    image = page()
+    scribble(image)
+    assert not near_signature(image, (295, 540, 510, 625), labels=[((120, 100, 290, 130), "ARTICLE 4 - ACCOUNTS")])

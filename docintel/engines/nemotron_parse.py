@@ -132,25 +132,28 @@ def add_marks(page: dict[str, Any], marks: list[tuple[str, str, list[float]]]) -
 
 RECOVERED_MIN_QUALITY = 0.7
 RECOVERED_MIN_CHARS = 12
-MARK_TYPES = {"stamp", "handwriting"}
+MARK_TYPES = {"stamp", "handwriting", "signature"}
 
 
-def add_unaccounted(page: dict[str, Any], items: list[tuple[str, list[float]]]) -> None:
+def add_unaccounted(page: dict[str, Any], items: list[tuple[str, list[float], bool]]) -> None:
     """Add what a second look found in ink no block accounted for.
 
-    Text read well enough becomes a paragraph, placed by its position among the others.  Anything
+    Text read well enough becomes a paragraph, placed by its position among the others.  Ink where a
+    signature goes (``signature``: over a signature line or beside the word) becomes a ``signature``
+    block with no text: a signature is evidence that it is there, not words to transcribe.  Anything
     else is an ``illegible`` block with no text: the page says something is there, and never guesses.
     """
-    for index, (text, bbox) in enumerate(items):
+    for index, (text, bbox, signature) in enumerate(items):
         score, reasons = text_quality(text)
         readable = len(text.strip()) >= RECOVERED_MIN_CHARS and score >= RECOVERED_MIN_QUALITY
-        kind = "text" if readable else "illegible"
-        region = {"type": kind, "layout_class": "Recovered" if readable else "Unaccounted", "text": text if readable else "",
-                  "bbox": bbox, "reading_order": 0}
-        block = _block(region, f"p{page['page_number']}_r{index}")
+        kind = "text" if readable else "signature" if signature else "illegible"
+        region = {"type": kind, "layout_class": {"text": "Recovered", "signature": "Signature"}.get(kind, "Unaccounted"),
+                  "text": text if readable else "", "bbox": bbox, "reading_order": 0}
+        block = _block(region, f"p{page['page_number']}_{'s' if kind == 'signature' else 'r'}{index}")
+        why = {"text": "recovered_from_unaccounted_ink", "signature": "signature_ink"}.get(kind, "unaccounted_ink")
         block["confidence"] = {
             "score": score if readable else 0.0,
-            "reasons": ["engine_reports_no_confidence", "recovered_from_unaccounted_ink" if readable else "unaccounted_ink", *reasons],
+            "reasons": ["engine_reports_no_confidence", why, *(reasons if readable else [])],
         }
         body = sorted((b for b in page["blocks"] if b["type"] not in MARK_TYPES), key=lambda b: b["reading_order"])
         marks = [b for b in page["blocks"] if b["type"] in MARK_TYPES]
