@@ -22,6 +22,7 @@ dependencies = [
   "opencv-python>=4.8",
   "psutil>=5.9",
   "pydantic>=2.7",
+  "rapidfuzz>=3",
 ]
 
 [project.optional-dependencies]
