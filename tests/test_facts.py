@@ -334,3 +334,27 @@ def test_an_email_file_carries_its_headers_and_attachments_in_metadata_email(tmp
     assert written["file"]["name"] == "mail.eml" and written["file"]["mime"] == "message/rfc822"
     assert written["metadata"]["email"] == {k: meta[k] for k in ("from", "to", "cc", "date", "subject", "attachments")}
     assert written["metadata"]["docx"] is None
+
+
+def test_a_local_urdu_reader_reads_crops_under_a_local_ceiling_so_nothing_is_illegible(tmp_path, monkeypatch):
+    import json
+
+    from docintel import facts
+    from docintel.engines import urdu_vision
+
+    seen = {}
+
+    def fake_run(pdf, prediction, output_dir, **kwargs):
+        seen.update(kwargs)
+        data = json.loads(prediction.read_text(encoding="utf-8"))
+        block0 = data["pages"][0]["blocks"][0]
+        block0["text"], block0["rtl"] = "اردو", {"vision": {"provider": "local"}}
+        prediction.write_text(json.dumps(data), encoding="utf-8")
+
+    monkeypatch.setattr(urdu_vision, "run", fake_run)
+    parsed = _parsed_folder(tmp_path, [block("ﻡﻼﺳ", **URDU)])
+    reader = lambda image: "x"
+    facts.write_folder(parsed, tmp_path / "facts", urdu_ceiling="local", urdu_reader=reader)
+    written = json.loads((tmp_path / "facts" / "in" / "in.json").read_text(encoding="utf-8"))
+    assert seen["ceiling"] == "local" and seen["local_reader"] is reader
+    assert written["pages"][0]["blocks"][0]["text"] == "اردو"

@@ -23,6 +23,7 @@ import fitz
 from docintel import __version__
 from docintel.engines.base import Policy
 from docintel.engines.marks_pass import MarkReader, read_marks
+from docintel.engines.urdu_local import Reader
 from docintel.ingest.email import sidecar_path
 from docintel.parsed import documents
 
@@ -209,7 +210,8 @@ def _second_look(document: dict[str, Any], pdf: Path, reader: MarkReader) -> Non
             read_marks(page, {"image_path": str(path), "page_size": (source_page.rect.width, source_page.rect.height)}, reader)
 
 
-def write_folder(parsed: Path, out: Path, *, urdu_ceiling: Policy = "local", mark_reader: MarkReader | None = None) -> list[Path]:
+def write_folder(parsed: Path, out: Path, *, urdu_ceiling: Policy = "local", mark_reader: MarkReader | None = None,
+                 urdu_reader: Reader | None = None) -> list[Path]:
     """One ``<stem>/<stem>.json`` plus ``pages/`` images per parsed file, built from the parsed folder.
 
     The parsed files are read, never changed: Urdu crops go to the vision route (Gemini, then
@@ -221,14 +223,14 @@ def write_folder(parsed: Path, out: Path, *, urdu_ceiling: Policy = "local", mar
         folder = out / stem
         folder.mkdir(parents=True, exist_ok=True)
         pdf = Path(document["document"]["source_file"])
-        if urdu_ceiling != "local":
+        if urdu_ceiling != "local" or urdu_reader is not None:
             from docintel.engines import urdu_vision
 
             work = folder / "_urdu_work"
             work.mkdir(exist_ok=True)
             copy = work / f"{stem}.json"
             copy.write_text(json.dumps(document, ensure_ascii=False), encoding="utf-8")
-            urdu_vision.run(pdf, copy, work, ceiling=urdu_ceiling, allow_llamaparse=True)
+            urdu_vision.run(pdf, copy, work, ceiling=urdu_ceiling, allow_llamaparse=True, local_reader=urdu_reader)
             document = json.loads(copy.read_text(encoding="utf-8"))
         if mark_reader:
             _second_look(document, pdf, mark_reader)

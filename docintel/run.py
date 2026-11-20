@@ -23,6 +23,7 @@ from docintel import pipeline, report
 from docintel.akn.build import write_akn
 from docintel.facts import write_folder
 from docintel.engines.nemotron_gpu import default_model
+from docintel.engines.urdu_local import hf_reader
 from docintel.ingest import normalize_folder
 from docintel.understand.retract import retract_non_court
 from docintel.understand.segment import classify_folder
@@ -42,6 +43,11 @@ def main() -> int:
         "--urdu-policy", choices=["local", "third_party"], default="third_party",
         help="how far Urdu crops may travel for the fact-intelligence layer: third_party sends them to Gemini, then "
         "LlamaParse (pages the sensitivity check flags stay local); local sends nothing and leaves Urdu illegible",
+    )
+    parser.add_argument(
+        "--urdu-local-model", nargs="?", const="Qwen/Qwen3-VL-8B-Instruct",
+        help="read Urdu with a vision model on this machine (a hub id or folder); it is loaded only when a crop needs it. "
+        "A crop is kept only if two readings of it agree; with --urdu-policy local nothing leaves the machine",
     )
     args = parser.parse_args()
     if not args.folder.is_dir():
@@ -83,7 +89,8 @@ def main() -> int:
     (out / "document_types.json").write_text(json.dumps(types, ensure_ascii=False, indent=2), encoding="utf-8")
     retract_non_court(out, types)
     write_akn(out, types)
-    write_folder(out, out / "facts", urdu_ceiling=args.urdu_policy, mark_reader=pipeline.model_reader(model) if model else None)
+    write_folder(out, out / "facts", urdu_ceiling=args.urdu_policy, mark_reader=pipeline.model_reader(model) if model else None,
+                 urdu_reader=hf_reader(args.urdu_local_model) if args.urdu_local_model else None)
     summary = report.summarise(report.load(out), manifest)
     (out / "report.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     print(report.render(summary))

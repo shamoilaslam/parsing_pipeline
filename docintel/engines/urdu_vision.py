@@ -32,6 +32,7 @@ import fitz
 
 from docintel.engines.native import SpecterParser, _is_rtl
 from docintel.engines.base import Policy
+from docintel.engines.urdu_local import LocalVision, Reader
 from docintel.escalation import may_send
 
 
@@ -319,7 +320,8 @@ def _extract_llama_text(value: Any) -> str:
 
 
 def prepare_queue(
-    pdf_path: Path, prediction_path: Path, output_dir: Path, scale: float = 4.0, ceiling: Policy = "local"
+    pdf_path: Path, prediction_path: Path, output_dir: Path, scale: float = 4.0, ceiling: Policy = "local",
+    local_reader: bool = False,
 ) -> Path:
     prediction = json.loads(prediction_path.read_text(encoding="utf-8"))
     stem = pdf_path.stem
@@ -336,16 +338,19 @@ def prepare_queue(
                 if not block.get("contains_rtl"):
                     continue
                 # The provider is a third party: text local reading found sensitive stays here.
-                if not may_send(engine="third_party", ceiling=ceiling, text=block.get("text", "")):
+                local_only = not may_send(engine="third_party", ceiling=ceiling, text=block.get("text", ""))
+                if local_only:
+                    # Only a reader on this machine may see it.  With none, it is not read at all.
                     reason = "sensitive_text" if may_send(engine="third_party", ceiling=ceiling, text="") else "policy_ceiling"
-                    withheld.append({"id": block["id"], "reason": reason})
-                    continue
+                    if not local_reader:
+                        withheld.append({"id": block["id"], "reason": reason})
+                        continue
                 path = image_dir / f"page_{page_index + 1:03d}_{block['id']}.png"
                 if not path.exists():
                     clip = fitz.Rect(*block["bbox"]).irect & page.rect.irect
                     pix = page.get_pixmap(matrix=fitz.Matrix(scale, scale), clip=fitz.Rect(clip), alpha=False)
                     pix.save(str(path))
-                tasks.append({"id": block["id"], "page": page_index + 1, "bbox": block["bbox"], "image": str(path), "status": "pending"})
+                tasks.append({"id": block["id"], "page": page_index + 1, "bbox": block["bbox"], "image": str(path), "status": "pending", "local_only": local_only})
     finally:
         doc.close()
     path = queue_dir / f"{stem}.json"
@@ -403,9 +408,9 @@ def _apply_results(prediction_path: Path, output_dir: Path, manifest: dict[str, 
     return prediction_path
 
 
-def run(pdf_path: Path, prediction_path: Path, output_dir: Path, mode: str = "auto", batch_size: int = 10, allow_llamaparse: bool = False, replace_text: bool = True, fresh: bool = False, ceiling: Policy = "local") -> dict[str, Any]:
+def run(pdf_path: Path, prediction_path: Path, output_dir: Path, mode: str = "auto", batch_size: int = 10, allow_llamaparse: bool = False, replace_text: bool = True, fresh: bool = False, ceiling: Policy = "local", local_reader: Reader | None = None) -> dict[str, Any]:
     load_dotenv()
-    manifest_path = prepare_queue(pdf_path, prediction_path, output_dir, ceiling=ceiling)
+    manifest_path = prepare_queue(pdf_path, prediction_path, output_dir, ceiling=ceiling, local_reader=local_reader is not None)
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if fresh:
         for task in manifest["tasks"]:
@@ -420,11 +425,17 @@ def run(pdf_path: Path, prediction_path: Path, output_dir: Path, mode: str = "au
         providers.append(OpenRouterVision(quota_dir))
     if mode == "auto" and allow_llamaparse:
         providers.append(LlamaParseVision(quota_dir))
+    if local_reader is not None and mode in {"auto", "local"}:
+        providers.append(LocalVision(local_reader))
     pending = [task for task in manifest["tasks"] if task.get("status") != "accepted"]
     for provider in providers:
+        # A crop only this machine may see is never offered to a provider on someone else's.
+        held = [task for task in pending if task.get("local_only") and provider.name != "local"]
+        pending = [task for task in pending if task not in held]
         if not pending:
-            break
-        next_pending = []
+            pending = held
+            continue
+        next_pending = list(held)
         for start in range(0, len(pending), max(1, batch_size if provider.name != "llamaparse" else 1)):
             batch = pending[start:start + (batch_size if provider.name != "llamaparse" else 1)]
             try:

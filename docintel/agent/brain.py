@@ -48,7 +48,9 @@ class HFBrain:
             import torch
             from transformers import AutoModelForCausalLM, AutoTokenizer
 
-            dtype = torch.bfloat16 if torch.cuda.is_available() else torch.float32
+            from docintel.engines.nemotron_gpu import choose_dtype
+
+            dtype = getattr(torch, choose_dtype(torch.cuda.get_device_capability() if torch.cuda.is_available() else None))
             model = AutoModelForCausalLM.from_pretrained(self._model_id, dtype=dtype, device_map="auto" if torch.cuda.is_available() else None)
             self._loaded = (model.eval(), AutoTokenizer.from_pretrained(self._model_id))
         return self._loaded
