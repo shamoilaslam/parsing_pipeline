@@ -24,6 +24,7 @@ import functools
 import hashlib
 import json
 import re
+import time
 from collections import Counter
 from pathlib import Path
 
@@ -260,6 +261,7 @@ def _parse_one(job: tuple) -> tuple[dict[str, object] | None, dict[str, object] 
     """
     pdf, out, engine, rtl_mode, render_scale, preprocess_variant, retry_threshold, stem, page_images, nemotron = job
     nemotron_work, nemotron_model = nemotron or (None, None)
+    started = time.perf_counter()
     try:
         result = parse_pdf(pdf, out, engine=engine, rtl_mode=rtl_mode, render_scale=render_scale,
                            preprocess_variant=preprocess_variant, retry_threshold=retry_threshold,
@@ -270,6 +272,10 @@ def _parse_one(job: tuple) -> tuple[dict[str, object] | None, dict[str, object] 
         upgrade(result, pdf)
         write_result(result, out)
         write_metadata(result, out)
+        # Beside the manifest, not in it: a manifest must be identical however many workers made it.
+        (out / "timings").mkdir(exist_ok=True)
+        (out / "timings" / f"{stem}.json").write_text(
+            json.dumps({"seconds": round(time.perf_counter() - started, 1)}), encoding="utf-8")
         return _row(pdf, result, stem), None
     except Exception as error:
         return None, {"pdf": str(pdf), "error": f"{type(error).__name__}: {error}"}

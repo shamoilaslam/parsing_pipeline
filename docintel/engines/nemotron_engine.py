@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import tempfile
+from dataclasses import dataclass
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
@@ -21,7 +22,14 @@ from docintel.engines.nemotron_batch import append_raw, ingest, load_raw, render
 from docintel.engines.marks_pass import read_marks
 from docintel.engines.nemotron_parse import SOURCE
 
-Transport = Callable[[Path, list[dict[str, Any]]], dict[int, str]]
+@dataclass(frozen=True)
+class Failure:
+    """A page the model could not read this run, with why.  Not logged, so the next run tries it again."""
+
+    reason: str
+
+
+Transport = Callable[[Path, list[dict[str, Any]]], dict[int, "str | Failure"]]
 
 
 def log_transport(work: Path) -> Transport:
@@ -36,15 +44,20 @@ def live_transport(work: Path, read_page: Callable[[Path], str]) -> Transport:
     in the document's log is not read again, so an interrupted run resumes.
     """
 
-    def transport(pdf: Path, jobs: list[dict[str, Any]]) -> dict[int, str]:
+    def transport(pdf: Path, jobs: list[dict[str, Any]]) -> dict[int, "str | Failure"]:
         work.mkdir(parents=True, exist_ok=True)
         digest = hashlib.sha1(str(Path(pdf).resolve()).encode("utf-8", "replace")).hexdigest()[:8]
         log = work / f"{Path(pdf).stem}_{digest}.jsonl"
         done = load_raw(log)
+        failed: dict[int, "str | Failure"] = {}
         for job in jobs:
-            if job["page_number"] not in done:
+            if job["page_number"] in done:
+                continue
+            try:
                 append_raw(log, job["page_number"], read_page(Path(job["image_path"])))
-        return load_raw(log)
+            except Exception as error:  # one page the model cannot read must not lose the others
+                failed[job["page_number"]] = Failure(f"{type(error).__name__}: {error}")
+        return {**load_raw(log), **failed}
 
     return transport
 
@@ -55,6 +68,10 @@ class PagesPending(RuntimeError):
     def __init__(self, pages: list[int]) -> None:
         super().__init__(f"no model output yet for pages {pages}")
         self.pages = pages
+
+
+def _failed_page(page: fitz.Page, reason: str) -> dict[str, Any]:
+    return {**_unread_page(page), "extraction": "failed", "failure": reason}
 
 
 def _unread_page(page: fitz.Page) -> dict[str, Any]:
@@ -85,14 +102,23 @@ class NemotronEngine:
         with fitz.open(pdf) as doc, tempfile.TemporaryDirectory() as scratch:
             wanted = pages if pages is not None else list(range(1, doc.page_count + 1))
             jobs = render_jobs(pdf, wanted, (output_dir or Path(scratch)) / "images")
-            read, pending = ingest(jobs, self._transport(pdf, jobs))
+            output = self._transport(pdf, jobs)
+            failures = {number: item.reason for number, item in output.items() if isinstance(item, Failure)}
+            read, pending = ingest(jobs, {number: item for number, item in output.items() if not isinstance(item, Failure)})
+            pending = [job for job in pending if job["page_number"] not in failures]
             if pending:
                 raise PagesPending([job["page_number"] for job in pending])
+            if failures and not read:
+                raise RuntimeError(next(iter(failures.values())))  # nothing read at all: let the pipeline fall back
             for page in read:
                 if self._mark_reader is not None:
                     read_marks(page, next(job for job in jobs if job["page_number"] == page["page_number"]), self._mark_reader)
             by_number = {page["page_number"]: page for page in read}
-            document_pages = [by_number.get(page.number + 1) or _unread_page(page) for page in doc]
+            document_pages = [
+                by_number.get(page.number + 1)
+                or (_failed_page(page, failures[page.number + 1]) if page.number + 1 in failures else _unread_page(page))
+                for page in doc
+            ]
             pdf_metadata = dict(doc.metadata or {})
 
         blocks = [block for page in document_pages for block in page["blocks"]]

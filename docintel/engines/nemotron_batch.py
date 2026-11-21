@@ -74,5 +74,6 @@ def load_raw(log: Path) -> dict[int, str]:
             record = json.loads(line)
         except json.JSONDecodeError:
             continue  # the line a killed session was writing
-        raws[record["page_number"]] = record["raw"]
+        if "raw" in record:
+            raws[record["page_number"]] = record["raw"]
     return raws

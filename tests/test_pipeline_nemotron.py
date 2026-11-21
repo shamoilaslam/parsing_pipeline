@@ -83,4 +83,4 @@ def test_a_model_failure_falls_back_to_local_ocr_and_says_so(tmp_path, monkeypat
     monkeypatch.setattr(pipeline, "model_reader", lambda model: broken)
     result = parse_pdf(mixed_pdf(tmp_path / "mixed.pdf"), tmp_path / "out", nemotron_model="any-model")
     assert result["document"]["router"]["selected"] == "scanned"
-    assert any("nemotron_failed: out of memory" in warning for warning in result["document"]["warnings"])
+    assert any("nemotron_failed: RuntimeError: out of memory" in warning for warning in result["document"]["warnings"])

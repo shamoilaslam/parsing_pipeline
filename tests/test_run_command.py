@@ -113,3 +113,12 @@ def test_run_writes_the_fact_intelligence_layer_without_changing_the_research_fi
     assert first["source"] == "text_layer" and first["text"] and first["blocks"][0]["bbox"][2] > 0
     assert (parsed / "facts" / "a" / first["image"]).exists()
     assert json.loads((parsed / "a.json").read_text(encoding="utf-8"))["pages"][0]["blocks"]  # research layer intact
+
+
+def test_run_records_how_long_each_document_took_and_the_facts_file_reports_it(corpus, monkeypatch):
+    run(monkeypatch, corpus, "--workers", "1", "--urdu-policy", "local")
+    parsed = corpus.parent / "judgments_parsed"
+    seconds = json.loads((parsed / "timings" / "a.json").read_text(encoding="utf-8"))["seconds"]
+    assert seconds > 0
+    assert json.loads((parsed / "facts" / "a" / "a.json").read_text(encoding="utf-8"))["file"]["seconds"] == seconds
+    assert "seconds" not in json.loads((parsed / "manifest.json").read_text(encoding="utf-8"))["documents"][0]

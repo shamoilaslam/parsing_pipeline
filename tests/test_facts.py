@@ -365,3 +365,104 @@ def test_language_is_counted_from_the_letters_in_the_text_not_from_a_stale_label
     [out] = facts(page([urdu_with_latin, block("English words here", order=1)]))["pages"]
     assert out["language"]["ur"] > 0.7 and out["language"]["en"] < 0.3
     assert out["blocks"][0]["language"] == "ur" and out["blocks"][1]["language"] == "en"
+
+
+def test_a_tilted_scan_gets_its_measured_skew_and_the_skewed_flag(tmp_path):
+    import cv2
+    import numpy as np
+
+    tilted = np.full((1200, 900, 3), 235, np.uint8)
+    for row in range(26):
+        cv2.putText(tilted, "The Manager shall maintain separate and proper books and accounts of the venture", (70, 90 + row * 40),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.62, (30, 30, 30), 1)
+    tilted = cv2.warpAffine(tilted, cv2.getRotationMatrix2D((450, 600), 2.0, 1.0), (900, 1200), borderValue=(235, 235, 235))
+    png = tmp_path / "scan.png"
+    cv2.imwrite(str(png), tilted)
+    pdf = tmp_path / "scan.pdf"
+    doc = fitz.open()
+    doc.new_page(width=600, height=800).insert_image(fitz.Rect(0, 0, 600, 800), filename=str(png))
+    doc.save(pdf)
+    straight = page([block("Text.", source="nemotron-3.5-parse")], extraction="scanned")
+    out = facts_file(result(straight), pdf=pdf, folder=tmp_path / "facts")
+    quality = out["pages"][0]["quality"]
+    assert abs(quality["skew_degrees"] - 2.0) <= 0.3 and "skewed" in quality["flags"]
+
+
+def test_a_text_layer_page_is_not_measured_for_skew(tmp_path):
+    pdf = tmp_path / "t.pdf"
+    doc = fitz.open()
+    doc.new_page(width=600, height=800).insert_text((60, 100), "Text layer.", fontsize=11)
+    doc.save(pdf)
+    out = facts_file(result(page([block("Text layer.")])), pdf=pdf, folder=tmp_path / "facts")
+    assert out["pages"][0]["quality"]["skew_degrees"] is None
+
+
+def test_a_page_the_model_failed_on_is_failed_with_the_models_reason_and_the_others_are_fine():
+    failed = page([], number=2, extraction="failed", failure="RuntimeError: CUDA out of memory")
+    ok, bad = facts(page([block("Fine.")]), failed)["pages"]
+    assert ok["status"] == "ok" and bad["status"] == "failed" and "CUDA out of memory" in bad["reason"]
+
+
+def test_a_block_lists_its_lines_with_boxes_from_the_text_layer_when_the_counts_match():
+    native = block("First line\nSecond line\nThird line", bbox=(60.0, 100.0, 300.0, 136.0), line_bboxes=[
+        [60.0, 100.0, 200.0, 112.0], [60.0, 112.0, 220.0, 124.0], [60.0, 124.0, 180.0, 136.0]])
+    [out] = facts(page([native]))["pages"]
+    lines = out["blocks"][0]["lines"]
+    assert [line["text"] for line in lines] == ["First line", "Second line", "Third line"]
+    assert lines[1]["bbox"] == pytest.approx([0.1, 112 / 792, 160 / 600, 12 / 792], abs=1e-3)
+    assert not any(line.get("approximate") for line in lines)
+
+
+def test_a_one_line_block_has_one_line_with_the_blocks_own_box():
+    [out] = facts(page([block("Only line", bbox=(60.0, 79.2, 300.0, 158.4))]))["pages"]
+    assert out["blocks"][0]["lines"] == [{"text": "Only line", "bbox": out["blocks"][0]["bbox"]}]
+
+
+def test_without_line_boxes_or_an_image_the_lines_are_an_even_split_marked_approximate():
+    [out] = facts(page([block("a one\na two", bbox=(60.0, 100.0, 300.0, 140.0), source="nemotron-3.5-parse")], extraction="scanned"))["pages"]
+    lines = out["blocks"][0]["lines"]
+    assert [line["approximate"] for line in lines] == [True, True]
+    assert lines[0]["bbox"][1] < lines[1]["bbox"][1]
+
+
+def test_lines_are_measured_from_the_page_image_when_it_shows_as_many_lines_as_the_text(tmp_path):
+    import cv2
+    import numpy as np
+
+    image = np.full((1200, 900, 3), 235, np.uint8)
+    for row in range(3):
+        cv2.putText(image, "The Manager shall maintain proper books", (100, 300 + row * 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (30, 30, 30), 2)
+    png = tmp_path / "scan.png"
+    cv2.imwrite(str(png), image)
+    pdf = tmp_path / "scan.pdf"
+    doc = fitz.open()
+    doc.new_page(width=600, height=800).insert_image(fitz.Rect(0, 0, 600, 800), filename=str(png))
+    doc.save(pdf)
+    text = "The Manager shall maintain proper books\n" * 3
+    scanned = page([block(text.strip(), bbox=(60.0, 180.0, 400.0, 280.0), source="nemotron-3.5-parse")], extraction="scanned")
+    [out] = facts_file(result(scanned), pdf=pdf, folder=tmp_path / "facts")["pages"]
+    lines = out["blocks"][0]["lines"]
+    assert len(lines) == 3 and not any(line.get("approximate") for line in lines)
+    ys = [line["bbox"][1] for line in lines]
+    assert ys == sorted(ys) and 0.2 < ys[0] < 0.3  # a first line near y=300px of 1200
+
+
+def test_one_long_line_of_text_over_several_visual_lines_is_split_by_width_without_losing_or_changing_a_word(tmp_path):
+    import cv2
+    import numpy as np
+
+    image = np.full((1200, 900, 3), 235, np.uint8)
+    for row in range(3):
+        cv2.putText(image, "The Manager shall maintain proper books", (100, 300 + row * 50), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (30, 30, 30), 2)
+    png = tmp_path / "scan.png"
+    cv2.imwrite(str(png), image)
+    pdf = tmp_path / "scan.pdf"
+    doc = fitz.open()
+    doc.new_page(width=600, height=800).insert_image(fitz.Rect(0, 0, 600, 800), filename=str(png))
+    doc.save(pdf)
+    one_line = " ".join(["The Manager shall maintain proper books"] * 3)  # the model gave it as one line
+    scanned = page([block(one_line, bbox=(60.0, 180.0, 400.0, 280.0), source="nemotron-3.5-parse")], extraction="scanned")
+    [out] = facts_file(result(scanned), pdf=pdf, folder=tmp_path / "facts")["pages"]
+    lines = out["blocks"][0]["lines"]
+    assert len(lines) == 3 and all(line["approximate"] for line in lines)
+    assert " ".join(line["text"] for line in lines) == one_line

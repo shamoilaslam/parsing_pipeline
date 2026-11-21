@@ -18,6 +18,7 @@ import unicodedata
 from pathlib import Path
 from typing import Any
 
+import cv2
 import fitz
 
 from docintel import __version__
@@ -26,6 +27,8 @@ from docintel.engines.marks_pass import MarkReader, read_marks
 from docintel.engines.urdu_local import Reader
 from docintel.ingest.email import sidecar_path
 from docintel.parsed import documents
+from docintel.lines import line_boxes
+from docintel.skew import estimate_skew
 
 PARSER = "docintel"
 SECOND_LOOK_ZOOM = 2.0
@@ -91,7 +94,52 @@ def _printed_number(*texts: str) -> str | None:
     return None
 
 
-def _block(block: dict[str, Any], order: int, page: dict[str, Any], from_ocr: bool) -> dict[str, Any]:
+def _split_by_width(text: str, boxes: list[list[float]]) -> list[str]:
+    """Hand the words of one long line to the visual lines in proportion to their widths.  No word is changed or lost."""
+    words = text.split()
+    widths = [box[2] - box[0] for box in boxes]
+    total, cumulative, parts, start = sum(widths), 0.0, [], 0
+    for index, width in enumerate(widths):
+        cumulative += width
+        end = len(words) if index == len(widths) - 1 else round(len(words) * cumulative / total)
+        parts.append(" ".join(words[start:end]))
+        start = end
+    return parts
+
+
+def _lines(block: dict[str, Any], box: list[float], text: str, page: dict[str, Any], picture: Any) -> list[dict[str, Any]]:
+    """Each line of the block's text with a box: the text layer's own, else measured on the page image, else an even split."""
+    texts = [line.strip() for line in text.split(chr(10)) if line.strip()]
+    if not texts:
+        return []
+    width, height = page["width"], page["height"]
+    own = block.get("line_bboxes") or []
+    if len(own) == len(texts) > 1:
+        return [{"text": line, "bbox": _fractions(bbox, width, height)} for line, bbox in zip(texts, own)]
+    x0, y0, x1, y1 = block["bbox"]
+    measured = None  # boxes in page points, found from the image
+    if picture is not None:
+        sx, sy = picture.shape[1] / width, picture.shape[0] / height
+        left, top, right, bottom = int(x0 * sx), int(y0 * sy), int(x1 * sx), int(y1 * sy)
+        if right > left and bottom > top:
+            found = line_boxes(picture[max(0, top) : bottom, max(0, left) : right], len(texts) if len(texts) > 1 else None)
+            if found:
+                measured = [[(left + a) / sx, (top + b) / sy, (left + c) / sx, (top + d) / sy] for a, b, c, d in found]
+    if len(texts) > 1:
+        if measured:
+            return [{"text": line, "bbox": _fractions(bbox, width, height)} for line, bbox in zip(texts, measured)]
+    else:
+        boxes = own if len(own) > 1 else measured
+        if boxes and len(boxes) > 1:
+            return [{"text": part, "bbox": _fractions(bbox, width, height), "approximate": True}
+                    for part, bbox in zip(_split_by_width(texts[0], boxes), boxes)]
+        return [{"text": texts[0], "bbox": box}]
+    step = (y1 - y0) / len(texts)
+    return [{"text": line, "bbox": _fractions([x0, y0 + index * step, x1, y0 + (index + 1) * step], width, height), "approximate": True}
+            for index, line in enumerate(texts)]
+
+
+def _block(block: dict[str, Any], order: int, page: dict[str, Any], from_ocr: bool, picture: Any = None) -> dict[str, Any]:
     box = _fractions(block["bbox"], page["width"], page["height"])
     score = round(float((block.get("confidence") or {}).get("score", 0.0)), 3)
     base = {"id": block.get("id"), "order": order, "bbox": box, "confidence": score,
@@ -102,6 +150,8 @@ def _block(block: dict[str, Any], order: int, page: dict[str, Any], from_ocr: bo
     text = _clean(block["text"], from_ocr)
     if kind == "table" and (rows := _rows(text)):
         return {**base, "type": kind, "rows": rows}
+    if kind in ("paragraph", "heading", "list_item", "footnote"):
+        return {**base, "type": kind, "text": text, "lines": _lines(block, box, text, page, picture)}
     return {**base, "type": kind, "text": text}
 
 
@@ -133,15 +183,15 @@ def _body_text(block: dict[str, Any]) -> str:
     return block.get("text", "")
 
 
-def _page(page: dict[str, Any], image: str | None) -> dict[str, Any]:
+def _page(page: dict[str, Any], image: str | None, image_file: Path | None = None) -> dict[str, Any]:
     extraction = page.get("extraction")
     out: dict[str, Any] = {
         "page": page["page_number"], "width": page["width"], "height": page["height"], "unit": "pt",
         "rotation": page.get("rotation", 0), "image": image,
     }
-    if extraction == "native_text_pending":
-        return {**out, "status": "failed", "reason": "no engine read this page", "source": "ocr", "blocks": [],
-                "text": "", "language": {}, "quality": {"score": 0.0, "ocr_confidence": None, "flags": []}}
+    if extraction in ("native_text_pending", "failed"):
+        return {**out, "status": "failed", "reason": page.get("failure") or "no engine read this page", "source": "ocr", "blocks": [],
+                "text": "", "language": {}, "quality": {"score": 0.0, "ocr_confidence": None, "flags": [], "skew_degrees": None}}
 
     ordered = sorted(page["blocks"], key=lambda block: block.get("reading_order", 0))
     edge = {kind: " ".join(block["text"] for block in ordered if block.get("type") == kind) for kind in ("header", "footer")}
@@ -149,7 +199,8 @@ def _page(page: dict[str, Any], image: str | None) -> dict[str, Any]:
     def from_ocr(block: dict[str, Any]) -> bool:
         return block["source"] not in TEXT_LAYER_SOURCES if block.get("source") else extraction != "digital"
 
-    blocks = [_block(block, order, page, from_ocr(block)) for order, block in enumerate(body)]
+    picture = cv2.imread(str(image_file)) if image_file is not None else None
+    blocks = [_block(block, order, page, from_ocr(block), picture) for order, block in enumerate(body)]
     ocr_blocks = [block for block in body if from_ocr(block)]
     kind = "mixed" if ocr_blocks and len(ocr_blocks) < len(body) else "ocr" if ocr_blocks or extraction != "digital" else "text_layer"
     read = [block for block in blocks if block["type"] != "illegible" and _body_text(block).strip()]
@@ -164,15 +215,20 @@ def _page(page: dict[str, Any], image: str | None) -> dict[str, Any]:
     if any(block.get("type") == "illegible" for block in body):
         flags.append("unaccounted_ink")
     flags += [kind for kind in ("stamp", "handwriting", "signature") if any(block["type"] == kind for block in blocks)]
-    skew = ((page.get("scan") or {}).get("preprocessing") or {}).get("estimated_skew_degrees") or 0.0
-    if abs(skew) > SKEW_FLAG_DEGREES:
+    skew = None
+    if image_file is not None and kind != "text_layer":
+        skew = estimate_skew(picture) if picture is not None else None
+    if skew is None:
+        skew = ((page.get("scan") or {}).get("preprocessing") or {}).get("estimated_skew_degrees")
+    if skew is not None and abs(skew) > SKEW_FLAG_DEGREES:
         flags.append("skewed")
     engine = next((block["source"] for block in ocr_blocks if block.get("source")), None)
     return {
         **out, "status": "ok", "source": kind,
         **({"engine": engine} if engine else {}),
         "language": _shares(blocks),
-        "quality": {"score": score, "ocr_confidence": score if kind == "ocr" and read else None, "flags": flags},
+        "quality": {"score": score, "ocr_confidence": score if kind == "ocr" and read else None, "flags": flags,
+                    "skew_degrees": skew},
         "printed_page_number": _printed_number(edge["footer"], edge["header"]),
         "header_text": edge["header"], "footer_text": edge["footer"],
         "text": "\n\n".join(
@@ -201,8 +257,17 @@ def facts_file(result: dict[str, Any], *, pdf: Path | None = None, folder: Path 
                  "sha256": document.get("id"), "mime": "message/rfc822" if email_meta else "application/pdf",
                  "pages": len(result["pages"]), "parser": PARSER, "parser_version": __version__, "seconds": seconds},
         "metadata": {"email": {key: email_meta.get(key) for key in EMAIL_FIELDS} if email_meta else None, "docx": None},
-        "pages": [_page(page, images.get(page["page_number"])) for page in result["pages"]],
+        "pages": [
+            _page(page, images.get(page["page_number"]), folder / images[page["page_number"]] if page["page_number"] in images else None)
+            for page in result["pages"]
+        ],
     }
+
+
+def _seconds(parsed: Path, stem: str) -> float | None:
+    """How long the parse of this file took, as the run recorded it."""
+    path = parsed / "timings" / f"{stem}.json"
+    return json.loads(path.read_text(encoding="utf-8")).get("seconds") if path.exists() else None
 
 
 def _email_meta(pdf: Path) -> dict[str, Any] | None:
@@ -247,6 +312,6 @@ def write_folder(parsed: Path, out: Path, *, urdu_ceiling: Policy = "local", mar
         if mark_reader:
             _second_look(document, pdf, mark_reader)
         path = folder / f"{stem}.json"
-        path.write_text(json.dumps(facts_file(document, pdf=pdf, folder=folder, email_meta=_email_meta(pdf)), ensure_ascii=False, indent=1), encoding="utf-8")
+        path.write_text(json.dumps(facts_file(document, pdf=pdf, folder=folder, email_meta=_email_meta(pdf), seconds=_seconds(parsed, stem)), ensure_ascii=False, indent=1), encoding="utf-8")
         written.append(path)
     return written

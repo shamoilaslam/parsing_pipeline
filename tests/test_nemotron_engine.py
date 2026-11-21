@@ -251,3 +251,45 @@ def test_an_unsigned_signature_line_adds_nothing(tmp_path):
         signature_page(tmp_path / "u.pdf", signed=False), tmp_path / "out"
     )
     assert [block["type"] for block in result["pages"][0]["blocks"]] == ["text"]
+
+
+def test_one_page_the_model_cannot_read_fails_alone_with_its_reason_and_the_rest_are_returned(tmp_path):
+    from docintel.engines.nemotron_engine import live_transport
+
+    def read_page(image_path):
+        if image_path.name.endswith("_p2.png"):
+            raise RuntimeError("CUDA out of memory")
+        return RAW
+
+    result = NemotronEngine(live_transport(tmp_path / "work", read_page)).parse(make_pdf(tmp_path / "scan.pdf"), tmp_path / "out")
+    first, second = result["pages"]
+    assert first["extraction"] == "scanned" and first["blocks"]
+    assert second["extraction"] == "failed" and "CUDA out of memory" in second["failure"] and second["blocks"] == []
+
+
+def test_a_failed_page_is_tried_again_on_the_next_run(tmp_path):
+    from docintel.engines.nemotron_engine import live_transport
+
+    calls = []
+
+    def flaky(image_path):
+        calls.append(image_path.name)
+        if image_path.name.endswith("_p2.png") and len(calls) == 2:
+            raise RuntimeError("transient")
+        return RAW
+
+    pdf = make_pdf(tmp_path / "scan.pdf")
+    NemotronEngine(live_transport(tmp_path / "work", flaky)).parse(pdf, tmp_path / "out")
+    result = NemotronEngine(live_transport(tmp_path / "work", flaky)).parse(pdf, tmp_path / "out")
+    assert [page["extraction"] for page in result["pages"]] == ["scanned", "scanned"]
+    assert calls.count("scan_p1.png") == 1  # the page that worked was not read again
+
+
+def test_when_every_page_fails_the_document_fails_so_the_pipeline_can_fall_back_to_ocr(tmp_path):
+    from docintel.engines.nemotron_engine import live_transport
+
+    def broken(image_path):
+        raise RuntimeError("no GPU")
+
+    with pytest.raises(RuntimeError, match="no GPU"):
+        NemotronEngine(live_transport(tmp_path / "work", broken)).parse(make_pdf(tmp_path / "scan.pdf"), tmp_path / "out")
