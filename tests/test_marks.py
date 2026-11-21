@@ -195,3 +195,13 @@ def test_reddish_texture_beyond_the_paper_at_the_image_edge_is_not_a_stamp():
     stamp(image, (300, 400, 640, 510))
     boxes = find_stamps(image)
     assert len(boxes) == 1 and boxes[0][0] < 400
+
+
+def test_a_soft_dark_smudge_with_thick_strokes_is_not_unaccounted_content():
+    from docintel.marks import find_unaccounted
+
+    image = page()
+    cv2.circle(image, (300, 500), 70, (60, 40, 70), 30)  # a thick dark ring: glare or a shadow, not writing
+    lines_of_text(image, 800)
+    found = find_unaccounted(image, covered=[])
+    assert found and all(y0 >= 760 for _, y0, _, _ in found)  # only the text lines, none at the smudge

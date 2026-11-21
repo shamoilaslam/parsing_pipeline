@@ -28,11 +28,12 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
+import cv2
 import fitz
 
 from docintel.engines.native import SpecterParser, _is_rtl
 from docintel.engines.base import Policy
-from docintel.engines.urdu_local import LocalVision, Reader
+from docintel.engines.urdu_local import LocalVision, Reader, agreement_with
 from docintel.escalation import may_send
 
 
@@ -387,6 +388,15 @@ def _apply_results(prediction_path: Path, output_dir: Path, manifest: dict[str, 
             block["rtl"]["vision"] = {**result, "image": image_path}
             block["confidence"]["score"] = round(min(float(block["confidence"].get("score", 1.0)), float(result["confidence"])), 3)
             block["confidence"].setdefault("reasons", []).append(f"{result['provider']}_urdu_vision")
+            agreement = result.get("agreement")
+            if agreement is not None and agreement >= AGREE:
+                # Two independent readers give the same words: more trusted than the engine's own cap.
+                block["confidence"]["score"] = round(min(float(result["confidence"]), agreement), 3)
+                block["confidence"]["reasons"].append("urdu_readers_agree")
+                block["needs_review"] = False
+            elif agreement is not None and agreement < DISAGREE:
+                block["confidence"]["reasons"].append("urdu_readers_disagree")
+                block["needs_review"] = True
             if replace_text:
                 block["text"] = result["text"]
                 block["markdown"] = result["text"]
@@ -406,6 +416,24 @@ def _apply_results(prediction_path: Path, output_dir: Path, manifest: dict[str, 
     prediction_path.write_text(json.dumps(prediction, ensure_ascii=False, indent=2), encoding="utf-8")
     (output_dir / f"{prediction_path.stem}.md").write_text(prediction["markdown"], encoding="utf-8")
     return prediction_path
+
+
+AGREE, DISAGREE = 0.85, 0.6  # between the two readers: above AGREE they confirm each other, below DISAGREE they contradict
+
+
+def _cross_check(results: list[dict[str, Any]], manifest: dict[str, Any], reader: Reader) -> None:
+    """Two independent readers: an API's reading is checked against the one on this machine.
+
+    Agreement is the best evidence available that neither made the text up.  Where the local reader
+    cannot read the crop it says nothing, and the API reading stands as it was.
+    """
+    images = {task["id"]: task["image"] for task in manifest["tasks"]}
+    for result in results:
+        if result["provider"] == "local" or result["id"] not in images:
+            continue
+        image = cv2.imread(images[result["id"]])
+        if image is not None and (value := agreement_with(result["text"], image, reader)) is not None:
+            result["agreement"] = value
 
 
 def run(pdf_path: Path, prediction_path: Path, output_dir: Path, mode: str = "auto", batch_size: int = 10, allow_llamaparse: bool = False, replace_text: bool = True, fresh: bool = False, ceiling: Policy = "local", local_reader: Reader | None = None) -> dict[str, Any]:
@@ -450,6 +478,8 @@ def run(pdf_path: Path, prediction_path: Path, output_dir: Path, mode: str = "au
             for task in batch:
                 task["status"] = "accepted" if task["id"] in accepted_ids else "pending"
         pending = next_pending
+    if local_reader is not None:
+        _cross_check(results, manifest, local_reader)
     _apply_results(prediction_path, output_dir, manifest, results, replace_text=replace_text)
     manifest["tasks"] = [{**task, "status": "accepted" if task["id"] in {item["id"] for item in results} else task.get("status", "pending")} for task in manifest["tasks"]]
     manifest["last_run"] = datetime.now(timezone.utc).isoformat()

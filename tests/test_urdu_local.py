@@ -80,3 +80,43 @@ def test_without_a_local_reader_a_local_ceiling_still_sends_and_reads_nothing(tm
     pdf, prediction = _case(tmp_path)
     summary = run(pdf, prediction, tmp_path / "out", ceiling="local")
     assert summary["accepted"] == 0 and summary["withheld"] == [{"id": "p1_b0", "reason": "policy_ceiling"}]
+
+
+def _api_returning(text):
+    def complete(self, tasks):
+        return [{"id": task["id"], "text": text, "confidence": 0.9, "provider": "gemini", "model": "m", "status": "accepted"} for task in tasks]
+
+    return complete
+
+
+def test_when_the_api_and_the_local_model_agree_the_reading_is_trusted_more_than_either_alone(tmp_path, monkeypatch):
+    from docintel.engines import urdu_vision
+
+    monkeypatch.setattr(urdu_vision.GeminiVision, "complete", _api_returning(URDU))
+    pdf, prediction = _case(tmp_path)
+    run(pdf, prediction, tmp_path / "out", ceiling="third_party", local_reader=lambda image: URDU)
+    block = json.loads(prediction.read_text(encoding="utf-8"))["pages"][0]["blocks"][0]
+    assert block["text"] == URDU and block["rtl"]["vision"]["agreement"] == 1.0
+    assert block["confidence"]["score"] >= 0.8 and "urdu_readers_agree" in block["confidence"]["reasons"]
+
+
+def test_when_they_disagree_the_api_text_is_kept_but_stays_low_and_flagged(tmp_path, monkeypatch):
+    from docintel.engines import urdu_vision
+
+    other = "بالکل مختلف عبارت جو دوسرے ریڈر نے پڑھی اور جو مماثل نہیں تھی"
+    monkeypatch.setattr(urdu_vision.GeminiVision, "complete", _api_returning(URDU))
+    pdf, prediction = _case(tmp_path)
+    run(pdf, prediction, tmp_path / "out", ceiling="third_party", local_reader=lambda image: other)
+    block = json.loads(prediction.read_text(encoding="utf-8"))["pages"][0]["blocks"][0]
+    assert block["text"] == URDU and block["rtl"]["vision"]["agreement"] < 0.6
+    assert block["confidence"]["score"] <= 0.2 and "urdu_readers_disagree" in block["confidence"]["reasons"] and block["needs_review"]
+
+
+def test_without_a_local_reader_an_api_reading_is_kept_as_before_with_no_agreement_recorded(tmp_path, monkeypatch):
+    from docintel.engines import urdu_vision
+
+    monkeypatch.setattr(urdu_vision.GeminiVision, "complete", _api_returning(URDU))
+    pdf, prediction = _case(tmp_path)
+    run(pdf, prediction, tmp_path / "out", ceiling="third_party")
+    block = json.loads(prediction.read_text(encoding="utf-8"))["pages"][0]["blocks"][0]
+    assert "agreement" not in block["rtl"]["vision"] and block["confidence"]["score"] <= 0.2

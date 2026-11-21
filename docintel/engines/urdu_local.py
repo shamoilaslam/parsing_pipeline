@@ -75,6 +75,17 @@ class LocalVision:
         return results
 
 
+def agreement_with(text: str, image: np.ndarray, reader: Reader) -> float | None:
+    """How closely this machine's reader, reading the crop on its own, matches ``text`` (0-1).
+
+    None when the local reader could not read the crop at all: then it can neither confirm nor dispute.
+    """
+    local = reader(image).strip()
+    if not plausible_urdu(local, (image.shape[1], image.shape[0])):
+        return None
+    return round(fuzz.ratio(text, local) / 100, 3)
+
+
 def hf_reader(model_id: str = MODEL) -> Reader:
     """A reader backed by a Hugging Face vision-language model, loaded on its first use.
 

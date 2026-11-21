@@ -27,6 +27,8 @@ MAX_ELONGATION = 8  # a region this much taller than wide is a rule or a band; w
 MIN_LINE_HEIGHT = 0.014  # of page width: a line of print is at least this tall
 MAX_DENSITY = 0.55  # more solid than this is a blob, not writing
 MIN_UNACCOUNTED_AREA = 0.0008
+PAPER_WINDOW = 0.12  # of page width: the window the paper's tone is estimated over
+MAX_BLOB_SHARE = 0.4  # of a region's ink that may be thicker than a pen stroke: more is glare or a shadow
 COVER_PAD = 0.012
 MAX_NOTE_AREA = 0.15
 
@@ -106,12 +108,15 @@ def find_unaccounted(image: np.ndarray, covered: list[tuple[int, int, int, int]]
     """
     height, width = image.shape[:2]
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    paper = cv2.medianBlur(gray, 51)
+    # The paper's tone is estimated over a window wider than any mark, so a thick smudge stays dark against it.
+    paper = cv2.medianBlur(gray, max(51, int(width * PAPER_WINDOW) // 2 * 2 + 1))
     ink = ((paper.astype(np.int16) - gray.astype(np.int16)) > INK_CONTRAST).astype(np.uint8)
     pad = int(width * COVER_PAD)
     for x0, y0, x1, y1 in covered:
         ink[max(0, y0 - pad) : y1 + pad, max(0, x0 - pad) : x1 + pad] = 0
     ink = cv2.morphologyEx(ink, cv2.MORPH_OPEN, np.ones((2, 2), np.uint8))
+    stroke = max(3, int(width * MAX_STROKE))
+    blobs = cv2.morphologyEx(ink, cv2.MORPH_OPEN, np.ones((stroke, stroke), np.uint8))  # what is thicker than any pen stroke
     size = max(3, int(width * 0.015))
     merged = cv2.morphologyEx(ink * 255, cv2.MORPH_CLOSE, np.ones((size, size), np.uint8))
     contours, _ = cv2.findContours(merged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -128,6 +133,7 @@ def find_unaccounted(image: np.ndarray, covered: list[tuple[int, int, int, int]]
             and not (w > MAX_ELONGATION * h and h < width * MIN_LINE_HEIGHT)
             and ink_pixels / (w * h) <= MAX_DENSITY
             and not in_strip
+            and blobs[y : y + h, x : x + w].sum() <= MAX_BLOB_SHARE * ink_pixels
         ):
             boxes.append((x, y, x + w, y + h))
     return sorted(boxes, key=lambda box: (box[1], box[0]))
