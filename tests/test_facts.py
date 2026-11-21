@@ -358,3 +358,10 @@ def test_a_local_urdu_reader_reads_crops_under_a_local_ceiling_so_nothing_is_ill
     written = json.loads((tmp_path / "facts" / "in" / "in.json").read_text(encoding="utf-8"))
     assert seen["ceiling"] == "local" and seen["local_reader"] is reader
     assert written["pages"][0]["blocks"][0]["text"] == "اردو"
+
+
+def test_language_is_counted_from_the_letters_in_the_text_not_from_a_stale_label():
+    urdu_with_latin = block("اردو" * 25 + " BDA", language="mixed", order=0)  # the label is stale; the text is Urdu
+    [out] = facts(page([urdu_with_latin, block("English words here", order=1)]))["pages"]
+    assert out["language"]["ur"] > 0.7 and out["language"]["en"] < 0.3
+    assert out["blocks"][0]["language"] == "ur" and out["blocks"][1]["language"] == "en"

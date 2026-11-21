@@ -12,3 +12,14 @@ def test_braces_inside_strings_do_not_end_the_object():
 def test_no_json_or_broken_json_is_none():
     assert first_json_object("no object here") is None
     assert first_json_object('{"a": ') is None
+
+
+def test_a_raw_newline_inside_a_json_string_is_accepted_without_changing_the_words():
+    assert first_json_object('{"q": "line one\nline two"}') == {"q": "line one\nline two"}
+
+
+def test_the_brain_keeps_the_last_raw_reply_so_a_failure_can_be_read():
+    from docintel.agent.brain import HFBrain
+
+    brain = HFBrain("any-model")
+    assert brain.last_reply is None

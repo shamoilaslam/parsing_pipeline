@@ -86,6 +86,9 @@ def _pages(paras: list[Para]) -> list[dict[str, Any]]:
     return [{"page_number": number, "blocks": blocks} for number, blocks in sorted(by_page.items())]
 
 
+UNUSABLE = {"status": "not_found", "why": "model_answer_unusable"}
+
+
 def _confirm(item: Any, pages: list[dict[str, Any]]) -> dict[str, Any]:
     if not isinstance(item, dict) or not item.get("value") or not item.get("quote"):
         return {"status": "not_found"}
@@ -103,7 +106,8 @@ def extract_metadata(brain: Brain, paras: list[Para], rule_case_number: str | No
     shown = paras[:HEAD_PARAGRAPHS] + [p for p in paras[HEAD_PARAGRAPHS:][-TAIL_PARAGRAPHS:]]
     text = "\n".join(f"- {p.text[:SHOWN_CHARS]}" for p in shown)
     answer = brain.json(METADATA_PROMPT.format(text=text))
-    answer = answer if isinstance(answer, dict) else {}
+    if not isinstance(answer, dict):
+        return {**{field: dict(UNUSABLE) for field in SCALAR_FIELDS}, **{field: [] for field in LIST_FIELDS}}
     pages = _pages(paras)
     meta: dict[str, Any] = {field: _confirm(answer.get(field), pages) for field in SCALAR_FIELDS}
     for field in LIST_FIELDS:
@@ -143,6 +147,8 @@ def _supported(sentence: str, cited: str) -> bool:
 def summarise(brain: Brain, paras: list[Para], tags: dict[str, str]) -> dict[str, Any]:
     source = [p for p in paras if tags.get(p.id) in SUMMARY_TAGS][:SUMMARY_SOURCES] or paras[:HEAD_PARAGRAPHS]
     answer = brain.json(SUMMARY_PROMPT.format(text="\n".join(f"[{p.id}] {p.text[:SUMMARY_CHARS]}" for p in source)))
+    if not isinstance(answer, dict):
+        return {"sentences": [], "rejected": [], "note": "model_answer_unusable"}
     by_id = {p.id: p for p in paras}
     kept, rejected = [], []
     for item in (answer.get("sentences") if isinstance(answer, dict) else None) or []:
@@ -178,7 +184,21 @@ def chunk_tree(paras: list[Para], tags: dict[str, str]) -> dict[str, Any]:
     return {"sections": sections, "paragraphs": entries}
 
 
-def analyse_judgment(document: dict[str, Any], brain: Brain) -> dict[str, Any]:
+class _Counted:
+    """The brain, counting how many of its answers were unusable: a failure must not look like an absent field."""
+
+    def __init__(self, brain: Brain) -> None:
+        self._brain, self.total, self.unusable = brain, 0, 0
+
+    def json(self, prompt: str) -> dict[str, Any] | None:
+        answer = self._brain.json(prompt)
+        self.total += 1
+        self.unusable += not isinstance(answer, dict)
+        return answer
+
+
+def analyse_judgment(document: dict[str, Any], model: Brain) -> dict[str, Any]:
+    brain = _Counted(model)
     paras = paragraphs(document)
     meta = extract_metadata(brain, paras, (document.get("document", {}).get("metadata") or {}).get("case_number"))
     tags = tag_paragraphs(brain, paras)
@@ -187,7 +207,8 @@ def analyse_judgment(document: dict[str, Any], brain: Brain) -> dict[str, Any]:
     flat = [meta[f] for f in SCALAR_FIELDS] + [item for f in LIST_FIELDS for item in meta[f]]
     return {
         "metadata": meta, "summary": summary, **tree,
-        "needs_review": bool(summary["rejected"]) or any(item["status"] == "rejected" for item in flat),
+        "model_calls": {"total": brain.total, "unusable": brain.unusable},
+        "needs_review": bool(summary["rejected"]) or brain.unusable > 0 or any(item["status"] == "rejected" for item in flat),
     }
 
 
@@ -196,10 +217,17 @@ def main() -> int:
     parser.add_argument("parsed", type=Path, help="a parsed <stem>.json")
     parser.add_argument("--model", default="Qwen/Qwen2.5-3B-Instruct", help="text model: a hub id or folder (downloaded on first use)")
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--dtype", choices=["float16", "bfloat16", "float32"], help="default: what the GPU supports")
     args = parser.parse_args()
     from docintel.agent.brain import HFBrain
 
-    result = analyse_judgment(json.loads(args.parsed.read_text(encoding="utf-8")), HFBrain(args.model))
+    brain = HFBrain(args.model, args.dtype)
+    replies: list[str | None] = []
+    original = brain.json
+    brain.json = lambda prompt: (lambda answer: (replies.append(brain.last_reply), answer)[1])(original(prompt))  # type: ignore[method-assign]
+    result = analyse_judgment(json.loads(args.parsed.read_text(encoding="utf-8")), brain)
+    # What the model actually said, so an unusable answer can be read, not guessed at.
+    args.out.with_suffix(".replies.json").write_text(json.dumps(replies, ensure_ascii=False, indent=2), encoding="utf-8")
     args.out.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
     return 0
 

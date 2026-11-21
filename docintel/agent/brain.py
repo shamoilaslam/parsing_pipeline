@@ -30,7 +30,7 @@ def first_json_object(text: str) -> dict[str, Any] | None:
                 depth -= 1
                 if depth == 0:
                     try:
-                        value = json.loads(text[start : index + 1])
+                        value = json.loads(text[start : index + 1], strict=False)
                     except json.JSONDecodeError:
                         break
                     return value if isinstance(value, dict) else None
@@ -39,9 +39,11 @@ def first_json_object(text: str) -> dict[str, Any] | None:
 
 
 class HFBrain:
-    def __init__(self, model_id: str = MODEL) -> None:
+    def __init__(self, model_id: str = MODEL, dtype: str | None = None) -> None:
         self._model_id = model_id
+        self._dtype = dtype  # "float16", "bfloat16" or "float32"; default: what the GPU supports
         self._loaded: tuple[Any, Any] | None = None
+        self.last_reply: str | None = None  # the raw reply to the last prompt, kept so a failed answer can be read
 
     def _load(self):
         if self._loaded is None:
@@ -50,7 +52,7 @@ class HFBrain:
 
             from docintel.engines.nemotron_gpu import choose_dtype
 
-            dtype = getattr(torch, choose_dtype(torch.cuda.get_device_capability() if torch.cuda.is_available() else None))
+            dtype = getattr(torch, self._dtype or choose_dtype(torch.cuda.get_device_capability() if torch.cuda.is_available() else None))
             model = AutoModelForCausalLM.from_pretrained(self._model_id, dtype=dtype, device_map="auto" if torch.cuda.is_available() else None)
             self._loaded = (model.eval(), AutoTokenizer.from_pretrained(self._model_id))
         return self._loaded
@@ -63,4 +65,5 @@ class HFBrain:
                                             return_tensors="pt", return_dict=True).to(model.device)
         with torch.inference_mode():
             out = model.generate(**ids, max_new_tokens=MAX_NEW_TOKENS, do_sample=False)
-        return first_json_object(tokenizer.decode(out[0][ids["input_ids"].shape[1]:], skip_special_tokens=True))
+        self.last_reply = tokenizer.decode(out[0][ids["input_ids"].shape[1]:], skip_special_tokens=True)
+        return first_json_object(self.last_reply)

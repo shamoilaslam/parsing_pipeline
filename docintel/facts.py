@@ -95,7 +95,7 @@ def _block(block: dict[str, Any], order: int, page: dict[str, Any], from_ocr: bo
     box = _fractions(block["bbox"], page["width"], page["height"])
     score = round(float((block.get("confidence") or {}).get("score", 0.0)), 3)
     base = {"id": block.get("id"), "order": order, "bbox": box, "confidence": score,
-            "language": block.get("language", "unknown")}
+            "language": _language(block.get("text") or "") if block.get("text") else block.get("language", "unknown")}
     if _unread_urdu(block) or block.get("type") == "illegible":
         return {**base, "type": "illegible", "text": "", "confidence": 0.0}
     kind = BLOCK_TYPES.get(block.get("type"), "paragraph")
@@ -105,14 +105,26 @@ def _block(block: dict[str, Any], order: int, page: dict[str, Any], from_ocr: bo
     return {**base, "type": kind, "text": text}
 
 
+def _letters(text: str) -> tuple[int, int]:
+    """(Urdu-script letters, other letters) in the text."""
+    urdu = sum(1 for char in text if char.isalpha() and ord(char) >= 0x600)
+    return urdu, sum(1 for char in text if char.isalpha()) - urdu
+
+
+def _language(text: str) -> str:
+    urdu, other = _letters(text)
+    return "ur" if urdu > other else "en"
+
+
 def _shares(blocks: list[dict[str, Any]]) -> dict[str, float]:
-    weights: dict[str, int] = {}
+    """The share of letters in each language, from the text itself: a label can be stale after Urdu is read."""
+    urdu = other = 0
     for block in blocks:
-        text = block.get("text") or ""
-        language = "ur" if block["language"] == "ur" else "en"
-        weights[language] = weights.get(language, 0) + len(text)
-    total = sum(weights.values())
-    return {language: round(weight / total, 3) for language, weight in weights.items() if weight} if total else {}
+        block_urdu, block_other = _letters(block.get("text") or "")
+        urdu, other = urdu + block_urdu, other + block_other
+    total = urdu + other
+    shares = {"en": round(other / total, 3), "ur": round(urdu / total, 3)} if total else {}
+    return {language: share for language, share in shares.items() if share}
 
 
 def _body_text(block: dict[str, Any]) -> str:

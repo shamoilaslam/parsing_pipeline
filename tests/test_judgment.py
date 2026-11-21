@@ -123,3 +123,11 @@ def test_the_whole_analysis_keeps_every_paragraphs_text_unchanged_and_reports_wh
     assert result["summary"]["sentences"][0]["cites"] == ["p1_b5"]
     assert [p["text"] for p in result["paragraphs"]] == [text for _, text in TEXTS]
     assert result["needs_review"] is True
+
+
+def test_an_unusable_model_answer_is_reported_as_a_failure_not_as_absent_fields():
+    result = analyse_judgment(document(), Brain(None))
+    assert result["model_calls"] == {"total": 3, "unusable": 3}
+    assert result["needs_review"] is True
+    assert result["metadata"]["court"] == {"status": "not_found", "why": "model_answer_unusable"}
+    assert result["summary"]["sentences"] == [] and "model_answer_unusable" in result["summary"]["note"]
