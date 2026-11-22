@@ -466,3 +466,32 @@ def test_one_long_line_of_text_over_several_visual_lines_is_split_by_width_witho
     lines = out["blocks"][0]["lines"]
     assert len(lines) == 3 and all(line["approximate"] for line in lines)
     assert " ".join(line["text"] for line in lines) == one_line
+
+
+def test_a_mixed_page_reports_the_ocr_confidence_of_the_part_a_model_read():
+    stamp = block("RECEIVED 06 OCT 1993", type="stamp", order=1, source="nemotron-3.5-parse", score=0.6)
+    [out] = facts(page([block("Text layer words that are long enough.", score=0.88), stamp]))["pages"]
+    assert out["source"] == "mixed" and out["quality"]["ocr_confidence"] == 0.6
+
+
+def test_a_word_file_carries_its_document_properties_in_metadata_docx(tmp_path):
+    import json
+
+    from docintel.facts import write_folder
+    from docintel.ingest.office import docx_sidecar
+
+    pdf = tmp_path / "letter.docx.pdf"
+    doc = fitz.open()
+    doc.new_page(width=600, height=800).insert_text((60, 100), "Letter.", fontsize=11)
+    doc.save(pdf)
+    props = {"title": "Letter", "creator": "A. Counsel", "created": "2008-10-20T09:00:00Z"}
+    docx_sidecar(pdf).write_text(json.dumps(props), encoding="utf-8")
+    parsed = tmp_path / "parsed"
+    parsed.mkdir()
+    payload = result(page([block("Letter.", bbox=(60, 90, 100, 104))]))
+    payload["document"].update(source_file=str(pdf), source_name="letter.docx.pdf")
+    (parsed / "letter.docx.json").write_text(json.dumps(payload), encoding="utf-8")
+    write_folder(parsed, tmp_path / "facts", urdu_ceiling="local")
+    written = json.loads((tmp_path / "facts" / "letter.docx" / "letter.docx.json").read_text(encoding="utf-8"))
+    assert written["metadata"]["docx"] == props and written["metadata"]["email"] is None
+    assert written["file"]["name"] == "letter.docx" and "wordprocessingml" in written["file"]["mime"]

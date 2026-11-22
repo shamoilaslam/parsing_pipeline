@@ -11,3 +11,10 @@ from docintel.engines.nemotron_gpu import choose_dtype
 )
 def test_the_format_follows_what_the_device_supports(capability, expected):
     assert choose_dtype(capability) == expected
+
+
+def test_the_hub_model_is_pinned_to_a_revision_and_a_local_folder_is_not():
+    from docintel.engines.nemotron_gpu import MODEL, REVISION, revision_for
+
+    assert len(REVISION) == 40 and revision_for(MODEL) == REVISION
+    assert revision_for("/content/my-local-copy") is None

@@ -122,3 +122,17 @@ def test_run_records_how_long_each_document_took_and_the_facts_file_reports_it(c
     assert seconds > 0
     assert json.loads((parsed / "facts" / "a" / "a.json").read_text(encoding="utf-8"))["file"]["seconds"] == seconds
     assert "seconds" not in json.loads((parsed / "manifest.json").read_text(encoding="utf-8"))["documents"][0]
+
+
+def test_clean_removes_the_working_files_and_keeps_every_output_and_the_resume_cache(tmp_path):
+    from docintel.run import clean_work
+
+    out = tmp_path / "out"
+    for name in ("images", "assets", "_normalized", "timings", "_nemotron", "facts/a/_urdu_work", "facts/a/pages"):
+        (out / name).mkdir(parents=True)
+        (out / name / "f.txt").write_text("x", encoding="utf-8")
+    (out / "facts" / "a" / "a.json").write_text("{}", encoding="utf-8")
+    clean_work(out)
+    assert not any((out / name).exists() for name in ("images", "assets", "_normalized", "timings", "facts/a/_urdu_work"))
+    assert (out / "_nemotron" / "f.txt").exists() and (out / "facts" / "a" / "pages" / "f.txt").exists()
+    assert (out / "facts" / "a" / "a.json").exists()

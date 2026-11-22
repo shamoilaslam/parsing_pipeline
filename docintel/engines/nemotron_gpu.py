@@ -23,9 +23,16 @@ from docintel.engines.nemotron_batch import append_raw, load_raw, render_jobs
 from docintel.engines.nemotron_parse import parse_output
 
 MODEL = "nvidia/Nemotron-3.5-Parse"  # a hub id or a local folder
+# The model runs code downloaded from its repository (trust_remote_code), so the revision is pinned: a change
+# upstream must not change our output.  This is the revision the casefile measurements were made on.
+REVISION = "ea2e1fe486bea3e7d0d505df9bafa4ad562407a0"
 # The model card's default prompt: boxes, classes, markdown text, text inside pictures.
 PROMPT = "</s><s><predict_bbox><predict_classes><output_markdown><predict_text_in_pic>"
 MAX_NEW_TOKENS = 8744  # the card's default
+
+
+def revision_for(model_id: str) -> str | None:
+    return REVISION if model_id == MODEL else None
 
 
 def choose_dtype(capability: tuple[int, int] | None) -> str:
@@ -41,8 +48,8 @@ def _load_model(model_id: str):
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype = getattr(torch, choose_dtype(torch.cuda.get_device_capability() if device == "cuda" else None))
-    model = AutoModel.from_pretrained(model_id, trust_remote_code=True, dtype=dtype).to(device).eval()
-    processor = AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
+    model = AutoModel.from_pretrained(model_id, trust_remote_code=True, dtype=dtype, revision=revision_for(model_id)).to(device).eval()
+    processor = AutoProcessor.from_pretrained(model_id, trust_remote_code=True, revision=revision_for(model_id))
     return model, processor, device
 
 
@@ -53,7 +60,7 @@ def _read_page(model, processor, device: str, model_id: str, image_path: Path) -
 
     image = Image.open(image_path).convert("RGB")
     inputs = processor(images=[image], text=PROMPT, return_tensors="pt", add_special_tokens=False).to(device)
-    config = GenerationConfig.from_pretrained(model_id, trust_remote_code=True)
+    config = GenerationConfig.from_pretrained(model_id, trust_remote_code=True, revision=revision_for(model_id))
     config.max_new_tokens, config.do_sample, config.num_beams, config.repetition_penalty = MAX_NEW_TOKENS, False, 1, 1.1
     with torch.inference_mode():
         output = model.generate(**inputs, generation_config=config)

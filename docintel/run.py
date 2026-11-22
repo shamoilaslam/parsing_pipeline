@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import sys
 from pathlib import Path
 
@@ -27,6 +28,21 @@ from docintel.engines.urdu_local import hf_reader
 from docintel.ingest import normalize_folder
 from docintel.understand.retract import retract_non_court
 from docintel.understand.segment import classify_folder
+
+
+WORK = ("images", "assets", "_normalized", "timings")
+
+
+def clean_work(out: Path) -> None:
+    """Delete the files a run makes on the way: page renders, conversions, timings and Urdu queues.
+
+    Every output stays, and so does ``_nemotron``, the record of each page the model has read, which is what
+    lets an interrupted or repeated run skip pages already done.
+    """
+    for name in WORK:
+        shutil.rmtree(out / name, ignore_errors=True)
+    for queue in (out / "facts").glob("*/_urdu_work"):
+        shutil.rmtree(queue, ignore_errors=True)
 
 
 def main() -> int:
@@ -49,6 +65,7 @@ def main() -> int:
         help="read Urdu with a vision model on this machine (a hub id or folder); it is loaded only when a crop needs it. "
         "A crop is kept only if two readings of it agree; with --urdu-policy local nothing leaves the machine",
     )
+    parser.add_argument("--clean", action="store_true", help="when done, delete the working files (page renders, conversions, timings, Urdu queues); outputs stay")
     args = parser.parse_args()
     if not args.folder.is_dir():
         parser.error(f"{args.folder} is not a folder")
@@ -94,6 +111,8 @@ def main() -> int:
     summary = report.summarise(report.load(out), manifest)
     (out / "report.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
     print(report.render(summary))
+    if args.clean:
+        clean_work(out)
     print(f"\nparsed folder: {out}")
     return 1 if manifest["failed"] or ingest_failures else 0
 

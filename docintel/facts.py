@@ -26,6 +26,7 @@ from docintel.engines.base import Policy
 from docintel.engines.marks_pass import MarkReader, read_marks
 from docintel.engines.urdu_local import Reader
 from docintel.ingest.email import sidecar_path
+from docintel.ingest.office import docx_sidecar
 from docintel.parsed import documents
 from docintel.lines import line_boxes
 from docintel.skew import estimate_skew
@@ -207,6 +208,11 @@ def _page(page: dict[str, Any], image: str | None, image_file: Path | None = Non
     weight = sum(len(_body_text(block)) for block in read)
     score = round(sum(block["confidence"] * len(_body_text(block)) for block in read) / weight, 3) if weight else 0.0
 
+    # What the model or OCR engine read, apart from what the text layer gave: marks (stamps, notes) count here too.
+    ocr_read = [(each, raw) for each, raw in zip(blocks, body) if from_ocr(raw) and each["type"] != "illegible" and (_body_text(each).strip() or each["type"] in APART)]
+    weight_ocr = sum(max(len(_body_text(each)), 1) for each, _ in ocr_read)
+    ocr_confidence = round(sum(each["confidence"] * max(len(_body_text(each)), 1) for each, _ in ocr_read) / weight_ocr, 3) if weight_ocr else None
+
     flags = []
     if not any(block["type"] not in APART for block in blocks):
         flags.append("blank")
@@ -227,7 +233,7 @@ def _page(page: dict[str, Any], image: str | None, image_file: Path | None = Non
         **out, "status": "ok", "source": kind,
         **({"engine": engine} if engine else {}),
         "language": _shares(blocks),
-        "quality": {"score": score, "ocr_confidence": score if kind == "ocr" and read else None, "flags": flags,
+        "quality": {"score": score, "ocr_confidence": ocr_confidence, "flags": flags,
                     "skew_degrees": skew},
         "printed_page_number": _printed_number(edge["footer"], edge["header"]),
         "header_text": edge["header"], "footer_text": edge["footer"],
@@ -241,8 +247,16 @@ def _page(page: dict[str, Any], image: str | None, image_file: Path | None = Non
 EMAIL_FIELDS = ("from", "to", "cc", "date", "subject", "attachments")
 
 
+DOCX_MIME = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+
+
+def _mime(email_meta: dict[str, Any] | None, docx_meta: dict[str, Any] | None) -> str:
+    return "message/rfc822" if email_meta else DOCX_MIME if docx_meta else "application/pdf"
+
+
 def facts_file(result: dict[str, Any], *, pdf: Path | None = None, folder: Path | None = None,
-               seconds: float | None = None, email_meta: dict[str, Any] | None = None) -> dict[str, Any]:
+               seconds: float | None = None, email_meta: dict[str, Any] | None = None,
+               docx_meta: dict[str, Any] | None = None) -> dict[str, Any]:
     document = result["document"]
     images: dict[int, str] = {}
     if pdf and folder:
@@ -253,10 +267,10 @@ def facts_file(result: dict[str, Any], *, pdf: Path | None = None, folder: Path 
                 page.get_pixmap(matrix=fitz.Matrix(PAGE_IMAGE_ZOOM, PAGE_IMAGE_ZOOM)).save(folder / name)
                 images[page.number + 1] = name
     return {
-        "file": {"name": (document.get("source_name") or "").removesuffix(".pdf") if email_meta else document.get("source_name"),
-                 "sha256": document.get("id"), "mime": "message/rfc822" if email_meta else "application/pdf",
+        "file": {"name": (document.get("source_name") or "").removesuffix(".pdf") if (email_meta or docx_meta) else document.get("source_name"),
+                 "sha256": document.get("id"), "mime": _mime(email_meta, docx_meta),
                  "pages": len(result["pages"]), "parser": PARSER, "parser_version": __version__, "seconds": seconds},
-        "metadata": {"email": {key: email_meta.get(key) for key in EMAIL_FIELDS} if email_meta else None, "docx": None},
+        "metadata": {"email": {key: email_meta.get(key) for key in EMAIL_FIELDS} if email_meta else None, "docx": docx_meta or None},
         "pages": [
             _page(page, images.get(page["page_number"]), folder / images[page["page_number"]] if page["page_number"] in images else None)
             for page in result["pages"]
@@ -268,6 +282,11 @@ def _seconds(parsed: Path, stem: str) -> float | None:
     """How long the parse of this file took, as the run recorded it."""
     path = parsed / "timings" / f"{stem}.json"
     return json.loads(path.read_text(encoding="utf-8")).get("seconds") if path.exists() else None
+
+
+def _docx_meta(pdf: Path) -> dict[str, Any] | None:
+    sidecar = docx_sidecar(pdf)
+    return json.loads(sidecar.read_text(encoding="utf-8")) if sidecar.exists() else None
 
 
 def _email_meta(pdf: Path) -> dict[str, Any] | None:
@@ -312,6 +331,6 @@ def write_folder(parsed: Path, out: Path, *, urdu_ceiling: Policy = "local", mar
         if mark_reader:
             _second_look(document, pdf, mark_reader)
         path = folder / f"{stem}.json"
-        path.write_text(json.dumps(facts_file(document, pdf=pdf, folder=folder, email_meta=_email_meta(pdf), seconds=_seconds(parsed, stem)), ensure_ascii=False, indent=1), encoding="utf-8")
+        path.write_text(json.dumps(facts_file(document, pdf=pdf, folder=folder, email_meta=_email_meta(pdf), docx_meta=_docx_meta(pdf), seconds=_seconds(parsed, stem)), ensure_ascii=False, indent=1), encoding="utf-8")
         written.append(path)
     return written

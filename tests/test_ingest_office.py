@@ -43,3 +43,50 @@ def test_a_machine_without_libreoffice_gets_a_clear_error_and_nothing_is_run(tmp
 def test_libreoffice_exiting_cleanly_without_a_pdf_is_reported_not_returned(tmp_path):
     with pytest.raises(ConversionFailed, match="nda.docx"):
         office_to_pdf(tmp_path / "nda.docx", tmp_path / "nda.pdf", find=lambda: "soffice", run=lambda command: None)
+
+
+CORE = (
+    '<?xml version="1.0" encoding="UTF-8"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" '
+    'xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/">'
+    "<dc:title>Letter on royalty terms</dc:title><dc:creator>A. Counsel</dc:creator><cp:lastModifiedBy>B. Clerk</cp:lastModifiedBy>"
+    '<cp:revision>3</cp:revision><dcterms:created xsi:type="dcterms:W3CDTF" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">2008-10-20T09:00:00Z</dcterms:created>'
+    "</cp:coreProperties>"
+)
+
+
+def docx_with_properties(path):
+    import zipfile
+
+    with zipfile.ZipFile(path, "w") as archive:
+        archive.writestr("docProps/core.xml", CORE)
+        archive.writestr("word/document.xml", "<w:document/>")
+    return path
+
+
+def test_the_documents_own_properties_are_read_exactly_as_stored(tmp_path):
+    from docintel.ingest.office import docx_properties
+
+    assert docx_properties(docx_with_properties(tmp_path / "a.docx")) == {
+        "title": "Letter on royalty terms", "creator": "A. Counsel", "last_modified_by": "B. Clerk",
+        "revision": "3", "created": "2008-10-20T09:00:00Z",
+    }
+
+
+def test_a_file_with_no_readable_properties_gives_an_empty_record(tmp_path):
+    from docintel.ingest.office import docx_properties
+
+    broken = tmp_path / "b.docx"
+    broken.write_bytes(b"not a zip")
+    assert docx_properties(broken) == {}
+
+
+def test_a_converted_word_file_leaves_its_properties_beside_the_pdf(tmp_path):
+    import json
+
+    from docintel.ingest.office import docx_sidecar
+
+    out = tmp_path / "out" / "a.docx.pdf"
+    docx = docx_with_properties(tmp_path / "a.docx")
+    out.parent.mkdir()
+    office_to_pdf(docx, out, find=lambda: "soffice", run=fake_libreoffice([]))
+    assert json.loads(docx_sidecar(out).read_text(encoding="utf-8"))["creator"] == "A. Counsel"
